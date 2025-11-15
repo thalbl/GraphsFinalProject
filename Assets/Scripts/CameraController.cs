@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Controlador principal da câmera que orquestra todos os sistemas modulares
+/// </summary>
 public class CameraController : MonoBehaviour {
     [Header("Zoom Settings")]
     public float zoomSpeed = 5f;
@@ -15,16 +18,23 @@ public class CameraController : MonoBehaviour {
     public bool useBounds = true;
     public float boundsPadding = 2f;
 
-    // Refer�ncias
+    [Header("Quick Actions")]
+    public KeyCode showAllKey = KeyCode.Space;
+
+    // Referências
     private Camera cam;
     private DungeonGenerator dungeonGenerator;
 
-    // Estado do pan
-    private Vector3 panStartPosition;
-    private Vector3 cameraStartPosition;
-    private bool isPanning = false;
+    // Módulos modulares
+    private CameraZoomHandler zoomHandler;
+    private CameraPanHandler panHandler;
+    private DungeonBoundsCalculator boundsCalculator;
+    private CameraZoomCalculator zoomCalculator;
+    private CameraAnimator cameraAnimator;
+    private CameraVisibilityChecker visibilityChecker;
+    private CameraBoundsClamper boundsClamper;
 
-    // Limites da c�mera
+    // Estado
     private Bounds dungeonBounds;
     private bool boundsCalculated = false;
 
@@ -32,190 +42,206 @@ public class CameraController : MonoBehaviour {
         cam = GetComponent<Camera>();
         dungeonGenerator = FindObjectOfType<DungeonGenerator>();
 
-        // Configurar zoom inicial
-        cam.orthographicSize = defaultZoom;
+        // Garantir que a câmera está configurada como ortográfica
+        if (cam != null && !cam.orthographic) {
+            cam.orthographic = true;
+            Debug.LogWarning("⚠️ Câmera configurada como ortográfica no Start().");
+        }
 
-        // Calcular limites ap�s a gera��o da dungeon
+        // Inicializar módulos
+        InitializeModules();
+
+        // Configurar zoom inicial
+        if (cam != null) {
+            cam.orthographicSize = defaultZoom;
+        }
+
+        // Calcular limites após a geração da dungeon
         if (dungeonGenerator != null) {
             dungeonGenerator.OnDungeonGenerated += CalculateDungeonBounds;
+            
+            // Se a dungeon já foi gerada, calcular limites imediatamente
+            if (dungeonGenerator.allRooms != null && dungeonGenerator.allRooms.Count > 0) {
+                CalculateDungeonBounds();
+            }
+        } else {
+            Debug.LogError("❌ DungeonGenerator não encontrado! A câmera não poderá focar no grafo.");
         }
     }
 
     void Update() {
-        HandleZoom();
-        HandlePan();
-        ClampCameraPosition();
-    }
+        // Processar inputs de zoom e pan
+        zoomHandler?.HandleZoom();
+        panHandler?.HandlePan();
+        
+        // Limitar posição da câmera dentro dos bounds
+        if (boundsCalculated) {
+            boundsClamper?.ClampPosition(dungeonBounds);
+        }
 
-    private void HandleZoom() {
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
-
-        if (scrollInput != 0) {
-            // Calcular novo tamanho ortogr�fico
-            float newSize = cam.orthographicSize - scrollInput * zoomSpeed;
-            newSize = Mathf.Clamp(newSize, minZoom, maxZoom);
-
-            // Aplicar zoom mantendo a posi��o do mouse como ponto focal
-            Vector3 mouseWorldPosBeforeZoom = cam.ScreenToWorldPoint(Input.mousePosition);
-            cam.orthographicSize = newSize;
-            Vector3 mouseWorldPosAfterZoom = cam.ScreenToWorldPoint(Input.mousePosition);
-
-            // Ajustar posi��o da c�mera para manter o foco no mouse
-            Vector3 positionAdjustment = mouseWorldPosBeforeZoom - mouseWorldPosAfterZoom;
-            transform.position += positionAdjustment;
+        // Atalho para mostrar toda a dungeon
+        if (Input.GetKeyDown(showAllKey)) {
+            ShowEntireDungeon();
         }
     }
 
-    private void HandlePan() {
-        // Iniciar pan (bot�o direito do mouse)
-        if (Input.GetMouseButtonDown(1)) // Bot�o direito
-        {
-            StartPan();
+    /// <summary>
+    /// Inicializa todos os módulos
+    /// </summary>
+    private void InitializeModules() {
+        if (cam == null) return;
+
+        // Inicializar handlers
+        zoomHandler = new CameraZoomHandler(cam, zoomSpeed, minZoom, maxZoom);
+        panHandler = new CameraPanHandler(cam, panSpeed, invertPan);
+        
+        // Inicializar calculadores
+        boundsCalculator = new DungeonBoundsCalculator(boundsPadding);
+        zoomCalculator = new CameraZoomCalculator(cam);
+        
+        // Inicializar verificador de visibilidade
+        visibilityChecker = new CameraVisibilityChecker(cam);
+        
+        // Inicializar clamp de bounds
+        boundsClamper = new CameraBoundsClamper(cam, useBounds);
+        
+        // CameraAnimator precisa estar no GameObject
+        cameraAnimator = GetComponent<CameraAnimator>();
+        if (cameraAnimator == null) {
+            cameraAnimator = gameObject.AddComponent<CameraAnimator>();
         }
-
-        // Durante o pan
-        if (isPanning) {
-            UpdatePan();
-        }
-
-        // Finalizar pan
-        if (Input.GetMouseButtonUp(1)) {
-            EndPan();
-        }
     }
 
-    private void StartPan() {
-        isPanning = true;
-        panStartPosition = Input.mousePosition;
-        cameraStartPosition = transform.position;
-    }
-
-    private void UpdatePan() {
-        Vector3 currentMousePos = Input.mousePosition;
-        Vector3 mouseDelta = currentMousePos - panStartPosition;
-
-        // Converter delta de tela para mundo
-        Vector3 worldDelta = cam.ScreenToWorldPoint(mouseDelta) - cam.ScreenToWorldPoint(Vector3.zero);
-
-        // Aplicar invers�o se configurado
-        if (invertPan) worldDelta = -worldDelta;
-
-        // Aplicar movimento
-        Vector3 newPosition = cameraStartPosition - worldDelta * panSpeed;
-        transform.position = newPosition;
-    }
-
-    private void EndPan() {
-        isPanning = false;
-    }
-
+    /// <summary>
+    /// Calcula os limites da dungeon
+    /// </summary>
     private void CalculateDungeonBounds() {
-        if (dungeonGenerator == null || dungeonGenerator.allRooms == null || dungeonGenerator.allRooms.Count == 0)
+        if (dungeonGenerator == null || dungeonGenerator.allRooms == null || dungeonGenerator.allRooms.Count == 0) {
+            Debug.LogWarning("⚠️ CalculateDungeonBounds: DungeonGenerator ou allRooms está vazio!");
             return;
-
-        // Encontrar os limites extremos da dungeon
-        float minX = float.MaxValue;
-        float maxX = float.MinValue;
-        float minY = float.MaxValue;
-        float maxY = float.MinValue;
-
-        foreach (RoomNode room in dungeonGenerator.allRooms) {
-            Rect roomRect = room.roomRect;
-
-            minX = Mathf.Min(minX, roomRect.xMin);
-            maxX = Mathf.Max(maxX, roomRect.xMax);
-            minY = Mathf.Min(minY, roomRect.yMin);
-            maxY = Mathf.Max(maxY, roomRect.yMax);
         }
 
-        // Aplicar padding
-        minX -= boundsPadding;
-        maxX += boundsPadding;
-        minY -= boundsPadding;
-        maxY += boundsPadding;
+        // Garantir que a câmera está ortográfica
+        if (cam != null && !cam.orthographic) {
+            cam.orthographic = true;
+            Debug.LogWarning("⚠️ Câmera configurada como ortográfica no CalculateDungeonBounds.");
+        }
 
-        // Criar bounds
-        Vector3 center = new Vector3((minX + maxX) * 0.5f, (minY + maxY) * 0.5f, 0f);
-        Vector3 size = new Vector3(maxX - minX, maxY - minY, 0f);
-
-        dungeonBounds = new Bounds(center, size);
+        // Calcular bounds usando o calculador
+        dungeonBounds = boundsCalculator.CalculateBounds(dungeonGenerator.allRooms);
         boundsCalculated = true;
 
-        Debug.Log($"Limites da dungeon calculados: {dungeonBounds}");
-    }
+        Debug.Log($"📐 Limites da dungeon calculados: Center={dungeonBounds.center}, Size={dungeonBounds.size}");
 
-    private void ClampCameraPosition() {
-        if (!useBounds || !boundsCalculated) return;
+        // Calcular limites dinâmicos de zoom
+        CalculateDynamicZoomLimits();
 
-        // Calcular os limites vis�veis da c�mera
-        float cameraHeight = cam.orthographicSize;
-        float cameraWidth = cameraHeight * cam.aspect;
-
-        float minX = dungeonBounds.min.x + cameraWidth;
-        float maxX = dungeonBounds.max.x - cameraWidth;
-        float minY = dungeonBounds.min.y + cameraHeight;
-        float maxY = dungeonBounds.max.y - cameraHeight;
-
-        // S� clamp se a dungeon for maior que a viewport
-        if (maxX >= minX && maxY >= minY) {
-            Vector3 clampedPosition = transform.position;
-            clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX, maxX);
-            clampedPosition.y = Mathf.Clamp(clampedPosition.y, minY, maxY);
-            transform.position = clampedPosition;
-        }
-        else {
-            // Se a dungeon for menor que a viewport, centralizar
-            transform.position = dungeonBounds.center;
+        // Posicionar a câmera na dungeon após calcular os limites
+        if (dungeonGenerator.allRooms.Count > 0) {
+            PositionCameraOnDungeon();
+            AdjustZoomForDungeon();
+            VerifyCameraVisibility();
         }
     }
 
-    // M�todo p�blico para focar em uma sala espec�fica
-    public void FocusOnRoom(RoomNode room, float duration = 1f) {
-        if (room != null) {
-            Vector3 targetPosition = new Vector3(room.roomRect.center.x, room.roomRect.center.y, transform.position.z);
-            StartCoroutine(MoveCameraSmoothly(targetPosition, duration));
+    /// <summary>
+    /// Posiciona a câmera no centro da dungeon
+    /// </summary>
+    private void PositionCameraOnDungeon() {
+        // Manter o Z da câmera, mas garantir que seja negativo para câmeras ortográficas
+        float cameraZ = transform.position.z;
+        if (cameraZ >= 0) {
+            cameraZ = -10f;
+            Debug.LogWarning($"⚠️ Ajustando Z da câmera para {cameraZ} (câmeras ortográficas precisam de Z negativo).");
         }
-    }
-
-    // M�todo p�blico para mostrar toda a dungeon
-    public void ShowEntireDungeon(float duration = 1f) {
-        if (boundsCalculated) {
-            // Calcular zoom necess�rio para ver toda a dungeon
-            float requiredSizeX = dungeonBounds.size.x / (2f * cam.aspect);
-            float requiredSizeY = dungeonBounds.size.y / 2f;
-            float targetSize = Mathf.Max(requiredSizeX, requiredSizeY) * 1.1f; // 10% de margem
-
-            targetSize = Mathf.Clamp(targetSize, minZoom, maxZoom);
-
-            StartCoroutine(ZoomSmoothly(targetSize, duration));
-            StartCoroutine(MoveCameraSmoothly(dungeonBounds.center, duration));
-        }
-    }
-
-    private System.Collections.IEnumerator MoveCameraSmoothly(Vector3 targetPosition, float duration) {
-        Vector3 startPosition = transform.position;
-        float elapsed = 0f;
-
-        while (elapsed < duration) {
-            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
+        
+        // Posicionar a câmera no centro da dungeon
+        Vector3 targetPosition = new Vector3(dungeonBounds.center.x, dungeonBounds.center.y, cameraZ);
         transform.position = targetPosition;
+        
+        Debug.Log($"📷 Câmera reposicionada para: {targetPosition}");
     }
 
-    private System.Collections.IEnumerator ZoomSmoothly(float targetSize, float duration) {
-        float startSize = cam.orthographicSize;
-        float elapsed = 0f;
+    /// <summary>
+    /// Ajusta o zoom para mostrar toda a dungeon
+    /// </summary>
+    private void AdjustZoomForDungeon() {
+        float requiredSize = zoomCalculator.CalculateRequiredZoomSize(dungeonBounds, dungeonGenerator.allRooms);
+        float clampedSize = Mathf.Clamp(requiredSize, minZoom, maxZoom);
+        
+        zoomHandler.SetZoom(clampedSize);
+        
+        Debug.Log($"📷 Zoom ajustado: Size={cam.orthographicSize:F2}, Required={requiredSize:F2}, Aspect={cam.aspect:F2}");
+    }
 
-        while (elapsed < duration) {
-            cam.orthographicSize = Mathf.Lerp(startSize, targetSize, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
+    /// <summary>
+    /// Verifica a visibilidade das salas
+    /// </summary>
+    private void VerifyCameraVisibility() {
+        if (visibilityChecker == null || dungeonGenerator?.allRooms == null) return;
+
+        VisibilityResult result = visibilityChecker.CheckVisibility(dungeonGenerator.allRooms);
+        
+        Debug.Log($"👁️ Salas visíveis: {result.FullyVisibleRooms} completas, {result.PartiallyVisibleRooms} parciais ({result.FullyVisibleRooms + result.PartiallyVisibleRooms}/{result.TotalRooms} total)");
+        
+        if (!result.AllRoomsVisible) {
+            Debug.LogWarning($"⚠️ {result.TotalRooms - result.FullyVisibleRooms} sala(s) não estão completamente visíveis na viewport.");
+            Debug.LogWarning($"   Viewport: X=[{result.ViewportBounds.xMin:F2}, {result.ViewportBounds.xMax:F2}], Y=[{result.ViewportBounds.yMin:F2}, {result.ViewportBounds.yMax:F2}]");
+            Debug.LogWarning($"   Camera Size: {cam.orthographicSize:F2}, Aspect: {cam.aspect:F2}");
+        }
+    }
+
+    /// <summary>
+    /// Calcula os limites dinâmicos de zoom
+    /// </summary>
+    private void CalculateDynamicZoomLimits() {
+        if (!boundsCalculated) return;
+
+        // Calcular o zoom necessário usando o calculador
+        float requiredZoom = zoomCalculator.CalculateRequiredZoomSize(dungeonBounds, dungeonGenerator.allRooms);
+        
+        // Definir maxZoom dinamicamente (com margem adicional para permitir zoom out)
+        maxZoom = requiredZoom * 1.5f;
+        
+        // Garantir um mínimo e máximo razoável
+        maxZoom = Mathf.Clamp(maxZoom, 5f, 50f);
+        
+        // Atualizar os limites no zoom handler
+        zoomHandler?.UpdateZoomLimits(minZoom, maxZoom);
+        
+        Debug.Log($"🔍 Zoom dinâmico: Required={requiredZoom:F1}, MaxZoom={maxZoom:F1}, Aspect={cam.aspect:F2}");
+    }
+
+    /// <summary>
+    /// Mostra toda a dungeon na tela
+    /// </summary>
+    public void ShowEntireDungeon(float duration = 0.3f) {
+        if (!boundsCalculated) {
+            CalculateDungeonBounds();
+            return;
         }
 
-        cam.orthographicSize = targetSize;
+        // Calcular zoom necessário usando o calculador
+        float targetSize = zoomCalculator.CalculateRequiredZoomSize(dungeonBounds, dungeonGenerator.allRooms);
+        targetSize = Mathf.Clamp(targetSize, minZoom, maxZoom);
+        
+        // Manter o Z da câmera atual (ou usar -10 se não for negativo)
+        float cameraZ = transform.position.z;
+        if (cameraZ >= 0) cameraZ = -10f;
+        Vector3 targetPosition = new Vector3(dungeonBounds.center.x, dungeonBounds.center.y, cameraZ);
+        
+        // Animar câmera e zoom
+        cameraAnimator?.MoveAndZoomSmoothly(targetPosition, targetSize, duration);
+    }
+
+    /// <summary>
+    /// Foca em uma sala específica
+    /// </summary>
+    public void FocusOnRoom(RoomNode room, float duration = 1f) {
+        if (room != null && cameraAnimator != null) {
+            Vector3 targetPosition = new Vector3(room.roomRect.center.x, room.roomRect.center.y, transform.position.z);
+            cameraAnimator.MoveCameraSmoothly(targetPosition, duration);
+        }
     }
 
     // Gizmos para debug (opcional)
@@ -233,3 +259,4 @@ public class CameraController : MonoBehaviour {
         }
     }
 }
+
