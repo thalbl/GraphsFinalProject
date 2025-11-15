@@ -14,7 +14,7 @@ public class DungeonGenerator : MonoBehaviour {
     public Vector2 spawnRoomSize = new Vector2(12, 12);
     public Vector2 bossRoomSize = new Vector2(16, 16);
     public Vector2 normalRoomSize = new Vector2(8, 8);
-    public float minGapBetweenRooms = 2f; // Espaço mínimo entre salas
+    public float minGapBetweenRooms = 2f; // Espaï¿½o mï¿½nimo entre salas
 
     [Header("Visual Settings")]
     public Material connectionMaterial; // Crie um material simples (Unlit/Color) no Unity
@@ -32,18 +32,30 @@ public class DungeonGenerator : MonoBehaviour {
     private Dictionary<Vector2Int, RoomNode> occupiedPositions;
     private GameObject dungeonContainer; // Objeto pai para organizar a hierarquia
 
+    [Header("Cost Settings")]
+    [SerializeField] private Vector2 healthCostRange = new Vector2(1, 5);
+    [SerializeField] private Vector2 sanityCostRange = new Vector2(1, 8);
+    [SerializeField] private Vector2 timeCostRange = new Vector2(1, 3);
+    [SerializeField] private bool directedGraph = true; // O grafo Ã© direcionado?
+    
+    [Header("Graph Complexity")]
+    [SerializeField] private float additionalEdgeChance = 0.15f; // 15% de chance de adicionar aresta extra
+    [SerializeField] private int maxAdditionalEdges = 5; // MÃ¡ximo de arestas adicionais
+
+    private Dictionary<(RoomNode, RoomNode), EdgeData> edgeCosts;
+
     [Header("System References")]
     public CameraController mainCamera;
     void Start() {
         if (generateOnStart) GenerateDungeon();
     }
 
-    // Botão para o Inspector (opcional)
+    // Botï¿½o para o Inspector (opcional)
     [ContextMenu("Generate Dungeon")]
     public void GenerateDungeon() {
         // Limpa a dungeon anterior, se existir
         if (dungeonContainer != null) {
-            // Use DestroyImmediate se estiver no Editor e não em Play Mode
+            // Use DestroyImmediate se estiver no Editor e nï¿½o em Play Mode
             if (Application.isPlaying)
                 Destroy(dungeonContainer);
             else
@@ -57,12 +69,15 @@ public class DungeonGenerator : MonoBehaviour {
         occupiedPositions = new Dictionary<Vector2Int, RoomNode>();
         allRooms = new List<RoomNode>();
 
-        // --- Fases da Geração ---
+        edgeCosts = new Dictionary<(RoomNode, RoomNode), EdgeData>();
+
+        // --- Fases da Geraï¿½ï¿½o ---
         GenerateRoomGraph();      // 1. Cria a estrutura (DFS)
+        AddAdditionalEdges();     // 1.5. Adiciona arestas extras para complexidade
         AssignRoomTypes();        // 2. Define Spawn, Boss, Tesouro (Pacing)
-        ApplyPhysicalLayout();    // 3. Define tamanhos e escala (Evita colisão)
+        ApplyPhysicalLayout();    // 3. Define tamanhos e escala (Evita colisï¿½o)
         NaturalizeLayout();       // 4. Torna menos "quadrado" (Gravidade)
-        // Fase 5 (Custos) foi REMOVIDA
+        GenerateEdgeCosts();      // Fase 5 (Custos) Aplicar custos nas arestas
         CreateVisualRepresentation(); // 6. Desenha na tela
 
         Debug.Log($"Dungeon gerado: {allRooms.Count} salas.");
@@ -88,12 +103,12 @@ public class DungeonGenerator : MonoBehaviour {
 
         while (stack.Count > 0 && allRooms.Count < maxRooms) {
             RoomNode currentRoom = stack.Pop();
-            ShuffleArray(directions); // Aleatoriza direções
+            ShuffleArray(directions); // Aleatoriza direï¿½ï¿½es
 
             foreach (Vector2Int dir in directions) {
                 Vector2Int newPos = currentRoom.logicalPosition + dir;
 
-                if (!occupiedPositions.ContainsKey(newPos)) // Se a posição está livre
+                if (!occupiedPositions.ContainsKey(newPos)) // Se a posiï¿½ï¿½o estï¿½ livre
                 {
                     RoomNode newRoom = new RoomNode(newPos);
                     newRoom.parent = currentRoom;
@@ -111,9 +126,52 @@ public class DungeonGenerator : MonoBehaviour {
         }
     }
 
+    // Fase 1.5: Adiciona arestas extras para tornar o grafo mais complexo
+    private void AddAdditionalEdges() {
+        int edgesAdded = 0;
+        int attempts = 0;
+        int maxAttempts = allRooms.Count * 10; // Limite de tentativas
+
+        while (edgesAdded < maxAdditionalEdges && attempts < maxAttempts) {
+            attempts++;
+            
+            // Seleciona duas salas aleatÃ³rias
+            RoomNode roomA = allRooms[Random.Range(0, allRooms.Count)];
+            RoomNode roomB = allRooms[Random.Range(0, allRooms.Count)];
+            
+            // NÃ£o adiciona aresta se:
+            // - SÃ£o a mesma sala
+            // - JÃ¡ estÃ£o conectadas
+            // - SÃ£o adjacentes na grade (jÃ¡ devem estar conectadas pela Ã¡rvore)
+            if (roomA == roomB) continue;
+            if (roomA.connections.Contains(roomB)) continue;
+            
+            Vector2Int diff = roomA.logicalPosition - roomB.logicalPosition;
+            int manhattanDistance = Mathf.Abs(diff.x) + Mathf.Abs(diff.y);
+            
+            // SÃ³ adiciona arestas entre salas que nÃ£o sÃ£o adjacentes imediatas
+            // e que estÃ£o a uma distÃ¢ncia razoÃ¡vel (atalhos)
+            if (manhattanDistance <= 1) continue;
+            if (manhattanDistance > 4) continue; // Limita distÃ¢ncia mÃ¡xima
+            
+            // Chance baseada na distÃ¢ncia (atalhos mais prÃ³ximos sÃ£o mais provÃ¡veis)
+            float chance = additionalEdgeChance * (1f / manhattanDistance);
+            if (Random.value > chance) continue;
+            
+            // Adiciona a conexÃ£o bidirecional
+            roomA.connections.Add(roomB);
+            roomB.connections.Add(roomA);
+            edgesAdded++;
+            
+            Debug.Log($"Aresta adicional criada: {roomA.logicalPosition} <-> {roomB.logicalPosition} (distÃ¢ncia: {manhattanDistance})");
+        }
+        
+        Debug.Log($"Arestas adicionais criadas: {edgesAdded}");
+    }
+
     // Fase 2: Pacing (Define Boss, etc.)
     private void AssignRoomTypes() {
-        CalculateDistancesFromStart(); // Usa BFS para achar distâncias
+        CalculateDistancesFromStart(); // Usa BFS para achar distï¿½ncias
 
         List<RoomNode> leafRooms = new List<RoomNode>();
         foreach (RoomNode room in allRooms) {
@@ -199,6 +257,45 @@ public class DungeonGenerator : MonoBehaviour {
         }
     }
 
+    private void GenerateEdgeCosts()
+    {
+        foreach (RoomNode fromRoom in allRooms)
+        {
+            // O 'connections' do seu RoomNode jÃ¡ armazena os vizinhos
+            foreach (RoomNode toRoom in fromRoom.connections)
+            {
+                // Vamos criar uma aresta lÃ³gica para cada conexÃ£o visual
+                
+                // Custo de IDA (From -> To)
+                float h1 = Random.Range(healthCostRange.x, healthCostRange.y);
+                float s1 = Random.Range(sanityCostRange.x, sanityCostRange.y);
+                float t1 = Random.Range(timeCostRange.x, timeCostRange.y);
+                EdgeData data1 = new EdgeData(h1, s1, t1, "Corredor");
+                
+                // Adiciona a aresta ao nosso "banco de dados"
+                edgeCosts[(fromRoom, toRoom)] = data1;
+
+                if (!directedGraph)
+                {
+                    // Se o grafo NÃƒO for direcionado, a volta (To -> From)
+                    // tem os mesmos custos da ida.
+                    edgeCosts[(toRoom, fromRoom)] = data1;
+                }
+                else
+                {
+                    // Se o grafo Ã‰ direcionado, a volta tem custos PRÃ“PRIOS
+                    float h2 = Random.Range(healthCostRange.x, healthCostRange.y);
+                    float s2 = Random.Range(sanityCostRange.x, sanityCostRange.y);
+                    float t2 = Random.Range(timeCostRange.x, timeCostRange.y);
+                    EdgeData data2 = new EdgeData(h2, s2, t2, "Corredor (Volta)");
+                    
+                    edgeCosts[(toRoom, fromRoom)] = data2;
+                }
+            }
+        }
+        Debug.Log($"Custos gerados para {edgeCosts.Count} arestas lÃ³gicas.");
+    }
+
     // Fase 6: Instancia os objetos visuais
     private void CreateVisualRepresentation() {
         foreach (RoomNode room in allRooms) {
@@ -220,14 +317,18 @@ public class DungeonGenerator : MonoBehaviour {
             roomVisual.Initialize(room);
         }
 
-        // Cria as Linhas de Conexão
+        // Cria as Linhas de Conexï¿½o
         foreach (RoomNode room in allRooms) {
             room.connectionLines = new LineRenderer[room.connections.Count];
 
             for (int i = 0; i < room.connections.Count; i++) {
                 RoomNode connectedRoom = room.connections[i];
 
-                if (room.distanceFromStart < connectedRoom.distanceFromStart) {
+                // Desenha todas as conexÃµes (incluindo arestas adicionais)
+                // Usa uma chave ordenada para evitar duplicatas
+                bool shouldDraw = room.GetHashCode() <= connectedRoom.GetHashCode();
+                
+                if (shouldDraw) {
                     GameObject connectionGO = new GameObject($"Connection_{room.logicalPosition}_to_{connectedRoom.logicalPosition}");
                     connectionGO.transform.SetParent(dungeonContainer.transform);
 
@@ -248,9 +349,9 @@ public class DungeonGenerator : MonoBehaviour {
         }
     }
 
-    // --- Métodos Utilitários ---
+    // --- Mï¿½todos Utilitï¿½rios ---
 
-    // Utilitário BFS para calcular distâncias
+    // Utilitï¿½rio BFS para calcular distï¿½ncias
     private void CalculateDistancesFromStart() {
         Queue<RoomNode> queue = new Queue<RoomNode>();
         Dictionary<RoomNode, bool> visited = new Dictionary<RoomNode, bool>();
@@ -284,7 +385,7 @@ public class DungeonGenerator : MonoBehaviour {
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f, 1f);
     }
 
-    private Color GetRoomColor(RoomNode room) {
+    public Color GetRoomColor(RoomNode room) {
         return room.roomType switch {
             RoomType.Spawn => spawnColor,
             RoomType.Boss => bossColor,
@@ -331,4 +432,14 @@ public class DungeonGenerator : MonoBehaviour {
 
         return horizontallyAligned || verticallyAligned;
     }
+
+    public EdgeData GetEdgeCost(RoomNode from, RoomNode to)
+    {
+        if (edgeCosts.TryGetValue((from, to), out EdgeData data))
+        {
+            return data;
+        }
+        return null; // NÃ£o existe aresta lÃ³gica
+    }
+    
 }
