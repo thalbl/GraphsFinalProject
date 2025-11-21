@@ -24,7 +24,7 @@ public class RoomVisual : MonoBehaviour {
 
         roomInfoText = textGO.AddComponent<TextMeshPro>();
         roomInfoText.text = $"{room.roomType}\n(Dist: {room.distanceFromStart})";
-        roomInfoText.fontSize = 2; // Ajuste o tamanho conforme necess�rio
+        roomInfoText.fontSize = 2; // Ajuste o tamanho conforme necessário
         roomInfoText.alignment = TextAlignmentOptions.Center;
         roomInfoText.sortingOrder = 2; // Na frente da sala
         roomInfoText.rectTransform.sizeDelta = new Vector2(room.roomRect.width, room.roomRect.height);
@@ -36,12 +36,24 @@ public class RoomVisual : MonoBehaviour {
     }
 
     void OnMouseExit() {
-        mainSprite.color = originalColor; // Retorna � cor original
+        mainSprite.color = originalColor; // Retorna à cor original
     }
 
     // Mostra info no clique
     void OnMouseDown() {
         try {
+            // ========================================
+            // NOTIFICA O PATH TESTER (Sistema de Debug de Pathfinding)
+            // ========================================
+            PathTester pathTester = FindObjectOfType<PathTester>();
+            if (pathTester != null)
+            {
+                pathTester.OnRoomClicked(roomData);
+            }
+
+            // ========================================
+            // FUNCIONALIDADE DE DEBUG ORIGINAL (Edge Costs)
+            // ========================================
             if (generator == null) {
                 Debug.LogWarning("Generator não encontrado!");
                 return;

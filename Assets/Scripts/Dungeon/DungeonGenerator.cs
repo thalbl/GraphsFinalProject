@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class DungeonGenerator : MonoBehaviour {
 
@@ -23,6 +24,7 @@ public class DungeonGenerator : MonoBehaviour {
     public Color combatColor = Color.white;
     public Color treasureColor = Color.yellow;
     public Color campColor = Color.blue;
+    public Color eventColor = Color.magenta; // Nova cor para eventos
 
     // Dados gerados
     [HideInInspector] public List<RoomNode> allRooms;
@@ -36,16 +38,23 @@ public class DungeonGenerator : MonoBehaviour {
     [SerializeField] private Vector2 healthCostRange = new Vector2(1, 5);
     [SerializeField] private Vector2 sanityCostRange = new Vector2(1, 8);
     [SerializeField] private Vector2 timeCostRange = new Vector2(1, 3);
-    [SerializeField] private bool directedGraph = true; // O grafo é direcionado?
+    [SerializeField] private bool directedGraph = false; // O grafo é direcionado?
     
     [Header("Graph Complexity")]
-    [SerializeField] private float additionalEdgeChance = 0.15f; // 15% de chance de adicionar aresta extra
-    [SerializeField] private int maxAdditionalEdges = 5; // Máximo de arestas adicionais
+    [Range(0f, 1f)] 
+    [SerializeField] private float cycleChance = 0.4f; // Chance de conectar salas vizinhas na grade (40% é alto, cria muitos ciclos)
+    
+    [Header("Room Distribution Chances")]
+    [Range(0f, 1f)] [SerializeField] private float treasureChanceInDeadEnd = 0.8f; // Alta chance de tesouro em becos sem saída
+    [Range(0f, 1f)] [SerializeField] private float treasureChanceInCorridor = 0.1f; // Baixa chance em corredores
+    [Range(0f, 1f)] [SerializeField] private float campChance = 0.15f; // Chance global de acampamento
+    [Range(0f, 1f)] [SerializeField] private float eventChance = 0.1f; // Chance global de evento
 
     private Dictionary<(RoomNode, RoomNode), EdgeData> edgeCosts;
 
     [Header("System References")]
     public CameraController mainCamera;
+    public DungeonGraph dungeonGraph; // Referência adicionada conforme solicitado anteriormente
     void Start() {
         if (generateOnStart) GenerateDungeon();
     }
@@ -71,9 +80,12 @@ public class DungeonGenerator : MonoBehaviour {
 
         edgeCosts = new Dictionary<(RoomNode, RoomNode), EdgeData>();
 
-        // --- Fases da Gera��o ---
+        if (dungeonGraph != null) dungeonGraph.Initialize();
+
+        // --- Pipeline de Geração ---
+        // 1. Estrutura Base (Árvore)��o ---
         GenerateRoomGraph();      // 1. Cria a estrutura (DFS)
-        AddAdditionalEdges();     // 1.5. Adiciona arestas extras para complexidade
+        AddCycles();     // 2. Adiciona ciclos e conexões extras
         AssignRoomTypes();        // 2. Define Spawn, Boss, Tesouro (Pacing)
         ApplyPhysicalLayout();    // 3. Define tamanhos e escala (Evita colis�o)
         NaturalizeLayout();       // 4. Torna menos "quadrado" (Gravidade)
@@ -126,76 +138,102 @@ public class DungeonGenerator : MonoBehaviour {
         }
     }
 
-    // Fase 1.5: Adiciona arestas extras para tornar o grafo mais complexo
-    private void AddAdditionalEdges() {
-        int edgesAdded = 0;
-        int attempts = 0;
-        int maxAttempts = allRooms.Count * 10; // Limite de tentativas
-
-        while (edgesAdded < maxAdditionalEdges && attempts < maxAttempts) {
-            attempts++;
-            
-            // Seleciona duas salas aleatórias
-            RoomNode roomA = allRooms[Random.Range(0, allRooms.Count)];
-            RoomNode roomB = allRooms[Random.Range(0, allRooms.Count)];
-            
-            // Não adiciona aresta se:
-            // - São a mesma sala
-            // - Já estão conectadas
-            // - São adjacentes na grade (já devem estar conectadas pela árvore)
-            if (roomA == roomB) continue;
-            if (roomA.connections.Contains(roomB)) continue;
-            
-            Vector2Int diff = roomA.logicalPosition - roomB.logicalPosition;
-            int manhattanDistance = Mathf.Abs(diff.x) + Mathf.Abs(diff.y);
-            
-            // Só adiciona arestas entre salas que não são adjacentes imediatas
-            // e que estão a uma distância razoável (atalhos)
-            if (manhattanDistance <= 1) continue;
-            if (manhattanDistance > 4) continue; // Limita distância máxima
-            
-            // Chance baseada na distância (atalhos mais próximos são mais prováveis)
-            float chance = additionalEdgeChance * (1f / manhattanDistance);
-            if (Random.value > chance) continue;
-            
-            // Adiciona a conexão bidirecional
-            roomA.connections.Add(roomB);
-            roomB.connections.Add(roomA);
-            edgesAdded++;
-            
-            Debug.Log($"Aresta adicional criada: {roomA.logicalPosition} <-> {roomB.logicalPosition} (distância: {manhattanDistance})");
-        }
+    // Fase 2: Adicionar Ciclos (Arestas Extras Inteligentes)
+    private void AddCycles() {
+        int cyclesAdded = 0;
         
-        Debug.Log($"Arestas adicionais criadas: {edgesAdded}");
+        // Direções estendidas: Cardeais de distância 1 e 2, e Diagonais
+        // Isso permite conectar salas que estão "dobrando a esquina" ou paralelas
+        Vector2Int[] checkOffsets = {
+            new Vector2Int(1, 0), new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(0, -1), // Dist 1
+            new Vector2Int(1, 1), new Vector2Int(1, -1), new Vector2Int(-1, 1), new Vector2Int(-1, -1), // Diagonal
+            new Vector2Int(2, 0), new Vector2Int(-2, 0), new Vector2Int(0, 2), new Vector2Int(0, -2)  // Dist 2 (pula uma casa)
+        };
+
+        foreach (RoomNode room in allRooms) {
+            foreach (Vector2Int offset in checkOffsets) {
+                Vector2Int neighborPos = room.logicalPosition + offset;
+                
+                // Se existe uma sala vizinha nessa posição
+                if (occupiedPositions.TryGetValue(neighborPos, out RoomNode neighbor)) {
+                    
+                    // Evita conectar consigo mesmo ou conexões já existentes
+                    if (room == neighbor) continue;
+                    if (room.connections.Contains(neighbor)) continue;
+                    
+                    // Evita conectar diretamente com o pai imediato (já conectado pelo DFS)
+                    if (room.parent == neighbor || neighbor.parent == room) continue;
+                    
+                    // Rola o dado para criar o ciclo
+                    if (Random.value < cycleChance) {
+                        room.connections.Add(neighbor);
+                        
+                        // Se quisermos ciclos bidirecionais fortes:
+                        if (!neighbor.connections.Contains(room)) {
+                            neighbor.connections.Add(room);
+                        }
+                        
+                        cyclesAdded++;
+                    }
+                }
+            }
+        }
+
+        Debug.Log($"Ciclos/Arestas Extras adicionadas: {cyclesAdded}");
     }
 
-    // Fase 2: Pacing (Define Boss, etc.)
+    // Fase 3: Distribuição de Tipos de Sala (Pacing Melhorado)
     private void AssignRoomTypes() {
         CalculateDistancesFromStart(); // Usa BFS para achar dist�ncias
 
-        List<RoomNode> leafRooms = new List<RoomNode>();
-        foreach (RoomNode room in allRooms) {
-            if (room.IsLeaf && room != spawnRoom) {
-                leafRooms.Add(room);
+        // 1. Encontrar Boss (Folha mais distante)
+        List<RoomNode> sortedRooms = allRooms.OrderByDescending(r => r.distanceFromStart).ToList();
+        
+        // Tenta pegar uma folha longe, senão pega a sala mais longe qualquer
+        RoomNode bossCandidate = sortedRooms.FirstOrDefault(r => r.IsLeaf && r != spawnRoom) ?? sortedRooms.First(r => r != spawnRoom);
+        
+        bossRoom = bossCandidate;
+        bossRoom.roomType = RoomType.Boss;
+
+        // 2. Separar o resto em "Becos sem Saída" e "Corredores"
+        List<RoomNode> availableRooms = allRooms.Where(r => r != spawnRoom && r != bossRoom).ToList();
+        
+        List<RoomNode> deadEnds = availableRooms.Where(r => r.IsLeaf).ToList();
+        List<RoomNode> corridors = availableRooms.Where(r => !r.IsLeaf).ToList();
+
+        // 3. Preencher Becos sem Saída (Prioridade para Tesouros)
+        foreach (RoomNode room in deadEnds) {
+            if (Random.value < treasureChanceInDeadEnd) {
+                room.roomType = RoomType.Treasure;
+            } else if (Random.value < campChance) {
+                room.roomType = RoomType.Camp;
+            } else {
+                room.roomType = RoomType.Combat; // Becos sem saída perigosos
             }
         }
 
-        if (leafRooms.Count > 0) {
-            leafRooms.Sort((a, b) => b.distanceFromStart.CompareTo(a.distanceFromStart));
-            bossRoom = leafRooms[0];
-            bossRoom.roomType = RoomType.Boss;
+        // 4. Preencher Corredores (O "Meio" do Grafo)
+        foreach (RoomNode room in corridors) {
+            float roll = Random.value;
 
-            for (int i = 1; i < Mathf.Min(leafRooms.Count, 3); i++) {
-                leafRooms[i].roomType = RoomType.Treasure;
+            if (roll < treasureChanceInCorridor) {
+                room.roomType = RoomType.Treasure; // Raro, mas possível achar tesouro no caminho
+            }
+            else if (roll < treasureChanceInCorridor + campChance) {
+                room.roomType = RoomType.Camp; // Bom lugar para descansar no meio da jornada
+            }
+            else if (roll < treasureChanceInCorridor + campChance + eventChance) {
+                room.roomType = RoomType.Event; // Evento aleatório
+            }
+            else {
+                room.roomType = RoomType.Combat; // Padrão
             }
         }
-        else {
-            bossRoom = allRooms[allRooms.Count - 1];
-            bossRoom.roomType = RoomType.Boss;
-        }
+
+        Debug.Log($"Boss colocado em distância {bossRoom.distanceFromStart}. Becos: {deadEnds.Count}, Corredores: {corridors.Count}");
     }
 
-    // Fase 3: Define Tamanhos e Escala
+    // Fase 4: Define Tamanhos e Escala
     private void ApplyPhysicalLayout() {
         foreach (RoomNode room in allRooms) {
             room.roomRect.size = room.roomType switch {
@@ -234,7 +272,7 @@ public class DungeonGenerator : MonoBehaviour {
         } while (collisionFound && protection < 100);
     }
 
-    // Fase 4: "Gravidade" para layout mais natural
+    // Fase 5: "Gravidade" para layout mais natural
     private void NaturalizeLayout() {
         float moveStep = 0.5f;
         Vector2 spawnCenter = spawnRoom.roomRect.center;
@@ -257,46 +295,60 @@ public class DungeonGenerator : MonoBehaviour {
         }
     }
 
-    private void GenerateEdgeCosts()
-    {
-        foreach (RoomNode fromRoom in allRooms)
-        {
-            // O 'connections' do seu RoomNode já armazena os vizinhos
-            foreach (RoomNode toRoom in fromRoom.connections)
-            {
-                // Vamos criar uma aresta lógica para cada conexão visual
+    // Fase 6: Custos do Grafo
+    private void GenerateEdgeCosts() {
+        // Se tivermos a referência do MonoBehaviour DungeonGraph, adicionamos os nós lá
+        if (dungeonGraph != null) {
+            foreach (var node in allRooms) dungeonGraph.AddNode(node);
+        }
+
+        foreach (RoomNode fromRoom in allRooms) {
+            foreach (RoomNode toRoom in fromRoom.connections) {
                 
-                // Custo de IDA (From -> To)
+                // Custo de IDA
                 float h1 = Random.Range(healthCostRange.x, healthCostRange.y);
                 float s1 = Random.Range(sanityCostRange.x, sanityCostRange.y);
                 float t1 = Random.Range(timeCostRange.x, timeCostRange.y);
+                
+                // Modificadores baseados no tipo de sala de destino (Lógica de Gameplay)
+                if (toRoom.roomType == RoomType.Boss) {
+                    h1 *= 1.5f; s1 *= 1.5f; // Caminho para o boss é mais árduo
+                } else if (toRoom.roomType == RoomType.Camp) {
+                    s1 *= 0.7f; // Caminho para descanso dá esperança (menos sanidade)
+                }
+                
                 EdgeData data1 = new EdgeData(h1, s1, t1, "Corredor");
                 
-                // Adiciona a aresta ao nosso "banco de dados"
                 edgeCosts[(fromRoom, toRoom)] = data1;
+                if (dungeonGraph != null) dungeonGraph.AddEdge(fromRoom, toRoom, data1);
 
-                if (!directedGraph)
-                {
-                    // Se o grafo NÃO for direcionado, a volta (To -> From)
-                    // tem os mesmos custos da ida.
+                if (!directedGraph) {
                     edgeCosts[(toRoom, fromRoom)] = data1;
-                }
-                else
-                {
-                    // Se o grafo É direcionado, a volta tem custos PRÓPRIOS
+                    if (dungeonGraph != null) dungeonGraph.AddEdge(toRoom, fromRoom, data1);
+                } else {
+                    // Custo de VOLTA diferente
                     float h2 = Random.Range(healthCostRange.x, healthCostRange.y);
                     float s2 = Random.Range(sanityCostRange.x, sanityCostRange.y);
                     float t2 = Random.Range(timeCostRange.x, timeCostRange.y);
+                    
+                    // Modificadores também para a volta
+                    if (fromRoom.roomType == RoomType.Boss) {
+                        h2 *= 1.5f; s2 *= 1.5f;
+                    } else if (fromRoom.roomType == RoomType.Camp) {
+                        s2 *= 0.7f;
+                    }
+                    
                     EdgeData data2 = new EdgeData(h2, s2, t2, "Corredor (Volta)");
                     
                     edgeCosts[(toRoom, fromRoom)] = data2;
+                    if (dungeonGraph != null) dungeonGraph.AddEdge(toRoom, fromRoom, data2);
                 }
             }
         }
         Debug.Log($"Custos gerados para {edgeCosts.Count} arestas lógicas.");
     }
 
-    // Fase 6: Instancia os objetos visuais
+    // Fase 7: Instancia os objetos visuais
     private void CreateVisualRepresentation() {
         foreach (RoomNode room in allRooms) {
             GameObject roomGO = new GameObject($"Room_{room.logicalPosition}");
@@ -324,22 +376,37 @@ public class DungeonGenerator : MonoBehaviour {
             for (int i = 0; i < room.connections.Count; i++) {
                 RoomNode connectedRoom = room.connections[i];
 
-                // Desenha todas as conexões (incluindo arestas adicionais)
-                // Usa uma chave ordenada para evitar duplicatas
+                // Como é um dígrafo, desenhamos setas ou linhas para todas as conexões de saída.
+                // Se quiser limpar o visual e evitar linha dupla sobreposta visualmente (embora logicamente existam 2),
+                // podemos manter a checagem de HashCode APENAS PARA O DESENHO.
+                // Mas para ver os ciclos, desenhar tudo é melhor, talvez com um pequeno offset.
+                
+                // Usa uma chave ordenada para evitar duplicatas visuais
                 bool shouldDraw = room.GetHashCode() <= connectedRoom.GetHashCode();
                 
                 if (shouldDraw) {
-                    GameObject connectionGO = new GameObject($"Connection_{room.logicalPosition}_to_{connectedRoom.logicalPosition}");
+                    GameObject connectionGO = new GameObject($"Connection_{room.logicalPosition}->{connectedRoom.logicalPosition}");
                     connectionGO.transform.SetParent(dungeonContainer.transform);
 
                     LineRenderer lr = connectionGO.AddComponent<LineRenderer>();
                     lr.positionCount = 2;
-                    lr.SetPosition(0, room.GetWorldPosition());
-                    lr.SetPosition(1, connectedRoom.GetWorldPosition());
-                    lr.startWidth = 0.2f;
-                    lr.endWidth = 0.2f;
+                    
+                    // Pequeno offset para ver arestas de ida e volta separadas visualmente
+                    Vector3 offset = Vector3.zero;
+                    if (directedGraph && connectedRoom.connections.Contains(room)) {
+                        Vector3 dir = (connectedRoom.GetWorldPosition() - room.GetWorldPosition()).normalized;
+                        Vector3 perp = new Vector3(-dir.y, dir.x, 0) * 0.2f; // Desloca um pouco para o lado
+                        offset = perp;
+                    }
+                    
+                    lr.SetPosition(0, room.GetWorldPosition() + offset);
+                    lr.SetPosition(1, connectedRoom.GetWorldPosition() + offset);
+                    lr.startWidth = 0.15f;
+                    lr.endWidth = 0.15f;
                     lr.material = connectionMaterial;
                     lr.sortingOrder = 0;
+                    
+                    // Cor da linha baseada no custo? (Opcional futuro)
                     lr.startColor = Color.gray;
                     lr.endColor = Color.gray;
 
@@ -391,6 +458,7 @@ public class DungeonGenerator : MonoBehaviour {
             RoomType.Boss => bossColor,
             RoomType.Treasure => treasureColor,
             RoomType.Camp => campColor,
+            RoomType.Event => eventColor,
             _ => combatColor
         };
     }
