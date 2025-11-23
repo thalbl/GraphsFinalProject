@@ -38,6 +38,12 @@ public class CameraController : MonoBehaviour {
     private Bounds dungeonBounds;
     private bool boundsCalculated = false;
 
+    // Menu Focus Mode
+    private bool inMenuFocusMode = false;
+    private Vector3 normalPosition;
+    private float normalZoom;
+    private RoomNode focusedRoom;
+
     void Start() {
         cam = GetComponent<Camera>();
         dungeonGenerator = FindObjectOfType<DungeonGenerator>();
@@ -70,18 +76,22 @@ public class CameraController : MonoBehaviour {
     }
 
     void Update() {
-        // Processar inputs de zoom e pan
-        zoomHandler?.HandleZoom();
-        panHandler?.HandlePan();
-        
-        // Limitar posição da câmera dentro dos bounds
-        if (boundsCalculated) {
-            boundsClamper?.ClampPosition(dungeonBounds);
-        }
+        // Não processar inputs de zoom/pan se estiver em modo menu
+        if (!inMenuFocusMode)
+        {
+            // Processar inputs de zoom e pan
+            zoomHandler?.HandleZoom();
+            panHandler?.HandlePan();
+            
+            // Limitar posição da câmera dentro dos bounds
+            if (boundsCalculated) {
+                boundsClamper?.ClampPosition(dungeonBounds);
+            }
 
-        // Atalho para mostrar toda a dungeon
-        if (Input.GetKeyDown(showAllKey)) {
-            ShowEntireDungeon();
+            // Atalho para mostrar toda a dungeon
+            if (Input.GetKeyDown(showAllKey)) {
+                ShowEntireDungeon();
+            }
         }
     }
 
@@ -243,6 +253,53 @@ public class CameraController : MonoBehaviour {
             cameraAnimator.MoveCameraSmoothly(targetPosition, duration);
         }
     }
+
+    /// <summary>
+    /// Entra no modo "Menu Focus" - foca em uma sala e desabilita controles
+    /// </summary>
+    public void EnterMenuFocusMode(RoomNode targetRoom, Vector3 offset, float zoomSize, float duration = 0.4f)
+    {
+        if (inMenuFocusMode || targetRoom == null || cam == null) return;
+
+        // Salva estado atual
+        normalPosition = transform.position;
+        normalZoom = cam.orthographicSize;
+        focusedRoom = targetRoom;
+        inMenuFocusMode = true;
+
+        // Calcula posição alvo (sala + offset para menu)
+        Vector3 roomWorldPos = targetRoom.GetWorldPosition();
+        Vector3 targetPosition = new Vector3(
+            roomWorldPos.x + offset.x,
+            roomWorldPos.y + offset.y,
+            transform.position.z
+        );
+
+        // Anima câmera para foco
+        cameraAnimator?.MoveAndZoomSmoothly(targetPosition, zoomSize, duration);
+
+        Debug.Log($"📷 Menu Focus Mode: Focando em sala {targetRoom.logicalPosition}, Zoom: {normalZoom:F1} → {zoomSize:F1}");
+    }
+
+    /// <summary>
+    /// Sai do modo "Menu Focus" - volta à posição/zoom normal
+    /// </summary>
+    public void ExitMenuFocusMode(float duration = 0.3f)
+    {
+        if (!inMenuFocusMode || cam == null) return;
+
+        // Anima volta para posição normal
+        cameraAnimator?.MoveAndZoomSmoothly(normalPosition, normalZoom, duration);
+
+        // Reseta estado
+        inMenuFocusMode = false;
+        focusedRoom = null;
+
+        Debug.Log($"📷 Menu Focus Mode: Voltando ao normal - Pos: {normalPosition}, Zoom: {normalZoom:F1}");
+    }
+
+    // Propriedades públicas
+    public bool IsInMenuFocusMode => inMenuFocusMode;
 
     // Gizmos para debug (opcional)
     private void OnDrawGizmosSelected() {

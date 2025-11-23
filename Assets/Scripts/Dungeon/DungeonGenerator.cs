@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class DungeonGenerator : MonoBehaviour {
 
@@ -15,7 +16,7 @@ public class DungeonGenerator : MonoBehaviour {
     public Vector2 spawnRoomSize = new Vector2(12, 12);
     public Vector2 bossRoomSize = new Vector2(16, 16);
     public Vector2 normalRoomSize = new Vector2(8, 8);
-    public float minGapBetweenRooms = 2f; // Espa�o m�nimo entre salas
+    public float minGapBetweenRooms = 2f; // Espaço mínimo entre salas
 
     [Header("Visual Settings")]
     public Material connectionMaterial; // Crie um material simples (Unlit/Color) no Unity
@@ -38,19 +39,20 @@ public class DungeonGenerator : MonoBehaviour {
     [SerializeField] private Vector2 healthCostRange = new Vector2(1, 5);
     [SerializeField] private Vector2 sanityCostRange = new Vector2(1, 8);
     [SerializeField] private Vector2 timeCostRange = new Vector2(1, 3);
-    [SerializeField] private bool directedGraph = false; // O grafo é direcionado?
+    public bool directedGraph = false; // O grafo é direcionado?
     
     [Header("Graph Complexity")]
     [Range(0f, 1f)] 
-    [SerializeField] private float cycleChance = 0.4f; // Chance de conectar salas vizinhas na grade (40% é alto, cria muitos ciclos)
+    public float cycleChance = 0.4f; // Chance de conectar salas vizinhas na grade (40% é alto, cria muitos ciclos)
     
     [Header("Room Distribution Chances")]
-    [Range(0f, 1f)] [SerializeField] private float treasureChanceInDeadEnd = 0.8f; // Alta chance de tesouro em becos sem saída
-    [Range(0f, 1f)] [SerializeField] private float treasureChanceInCorridor = 0.1f; // Baixa chance em corredores
-    [Range(0f, 1f)] [SerializeField] private float campChance = 0.15f; // Chance global de acampamento
-    [Range(0f, 1f)] [SerializeField] private float eventChance = 0.1f; // Chance global de evento
+    [Range(0f, 1f)] public float treasureChanceInDeadEnd = 0.8f; // Alta chance de tesouro em becos sem saída
+    [Range(0f, 1f)] public float treasureChanceInCorridor = 0.1f; // Baixa chance em corredores
+    [Range(0f, 1f)] public float campChance = 0.15f; // Chance global de acampamento
+    [Range(0f, 1f)] public float eventChance = 0.1f; // Chance global de evento
 
     private Dictionary<(RoomNode, RoomNode), EdgeData> edgeCosts;
+    private System.Random prng; // Gerador de números aleatórios privado e controlado
 
     [Header("System References")]
     public CameraController mainCamera;
@@ -59,12 +61,15 @@ public class DungeonGenerator : MonoBehaviour {
         if (generateOnStart) GenerateDungeon();
     }
 
-    // Bot�o para o Inspector (opcional)
+    // Botão para o Inspector (opcional)
     [ContextMenu("Generate Dungeon")]
     public void GenerateDungeon() {
+        // Inicializa o gerador de números aleatórios PRIVADO
+        prng = new System.Random(randomSeed);
+
         // Limpa a dungeon anterior, se existir
         if (dungeonContainer != null) {
-            // Use DestroyImmediate se estiver no Editor e n�o em Play Mode
+            // Use DestroyImmediate se estiver no Editor e não em Play Mode
             if (Application.isPlaying)
                 Destroy(dungeonContainer);
             else
@@ -74,7 +79,6 @@ public class DungeonGenerator : MonoBehaviour {
         dungeonContainer = new GameObject("Dungeon");
 
         // Inicializa
-        if (randomSeed != 0) Random.InitState(randomSeed);
         occupiedPositions = new Dictionary<Vector2Int, RoomNode>();
         allRooms = new List<RoomNode>();
 
@@ -83,11 +87,11 @@ public class DungeonGenerator : MonoBehaviour {
         if (dungeonGraph != null) dungeonGraph.Initialize();
 
         // --- Pipeline de Geração ---
-        // 1. Estrutura Base (Árvore)��o ---
+        // 1. Estrutura Base (Árvore) ---
         GenerateRoomGraph();      // 1. Cria a estrutura (DFS)
         AddCycles();     // 2. Adiciona ciclos e conexões extras
         AssignRoomTypes();        // 2. Define Spawn, Boss, Tesouro (Pacing)
-        ApplyPhysicalLayout();    // 3. Define tamanhos e escala (Evita colis�o)
+        ApplyPhysicalLayout();    // 3. Define tamanhos e escala (Evita colisão)
         NaturalizeLayout();       // 4. Torna menos "quadrado" (Gravidade)
         GenerateEdgeCosts();      // Fase 5 (Custos) Aplicar custos nas arestas
         CreateVisualRepresentation(); // 6. Desenha na tela
@@ -115,12 +119,12 @@ public class DungeonGenerator : MonoBehaviour {
 
         while (stack.Count > 0 && allRooms.Count < maxRooms) {
             RoomNode currentRoom = stack.Pop();
-            ShuffleArray(directions); // Aleatoriza dire��es
+            ShuffleArray(directions); // Aleatoriza direções
 
             foreach (Vector2Int dir in directions) {
                 Vector2Int newPos = currentRoom.logicalPosition + dir;
 
-                if (!occupiedPositions.ContainsKey(newPos)) // Se a posi��o est� livre
+                if (!occupiedPositions.ContainsKey(newPos)) // Se a posição está livre
                 {
                     RoomNode newRoom = new RoomNode(newPos);
                     newRoom.parent = currentRoom;
@@ -165,7 +169,7 @@ public class DungeonGenerator : MonoBehaviour {
                     if (room.parent == neighbor || neighbor.parent == room) continue;
                     
                     // Rola o dado para criar o ciclo
-                    if (Random.value < cycleChance) {
+                    if (prng.NextDouble() < cycleChance) {
                         room.connections.Add(neighbor);
                         
                         // Se quisermos ciclos bidirecionais fortes:
@@ -184,7 +188,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     // Fase 3: Distribuição de Tipos de Sala (Pacing Melhorado)
     private void AssignRoomTypes() {
-        CalculateDistancesFromStart(); // Usa BFS para achar dist�ncias
+        CalculateDistancesFromStart(); // Usa BFS para achar distâncias
 
         // 1. Encontrar Boss (Folha mais distante)
         List<RoomNode> sortedRooms = allRooms.OrderByDescending(r => r.distanceFromStart).ToList();
@@ -203,9 +207,9 @@ public class DungeonGenerator : MonoBehaviour {
 
         // 3. Preencher Becos sem Saída (Prioridade para Tesouros)
         foreach (RoomNode room in deadEnds) {
-            if (Random.value < treasureChanceInDeadEnd) {
+            if (prng.NextDouble() < treasureChanceInDeadEnd) {
                 room.roomType = RoomType.Treasure;
-            } else if (Random.value < campChance) {
+            } else if (prng.NextDouble() < campChance) {
                 room.roomType = RoomType.Camp;
             } else {
                 room.roomType = RoomType.Combat; // Becos sem saída perigosos
@@ -214,7 +218,7 @@ public class DungeonGenerator : MonoBehaviour {
 
         // 4. Preencher Corredores (O "Meio" do Grafo)
         foreach (RoomNode room in corridors) {
-            float roll = Random.value;
+            double roll = prng.NextDouble();
 
             if (roll < treasureChanceInCorridor) {
                 room.roomType = RoomType.Treasure; // Raro, mas possível achar tesouro no caminho
@@ -306,9 +310,9 @@ public class DungeonGenerator : MonoBehaviour {
             foreach (RoomNode toRoom in fromRoom.connections) {
                 
                 // Custo de IDA
-                float h1 = Random.Range(healthCostRange.x, healthCostRange.y);
-                float s1 = Random.Range(sanityCostRange.x, sanityCostRange.y);
-                float t1 = Random.Range(timeCostRange.x, timeCostRange.y);
+                float h1 = (float)(healthCostRange.x + prng.NextDouble() * (healthCostRange.y - healthCostRange.x));
+                float s1 = (float)(sanityCostRange.x + prng.NextDouble() * (sanityCostRange.y - sanityCostRange.x));
+                float t1 = (float)(timeCostRange.x + prng.NextDouble() * (timeCostRange.y - timeCostRange.x));
                 
                 // Modificadores baseados no tipo de sala de destino (Lógica de Gameplay)
                 if (toRoom.roomType == RoomType.Boss) {
@@ -327,9 +331,9 @@ public class DungeonGenerator : MonoBehaviour {
                     if (dungeonGraph != null) dungeonGraph.AddEdge(toRoom, fromRoom, data1);
                 } else {
                     // Custo de VOLTA diferente
-                    float h2 = Random.Range(healthCostRange.x, healthCostRange.y);
-                    float s2 = Random.Range(sanityCostRange.x, sanityCostRange.y);
-                    float t2 = Random.Range(timeCostRange.x, timeCostRange.y);
+                    float h2 = (float)(healthCostRange.x + prng.NextDouble() * (healthCostRange.y - healthCostRange.x));
+                    float s2 = (float)(sanityCostRange.x + prng.NextDouble() * (sanityCostRange.y - sanityCostRange.x));
+                    float t2 = (float)(timeCostRange.x + prng.NextDouble() * (timeCostRange.y - timeCostRange.x));
                     
                     // Modificadores também para a volta
                     if (fromRoom.roomType == RoomType.Boss) {
@@ -369,7 +373,7 @@ public class DungeonGenerator : MonoBehaviour {
             roomVisual.Initialize(room);
         }
 
-        // Cria as Linhas de Conex�o
+        // Cria as Linhas de Conexão
         foreach (RoomNode room in allRooms) {
             room.connectionLines = new LineRenderer[room.connections.Count];
 
@@ -416,9 +420,9 @@ public class DungeonGenerator : MonoBehaviour {
         }
     }
 
-    // --- M�todos Utilit�rios ---
+    // --- Métodos Utilitários ---
 
-    // Utilit�rio BFS para calcular dist�ncias
+    // Utilitário BFS para calcular distâncias
     private void CalculateDistancesFromStart() {
         Queue<RoomNode> queue = new Queue<RoomNode>();
         Dictionary<RoomNode, bool> visited = new Dictionary<RoomNode, bool>();
@@ -465,7 +469,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     private void ShuffleArray(Vector2Int[] array) {
         for (int i = 0; i < array.Length; i++) {
-            int randomIndex = Random.Range(i, array.Length);
+            int randomIndex = prng.Next(i, array.Length);
             (array[i], array[randomIndex]) = (array[randomIndex], array[i]);
         }
     }

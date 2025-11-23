@@ -1,0 +1,555 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4499523164086263747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7275873843830763411}
+  - component: {fileID: 465752298457437941}
+  - component: {fileID: 4823371933084768973}
+  m_Layer: 0
+  m_Name: DungeonGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7275873843830763411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4499523164086263747}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 279.90366, y: 79.81528, z: -3.2640936}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &465752298457437941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4499523164086263747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b85f2d17afec184390bfd54173c6723, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRooms: 50
+  randomSeed: 2025
+  generateOnStart: 1
+  spawnRoomSize: {x: 12, y: 12}
+  bossRoomSize: {x: 16, y: 16}
+  normalRoomSize: {x: 8, y: 8}
+  minGapBetweenRooms: 2
+  connectionMaterial: {fileID: 2100000, guid: 8c28aa3473888d74bbd9e70204481667, type: 2}
+  spawnColor: {r: 0, g: 1, b: 0, a: 1}
+  bossColor: {r: 1, g: 0, b: 0, a: 1}
+  combatColor: {r: 1, g: 1, b: 1, a: 1}
+  treasureColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  campColor: {r: 0, g: 0, b: 1, a: 1}
+  eventColor: {r: 1, g: 0, b: 1, a: 1}
+  allRooms:
+  - logicalPosition: {x: 0, y: 0}
+    roomType: 0
+    roomRect:
+      serializedVersion: 2
+      x: -6
+      y: -6
+      width: 12
+      height: 12
+    distanceFromStart: 0
+  - logicalPosition: {x: 0, y: -1}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -16
+      width: 8
+      height: 8
+    distanceFromStart: 1
+  - logicalPosition: {x: -1, y: 0}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -16
+      y: -4
+      width: 8
+      height: 8
+    distanceFromStart: 1
+  - logicalPosition: {x: 0, y: 1}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: 8
+      width: 8
+      height: 8
+    distanceFromStart: 1
+  - logicalPosition: {x: 1, y: 0}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 8
+      y: -4
+      width: 8
+      height: 8
+    distanceFromStart: 1
+  - logicalPosition: {x: 2, y: 0}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 18
+      y: -4
+      width: 8
+      height: 8
+    distanceFromStart: 2
+  - logicalPosition: {x: 1, y: 1}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 11
+      y: 11
+      width: 8
+      height: 8
+    distanceFromStart: 2
+  - logicalPosition: {x: 1, y: -1}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 11
+      y: -19
+      width: 8
+      height: 8
+    distanceFromStart: 2
+  - logicalPosition: {x: 1, y: -2}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 11
+      y: -34
+      width: 8
+      height: 8
+    distanceFromStart: 3
+  - logicalPosition: {x: 2, y: -1}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 26
+      y: -19
+      width: 8
+      height: 8
+    distanceFromStart: 3
+  - logicalPosition: {x: 3, y: -1}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 41
+      y: -19
+      width: 8
+      height: 8
+    distanceFromStart: 4
+  - logicalPosition: {x: 2, y: -2}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 26
+      y: -34
+      width: 8
+      height: 8
+    distanceFromStart: 4
+  - logicalPosition: {x: 3, y: -2}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 41
+      y: -34
+      width: 8
+      height: 8
+    distanceFromStart: 5
+  - logicalPosition: {x: 2, y: -3}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 26
+      y: -49
+      width: 8
+      height: 8
+    distanceFromStart: 5
+  - logicalPosition: {x: 3, y: -3}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 41
+      y: -49
+      width: 8
+      height: 8
+    distanceFromStart: 5
+  - logicalPosition: {x: 2, y: -4}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 26
+      y: -64
+      width: 8
+      height: 8
+    distanceFromStart: 6
+  - logicalPosition: {x: 1, y: -3}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 11
+      y: -49
+      width: 8
+      height: 8
+    distanceFromStart: 6
+  - logicalPosition: {x: 0, y: -3}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -49
+      width: 8
+      height: 8
+    distanceFromStart: 7
+  - logicalPosition: {x: 1, y: -4}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 11
+      y: -64
+      width: 8
+      height: 8
+    distanceFromStart: 6
+  - logicalPosition: {x: 0, y: -4}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -64
+      width: 8
+      height: 8
+    distanceFromStart: 7
+  - logicalPosition: {x: 1, y: -5}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 10.901942
+      y: -78.50971
+      width: 8
+      height: 8
+    distanceFromStart: 7
+  - logicalPosition: {x: 2, y: -5}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 25.814304
+      y: -78.53576
+      width: 8
+      height: 8
+    distanceFromStart: 8
+  - logicalPosition: {x: 1, y: -6}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 10.835602
+      y: -93.01361
+      width: 8
+      height: 8
+    distanceFromStart: 8
+  - logicalPosition: {x: 0, y: -5}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -78.5
+      width: 8
+      height: 8
+    distanceFromStart: 8
+  - logicalPosition: {x: 0, y: -6}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -88.5
+      width: 8
+      height: 8
+    distanceFromStart: 9
+  - logicalPosition: {x: -1, y: -5}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -18.901943
+      y: -78.50971
+      width: 8
+      height: 8
+    distanceFromStart: 9
+  - logicalPosition: {x: -1, y: -4}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -18.87873
+      y: -63.514927
+      width: 8
+      height: 8
+    distanceFromStart: 10
+  - logicalPosition: {x: -2, y: -5}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -33.814304
+      y: -78.53576
+      width: 8
+      height: 8
+    distanceFromStart: 10
+  - logicalPosition: {x: -1, y: -6}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -18.835602
+      y: -93.01361
+      width: 8
+      height: 8
+    distanceFromStart: 10
+  - logicalPosition: {x: -2, y: -6}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -33.683777
+      y: -93.051315
+      width: 8
+      height: 8
+    distanceFromStart: 11
+  - logicalPosition: {x: -1, y: -7}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -18.787867
+      y: -107.51508
+      width: 8
+      height: 8
+    distanceFromStart: 10
+  - logicalPosition: {x: -2, y: -7}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -33.58792
+      y: -107.557724
+      width: 8
+      height: 8
+    distanceFromStart: 11
+  - logicalPosition: {x: 0, y: -7}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -107.5
+      width: 8
+      height: 8
+    distanceFromStart: 9
+  - logicalPosition: {x: -1, y: -8}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -18.689913
+      y: -121.5193
+      width: 8
+      height: 8
+    distanceFromStart: 11
+  - logicalPosition: {x: -2, y: -8}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -33.393654
+      y: -121.57465
+      width: 8
+      height: 8
+    distanceFromStart: 12
+  - logicalPosition: {x: 0, y: -8}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -121.5
+      width: 8
+      height: 8
+    distanceFromStart: 12
+  - logicalPosition: {x: -1, y: -9}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -18.61349
+      y: -135.52136
+      width: 8
+      height: 8
+    distanceFromStart: 12
+  - logicalPosition: {x: -2, y: -9}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -33.24073
+      y: -135.58331
+      width: 8
+      height: 8
+    distanceFromStart: 13
+  - logicalPosition: {x: -1, y: -10}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -18.552238
+      y: -149.52238
+      width: 8
+      height: 8
+    distanceFromStart: 13
+  - logicalPosition: {x: 0, y: -9}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -135.5
+      width: 8
+      height: 8
+    distanceFromStart: 13
+  - logicalPosition: {x: 0, y: -10}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: -4
+      y: -145.5
+      width: 8
+      height: 8
+    distanceFromStart: 14
+  - logicalPosition: {x: 1, y: -9}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 10.613489
+      y: -135.52136
+      width: 8
+      height: 8
+    distanceFromStart: 14
+  - logicalPosition: {x: 1, y: -10}
+    roomType: 3
+    roomRect:
+      serializedVersion: 2
+      x: 10.55223
+      y: -149.52238
+      width: 8
+      height: 8
+    distanceFromStart: 15
+  - logicalPosition: {x: 2, y: -9}
+    roomType: 3
+    roomRect:
+      serializedVersion: 2
+      x: 25.240744
+      y: -135.58331
+      width: 8
+      height: 8
+    distanceFromStart: 15
+  - logicalPosition: {x: 1, y: -8}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 10.565878
+      y: -120.52702
+      width: 8
+      height: 8
+    distanceFromStart: 15
+  - logicalPosition: {x: 2, y: -8}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 25.151129
+      y: -120.604515
+      width: 8
+      height: 8
+    distanceFromStart: 16
+  - logicalPosition: {x: 1, y: -7}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 10.505023
+      y: -105.535194
+      width: 8
+      height: 8
+    distanceFromStart: 16
+  - logicalPosition: {x: 2, y: -7}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 25.313202
+      y: -106.59621
+      width: 8
+      height: 8
+    distanceFromStart: 17
+  - logicalPosition: {x: 2, y: -6}
+    roomType: 1
+    roomRect:
+      serializedVersion: 2
+      x: 21.52566
+      y: -96.57697
+      width: 16
+      height: 16
+    distanceFromStart: 18
+  - logicalPosition: {x: 3, y: -7}
+    roomType: 2
+    roomRect:
+      serializedVersion: 2
+      x: 40.21216
+      y: -107.16171
+      width: 8
+      height: 8
+    distanceFromStart: 17
+  spawnRoom:
+    logicalPosition: {x: 0, y: 0}
+    roomType: 0
+    roomRect:
+      serializedVersion: 2
+      x: -6
+      y: -6
+      width: 12
+      height: 12
+    distanceFromStart: 0
+  bossRoom:
+    logicalPosition: {x: 2, y: -6}
+    roomType: 1
+    roomRect:
+      serializedVersion: 2
+      x: 21.52566
+      y: -96.57697
+      width: 16
+      height: 16
+    distanceFromStart: 18
+  healthCostRange: {x: 1, y: 5}
+  sanityCostRange: {x: 1, y: 8}
+  timeCostRange: {x: 1, y: 3}
+  directedGraph: 1
+  cycleChance: 0.4
+  treasureChanceInDeadEnd: 0.8
+  treasureChanceInCorridor: 0.1
+  campChance: 0.15
+  eventChance: 0.1
+  mainCamera: {fileID: 0}
+  dungeonGraph: {fileID: 4823371933084768973}
+--- !u!114 &4823371933084768973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4499523164086263747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4cc1f636d0a954b881e7275b9d3f6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

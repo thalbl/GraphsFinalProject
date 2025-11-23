@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // Importe TextMeshPro
+using TMPro;
 using System.Text;
 
 public class RoomVisual : MonoBehaviour {
@@ -39,11 +39,23 @@ public class RoomVisual : MonoBehaviour {
         mainSprite.color = originalColor; // Retorna à cor original
     }
 
-    // Mostra info no clique
+    // Mostra info no click
     void OnMouseDown() {
         try {
             // ========================================
+            // NOTIFICA O GAME CONTROLLER (Sistema de Produção)
+            // ========================================
+            GameController gameController = FindObjectOfType<GameController>();
+            if (gameController != null)
+            {
+                gameController.OnRoomClicked(roomData);
+                // Se GameController está ativo, não executa PathTester
+                return;
+            }
+
+            // ========================================
             // NOTIFICA O PATH TESTER (Sistema de Debug de Pathfinding)
+            // Só executa se GameController não estiver presente
             // ========================================
             PathTester pathTester = FindObjectOfType<PathTester>();
             if (pathTester != null)
