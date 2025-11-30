@@ -43,15 +43,12 @@ public class RoomVisual : MonoBehaviour {
 
         roomInfoText = textGO.AddComponent<TextMeshPro>();
         roomInfoText.text = $"{room.roomType}\n(Dist: {room.distanceFromStart})";
-        roomInfoText.fontSize = 2; // Ajuste o tamanho conforme necessário
+        roomInfoText.fontSize = 2;
         roomInfoText.alignment = TextAlignmentOptions.Center;
-        roomInfoText.sortingOrder = 2; // Na frente da sala
+        roomInfoText.sortingOrder = 2;
         roomInfoText.rectTransform.sizeDelta = new Vector2(room.roomRect.width, room.roomRect.height);
     }
 
-    /// <summary>
-    /// Carrega a configuração de sprites do Resources
-    /// </summary>
     private void LoadSpriteConfig()
     {
         if (spriteConfig == null)
@@ -60,15 +57,11 @@ public class RoomVisual : MonoBehaviour {
             
             if (spriteConfig == null)
             {
-                Debug.LogWarning("[RoomVisual] RoomSpriteConfig não encontrado em Resources! " +
-                                "Crie um em: Assets/Resources/RoomSpriteConfig.asset");
+                Debug.LogWarning("[RoomVisual] RoomSpriteConfig não encontrado em Resources!");
             }
         }
     }
 
-    /// <summary>
-    /// Aplica o sprite correto baseado no tipo de sala
-    /// </summary>
     private void ApplyRoomSprite(RoomType roomType)
     {
         if (spriteConfig == null || mainSprite == null)
@@ -79,75 +72,51 @@ public class RoomVisual : MonoBehaviour {
         if (roomSprite != null)
         {
             mainSprite.sprite = roomSprite;
-            // Atualiza a cor original para a cor branca (para não alterar a cor do sprite)
             mainSprite.color = Color.white;
             originalColor = Color.white;
         }
-        else
-        {
-            Debug.LogWarning($"[RoomVisual] Nenhum sprite encontrado para {roomType}");
-        }
     }
 
-    /// <summary>
-    /// Cria o GameObject da borda animada
-    /// </summary>
     private void CreateBorder(Rect roomRect)
     {
         if (spriteConfig == null || (spriteConfig.borderSprite1 == null && spriteConfig.borderSprite2 == null))
         {
-            Debug.LogWarning("[RoomVisual] Sprites de borda não configurados no RoomSpriteConfig");
             return;
         }
 
-        // Cria o GameObject da borda como filho desta sala
         borderObject = new GameObject("RoomBorder");
         borderObject.transform.SetParent(transform);
         borderObject.transform.localPosition = Vector3.zero;
         
-        // Adiciona o SpriteRenderer
         borderSpriteRenderer = borderObject.AddComponent<SpriteRenderer>();
-        borderSpriteRenderer.sprite = spriteConfig.borderSprite1; // Começa com o primeiro sprite
-        borderSpriteRenderer.sortingOrder = 1; // Entre a sala (0) e o texto (2)
+        borderSpriteRenderer.sprite = spriteConfig.borderSprite1;
+        borderSpriteRenderer.sortingOrder = 1;
         
-        // Aplica a escala maior que a sala
         float scaleMultiplier = spriteConfig.borderScaleMultiplier;
         borderObject.transform.localScale = new Vector3(scaleMultiplier, scaleMultiplier, 1f);
         
-        // Começa invisível (será mostrada no hover/seleção)
         borderSpriteRenderer.enabled = false;
     }
 
-    /// <summary>
-    /// Atualiza a animação da borda
-    /// </summary>
     private void Update()
     {
-        // Só anima se a borda estiver visível
         if (borderSpriteRenderer != null && borderSpriteRenderer.enabled && spriteConfig != null)
         {
             UpdateBorderAnimation();
         }
     }
 
-    /// <summary>
-    /// Controla a animação alternando entre os 2 sprites da borda
-    /// </summary>
     private void UpdateBorderAnimation()
     {
         if (spriteConfig.borderSprite1 == null || spriteConfig.borderSprite2 == null)
             return;
 
         animationTimer += Time.deltaTime;
-        
-        // Calcula o intervalo entre frames baseado na velocidade
         float frameInterval = 1f / spriteConfig.borderAnimationSpeed;
         
         if (animationTimer >= frameInterval)
         {
             animationTimer = 0f;
-            
-            // Alterna entre os dois sprites
             currentBorderFrame = (currentBorderFrame + 1) % 2;
             borderSpriteRenderer.sprite = currentBorderFrame == 0 ? 
                 spriteConfig.borderSprite1 : 
@@ -155,16 +124,12 @@ public class RoomVisual : MonoBehaviour {
         }
     }
 
-    /// <summary>
-    /// Mostra ou esconde a borda
-    /// </summary>
     private void UpdateBorderVisibility()
     {
         if (borderSpriteRenderer != null)
         {
             borderSpriteRenderer.enabled = isHovered || isSelected;
             
-            // Reseta a animação quando a borda aparece
             if (borderSpriteRenderer.enabled)
             {
                 animationTimer = 0f;
@@ -177,55 +142,38 @@ public class RoomVisual : MonoBehaviour {
         }
     }
 
-    /// <summary>
-    /// Define se esta sala está selecionada
-    /// </summary>
     public void SetSelected(bool selected)
     {
         isSelected = selected;
         UpdateBorderVisibility();
     }
 
-    // Highlight de mouse-over
+    // Mouse hover - apenas borda, sem mudança de cor
     void OnMouseEnter() {
         isHovered = true;
         UpdateBorderVisibility();
-        mainSprite.color = Color.cyan; // Feedback visual
     }
 
     void OnMouseExit() {
         isHovered = false;
         UpdateBorderVisibility();
-        mainSprite.color = originalColor; // Retorna à cor original
     }
 
-    // Mostra info no click
     void OnMouseDown() {
         try {
-            // ========================================
-            // NOTIFICA O GAME CONTROLLER (Sistema de Produção)
-            // ========================================
             GameController gameController = FindObjectOfType<GameController>();
             if (gameController != null)
             {
                 gameController.OnRoomClicked(roomData);
-                // Se GameController está ativo, não executa PathTester
                 return;
             }
 
-            // ========================================
-            // NOTIFICA O PATH TESTER (Sistema de Debug de Pathfinding)
-            // Só executa se GameController não estiver presente
-            // ========================================
             PathTester pathTester = FindObjectOfType<PathTester>();
             if (pathTester != null)
             {
                 pathTester.OnRoomClicked(roomData);
             }
 
-            // ========================================
-            // FUNCIONALIDADE DE DEBUG ORIGINAL (Edge Costs)
-            // ========================================
             if (generator == null) {
                 Debug.LogWarning("Generator não encontrado!");
                 return;
@@ -236,7 +184,6 @@ public class RoomVisual : MonoBehaviour {
                 return;
             }
 
-            // Constrói uma string de log
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"--- SALA CLICADA ---");
             sb.AppendLine($"Posição Lógica: {roomData.logicalPosition}");
@@ -248,7 +195,6 @@ public class RoomVisual : MonoBehaviour {
             } else {
                 sb.AppendLine($"--- Conexões de Saída ({roomData.connections.Count}) ---");
 
-                // Itera pelas conexões e pede os custos ao gerador
                 foreach (RoomNode neighbor in roomData.connections)
                 {
                     if (neighbor == null) {
@@ -256,7 +202,7 @@ public class RoomVisual : MonoBehaviour {
                         continue;
                     }
                     
-                    EdgeData cost = generator.GetEdgeCost(roomData, neighbor); // Pede o custo
+                    EdgeData cost = generator.GetEdgeCost(roomData, neighbor);
                     if (cost != null)
                     {
                         sb.AppendLine($"-> Para {neighbor.logicalPosition}:");
@@ -264,7 +210,7 @@ public class RoomVisual : MonoBehaviour {
                     }
                     else
                     {
-                        sb.AppendLine($"-> Para {neighbor.logicalPosition}: SEM CUSTO (aresta não encontrada)");
+                        sb.AppendLine($"-> Para {neighbor.logicalPosition}: SEM CUSTO");
                     }
                 }
             }

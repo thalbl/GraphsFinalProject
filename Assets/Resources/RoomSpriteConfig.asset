@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17defd0d4956544681092e829306dac, type: 3}
   m_Name: RoomSpriteConfig
   m_EditorClassIdentifier: 
-  spawnRoomSprite: {fileID: 0}
-  bossRoomSprite: {fileID: 0}
-  combatRoomSprite: {fileID: 0}
-  treasureRoomSprite: {fileID: 0}
-  campRoomSprite: {fileID: 0}
-  eventRoomSprite: {fileID: 0}
+  spawnRoomSprite: {fileID: 21300000, guid: 155989938195bf341aa6a4f5f733ec1b, type: 3}
+  bossRoomSprite: {fileID: 21300000, guid: c8924cca1d1c8614c9b55d69b571ca2d, type: 3}
+  combatRoomSprite: {fileID: 21300000, guid: 8d2082bc11493db4db6a896ccfa5a386, type: 3}
+  treasureRoomSprite: {fileID: 21300000, guid: 020d531181373ca4795bc9737748a118, type: 3}
+  campRoomSprite: {fileID: 21300000, guid: 4e68aa9ddd449844b9066f93f51a1da3, type: 3}
+  eventRoomSprite: {fileID: 21300000, guid: 43629295b2695b641a791c12e09c9c6e, type: 3}
   defaultRoomSprite: {fileID: 0}
+  borderSprite1: {fileID: 21300000, guid: 6cd65a73579e8984fa30d53f53cf861b, type: 3}
+  borderSprite2: {fileID: 21300000, guid: efad85a3c10b06a43941decc9281d23c, type: 3}
+  borderAnimationSpeed: 2.1
+  borderScaleMultiplier: 1.786

@@ -81,6 +81,10 @@ public class GameController : MonoBehaviour
         {
             playerCurrentRoom = dungeonGenerator.spawnRoom;
             HighlightCurrentRoom();
+            
+            // ═══ DESTACA ARESTAS ACESSÍVEIS DA SALA INICIAL ═══
+            dungeonGenerator.HighlightPlayerAccessibleEdges(playerCurrentRoom);
+            
             Debug.Log($"Sala inicial definida: {playerCurrentRoom.logicalPosition}");
 
             // ═══ CORREÇÃO: Pequeno delay para garantir sincronização ═══
@@ -444,6 +448,12 @@ public class GameController : MonoBehaviour
         
         // Destaca nova sala
         HighlightCurrentRoom();
+        
+        // ═══ DESTACA ARESTAS ACESSÍVEIS DA NOVA POSIÇÃO ═══
+        if (dungeonGenerator != null)
+        {
+            dungeonGenerator.HighlightPlayerAccessibleEdges(playerCurrentRoom);
+        }
 
         Debug.Log($"Jogador movido para {room.logicalPosition}");
     }
