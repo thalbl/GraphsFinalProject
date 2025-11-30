@@ -5,7 +5,7 @@ using TMPro;
 using System;
 
 /// <summary>
-/// Botão de opção de custo com animação idle estilo Persona (bobbing).
+/// Botão de opção de custo com animação idle (bobbing).
 /// </summary>
 public class CostOptionButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {

@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Anima o brilho de fundo do menu com efeito de pulso suave.
-/// Simula o gradiente radial animado do design HTML.
 /// </summary>
 [RequireComponent(typeof(Image))]
 public class BackgroundGlow : MonoBehaviour

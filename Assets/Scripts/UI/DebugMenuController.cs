@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// Controlador do Menu de Debug estilo Persona 5
+/// Controlador do Menu de Debug
 /// Gerencia a UI e sincroniza com o GameSessionState
 /// </summary>
 public class DebugMenuController : MonoBehaviour
@@ -184,7 +184,7 @@ public class DebugMenuController : MonoBehaviour
     }
 
     /// <summary>
-    /// Botão "RESTART REALITY" - Reinicia a cena com os novos valores
+    /// Botão "RESTART Reinicia a cena com os novos valores
     /// </summary>
     public void OnRestartButtonClicked()
     {

@@ -5,7 +5,7 @@ using TMPro;
 using System.Collections;
 
 /// <summary>
-/// Botão animado estilo Persona 5 com hover effects (scale, glow, color).
+/// Botão animado com hover effects (scale, glow, color).
 /// Baseado no CostOptionButton mas genérico para qualquer botão.
 /// </summary>
 public class AnimatedButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler

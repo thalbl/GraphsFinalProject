@@ -158,6 +158,14 @@ public class CameraController : MonoBehaviour {
     /// Posiciona a câmera no centro da dungeon
     /// </summary>
     private void PositionCameraOnDungeon() {
+        // ═══ CORREÇÃO: Não reposiciona se já tiver um player ativo ═══
+        PlayerController player = FindObjectOfType<PlayerController>();
+        if (player != null)
+        {
+            Debug.Log("📷 Player detectado, pulando PositionCameraOnDungeon...");
+            return;
+        }
+
         // Manter o Z da câmera, mas garantir que seja negativo para câmeras ortográficas
         float cameraZ = transform.position.z;
         if (cameraZ >= 0) {
@@ -169,7 +177,7 @@ public class CameraController : MonoBehaviour {
         Vector3 targetPosition = new Vector3(dungeonBounds.center.x, dungeonBounds.center.y, cameraZ);
         transform.position = targetPosition;
         
-        Debug.Log($"📷 Câmera reposicionada para: {targetPosition}");
+        Debug.Log($"📷 Câmera reposicionada para centro da dungeon: {targetPosition}");
     }
 
     /// <summary>

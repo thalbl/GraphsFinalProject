@@ -11,10 +11,16 @@ public class GameController : MonoBehaviour
     [SerializeField] private DungeonGenerator dungeonGenerator;
     [SerializeField] private DungeonGraph dungeonGraph;
     [SerializeField] private CostSelectionMenu costSelectionMenu;
+    [SerializeField] private GameOverUI gameOverUI;
+
+    [Header("Player")]
+    [SerializeField] private GameObject playerPrefab; // Prefab do jogador (sprite simples)
+    private PlayerController playerController; // Instância do player
 
     [Header("Estado do Jogo")]
     [SerializeField] private RoomNode playerCurrentRoom; // Sala atual do jogador
     [SerializeField] private bool allowRoomSelection = true;
+    private bool isGameOver = false;
 
     [Header("Visualização de Caminho")]
     [SerializeField] private Color pathColor = Color.cyan;
@@ -36,6 +42,9 @@ public class GameController : MonoBehaviour
 
         if (costSelectionMenu == null)
             costSelectionMenu = FindObjectOfType<CostSelectionMenu>();
+
+        if (gameOverUI == null)
+            gameOverUI = FindObjectOfType<GameOverUI>();
 
         // Registra evento de seleção de custo
         if (costSelectionMenu != null)
@@ -73,6 +82,9 @@ public class GameController : MonoBehaviour
             playerCurrentRoom = dungeonGenerator.spawnRoom;
             HighlightCurrentRoom();
             Debug.Log($"Sala inicial definida: {playerCurrentRoom.logicalPosition}");
+
+            // ═══ CORREÇÃO: Pequeno delay para garantir sincronização ═══
+            StartCoroutine(InstantiatePlayerWithDelay());
         }
         else
         {
@@ -98,10 +110,142 @@ public class GameController : MonoBehaviour
     }
 
     /// <summary>
+    /// Instancia o player com um pequeno delay para garantir sincronização.
+    /// </summary>
+    private System.Collections.IEnumerator InstantiatePlayerWithDelay()
+    {
+        // Espera um frame para garantir que o CameraController terminou seu setup
+        yield return null;
+        
+        InstantiatePlayer(dungeonGenerator.spawnRoom);
+    }
+
+    /// <summary>
+    /// Instancia o player na sala de spawn.
+    /// </summary>
+    private void InstantiatePlayer(RoomNode spawnRoom)
+    {
+        if (playerPrefab == null)
+        {
+            Debug.LogError("Player Prefab não atribuído no GameController!");
+            Debug.LogWarning("Crie um GameObject com SpriteRenderer e atribua no Inspector.");
+            return;
+        }
+
+        // Destroi player anterior se existir (para regeneração)
+        if (playerController != null)
+        {
+            Destroy(playerController.gameObject);
+        }
+
+        // Instancia o prefab
+        GameObject playerGO = Instantiate(playerPrefab, spawnRoom.GetWorldPosition(), Quaternion.identity);
+        playerGO.name = "Player";
+
+        // Pega o componente PlayerController
+        playerController = playerGO.GetComponent<PlayerController>();
+        
+        if (playerController == null)
+        {
+            Debug.LogError("Player Prefab não tem componente PlayerController!");
+            return;
+        }
+
+        // Inicializa o player
+        playerController.Initialize(spawnRoom);
+
+        // Registra evento de morte
+        playerController.stats.OnPlayerDied += OnPlayerDied;
+
+        Debug.Log("═══ PLAYER INSTANCIADO COM SUCESSO ═══");
+
+        // ═══ CORREÇÃO: USA O CAMERA CONTROLLER PARA CENTRALIZAR ═══
+        CenterCameraOnPlayerUsingCameraController();
+    }
+
+    /// <summary>
+    /// Centraliza a câmera no player usando o CameraController (em vez de mover diretamente)
+    /// </summary>
+    private void CenterCameraOnPlayerUsingCameraController()
+    {
+        if (playerController == null) return;
+
+        // Encontra o CameraController
+        CameraController cameraController = FindObjectOfType<CameraController>();
+        if (cameraController != null)
+        {
+            // Foca na sala atual do player
+            cameraController.FocusOnRoom(playerCurrentRoom, 0.5f);
+            Debug.Log($"📷 CameraController focando na sala do player: {playerCurrentRoom.logicalPosition}");
+        }
+        else
+        {
+            // Fallback: método antigo se não encontrar CameraController
+            Debug.LogWarning("CameraController não encontrado, usando fallback...");
+            CenterCameraOnPlayer();
+        }
+    }
+
+    /// <summary>
+    /// Centraliza a câmera na posição do player (fallback)
+    /// </summary>
+    private void CenterCameraOnPlayer()
+    {
+        if (playerController == null) return;
+
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            Vector3 playerPos = playerController.transform.position;
+            Vector3 newCameraPos = new Vector3(playerPos.x, playerPos.y, mainCamera.transform.position.z);
+            mainCamera.transform.position = newCameraPos;
+            
+            Debug.Log($"📷 Câmera centralizada no player (fallback): {newCameraPos}");
+        }
+        else
+        {
+            Debug.LogWarning("Camera.main não encontrada!");
+        }
+    }
+
+    /// <summary>
+    /// Callback quando o jogador morre.
+    /// </summary>
+    private void OnPlayerDied()
+    {
+        isGameOver = true;
+        allowRoomSelection = false;
+        
+        Debug.LogError("════════════════════════════════════");
+        Debug.LogError("   GAME OVER - GameController      ");
+        Debug.LogError("════════════════════════════════════");
+
+        // IMPORTANTE: Ativa UI ANTES de pausar!
+        // Isso permite que as coroutines iniciem corretamente
+        if (gameOverUI != null)
+        {
+            gameOverUI.ShowGameOver();
+        }
+        else
+        {
+            Debug.LogError("GameOverUI não encontrada! Adicione o componente GameOverUI na cena.");
+        }
+
+        // Pausa o jogo DEPOIS da UI estar ativa
+        Time.timeScale = 0f;
+    }
+
+    /// <summary>
     /// Chamado quando uma sala é clicada (pelo RoomVisual).
     /// </summary>
     public void OnRoomClicked(RoomNode clickedRoom)
     {
+        if (isGameOver)
+        {
+            Debug.Log("Game Over - seleção desabilitada.");
+            return;
+        }
+
         if (!allowRoomSelection)
         {
             Debug.Log("Seleção de sala desabilitada no momento.");
@@ -131,15 +275,27 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        // Verifica se há caminho possível
-        if (!HasPathToRoom(clickedRoom))
+        // ═══ VALIDAÇÃO: APENAS SALAS ADJACENTES POR ENQUANTO ═══
+        if (!playerCurrentRoom.connections.Contains(clickedRoom))
         {
-            Debug.LogWarning($"Não há caminho para {clickedRoom.logicalPosition}!");
+            Debug.LogWarning($"Sala {clickedRoom.logicalPosition} não está adjacente! Clique em uma sala conectada.");
             return;
         }
 
         // Salva destino e abre menu de seleção
         selectedDestination = clickedRoom;
+        
+        // Log de seleção de sala usando sistema narrativo
+        if (NarrativeLogSystem.Instance != null)
+        {
+            NarrativeLogSystem.Instance.LogRoomSelection(clickedRoom);
+        }
+        else
+        {
+            // Fallback se NarrativeLogSystem não estiver na cena
+            EventLogger.LogRoomSelection($"{clickedRoom.roomType} ({clickedRoom.logicalPosition})");
+        }
+        
         OpenCostSelectionMenu();
     }
 
@@ -163,12 +319,25 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void OnCostTypeSelected(CostType selectedCostType)
     {
-        Debug.Log($"Calculando caminho com custo: {selectedCostType}");
+        Debug.Log($"Tipo de custo selecionado: {selectedCostType}");
 
-        // Calcula o caminho com o custo selecionado
-        CalculateAndShowPath(selectedCostType);
+        // ═══ DELEGA MOVIMENTO AO PLAYERCONTROLLER ═══
+        if (playerController != null && selectedDestination != null)
+        {
+            // Limpa visualização anterior
+            ClearCurrentPath();
 
-        // Permite nova seleção
+            // Inicia movimento do player
+            playerController.MoveTo(selectedDestination, selectedCostType);
+
+            // Nota: O PlayerController chamará MovePlayerToRoom() quando completar
+        }
+        else
+        {
+            Debug.LogError("PlayerController ou selectedDestination é null!");
+        }
+
+        // Permite nova seleção após movimento
         allowRoomSelection = true;
     }
 
