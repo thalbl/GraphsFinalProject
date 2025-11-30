@@ -17,6 +17,7 @@ public class CostSelectionMenu : MonoBehaviour
     [SerializeField] private CostOptionButton sanityButton;
     [SerializeField] private CostOptionButton timeButton;
     [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private Button cancelButton;
 
     [Header("Animação")]
     [SerializeField] private float slideInDuration = 0.4f;
@@ -39,6 +40,7 @@ public class CostSelectionMenu : MonoBehaviour
 
     // Eventos
     public event Action<CostType> OnCostSelected;
+    public event Action OnCancelled;
 
     void Awake()
     {
@@ -72,6 +74,10 @@ public class CostSelectionMenu : MonoBehaviour
         if (timeButton != null)
             timeButton.OnButtonClicked += () => SelectCost(CostType.Time);
 
+        // Conecta botão de cancelamento
+        if (cancelButton != null)
+            cancelButton.onClick.AddListener(CancelSelection);
+
         // Busca GraphViewController se não foi setado
         if (graphViewController == null)
             graphViewController = FindObjectOfType<GraphViewController>();
@@ -83,6 +89,12 @@ public class CostSelectionMenu : MonoBehaviour
         if (isAnimating)
         {
             UpdateAnimation();
+        }
+
+        // Detecta tecla ESC para cancelar seleção
+        if (isMenuOpen && !isAnimating && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CancelSelection();
         }
     }
 
@@ -152,6 +164,20 @@ public class CostSelectionMenu : MonoBehaviour
 
         // Notifica listeners
         OnCostSelected?.Invoke(costType);
+
+        // Fecha o menu
+        HideMenu();
+    }
+
+    /// <summary>
+    /// Cancela a seleção de sala e fecha o menu.
+    /// </summary>
+    public void CancelSelection()
+    {
+        Debug.Log("Seleção de sala cancelada");
+
+        // Notifica listeners
+        OnCancelled?.Invoke();
 
         // Fecha o menu
         HideMenu();

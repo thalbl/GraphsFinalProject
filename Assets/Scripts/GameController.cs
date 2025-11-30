@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour
         if (costSelectionMenu != null)
         {
             costSelectionMenu.OnCostSelected += OnCostTypeSelected;
+            costSelectionMenu.OnCancelled += OnSelectionCancelled;
         }
 
         // Cacheia cores originais das salas
@@ -342,6 +343,20 @@ public class GameController : MonoBehaviour
         }
 
         // Permite nova seleção após movimento
+        allowRoomSelection = true;
+    }
+
+    /// <summary>
+    /// Chamado quando o jogador cancela a seleção de sala.
+    /// </summary>
+    private void OnSelectionCancelled()
+    {
+        Debug.Log("Seleção cancelada pelo jogador");
+
+        // Limpa destino selecionado
+        selectedDestination = null;
+
+        // Re-habilita seleção de sala
         allowRoomSelection = true;
     }
 

@@ -239,7 +239,16 @@ public class CostOptionButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 glowColor = new Color(1f, 0.87f, 0f, 0.4f); // Glow amarelo semi-transparente
                 phaseOffset = Mathf.PI * 4f / 3f; // 240°
                 break;
-        }
+
+            case CostType.Cancel:
+                if (titleText != null) titleText.text = "CANCELAR";
+                if (descriptionText != null) descriptionText.text = "Voltar (ESC)";
+                idleColor = baseIdleColor;
+                hoverColor = new Color(0.8f, 0.2f, 0.2f, 1f); // Vermelho suave no hover
+                glowColor = new Color(1f, 0.3f, 0.3f, 0.4f); // Glow vermelho semi-transparente
+                phaseOffset = Mathf.PI; // 180°
+                break;
+        } 
 
         // Aplica cor idle (preto) ao background
         if (backgroundImage != null)

@@ -10,5 +10,6 @@ public enum CostType
 {
     Health,  // Custo de vida (HP)
     Sanity,  // Custo de sanidade mental
-    Time     // Custo de tempo (turnos/dias)
+    Time,    // Custo de tempo (turnos/dias)
+    Cancel   // Botão de cancelamento
 }
