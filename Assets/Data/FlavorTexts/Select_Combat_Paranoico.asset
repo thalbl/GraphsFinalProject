@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39b58fb2ed3de764d8b7644b7e676e8b, type: 3}
-  m_Name: Selection_Camp_Normal
+  m_Name: Select_Combat_Paranoico
   m_EditorClassIdentifier: 
   context: 0
-  roomType: 4
+  roomType: 2
   anyRoomType: 0
   condition: 0
-  requiredTraitName: 
+  requiredTraitName: "Paran\xF3ico"
   phrases:
-  - "> Restos de uma fogueira prometem descanso e seguran\xE7a."
-  - "> Um ref\xFAgio onde corpo e mente podem se recuperar."
-  - '> O ambiente calmo convida ao descanso.'
-  - "> Um lugar perfeito para restaurar as for\xE7as."
-  - '> Finalmente, um momento de paz neste inferno.'
+  - "> (Paran\xF3ico) \"Eles est\xE3o l\xE1 dentro... esperando por n\xF3s.\""
+  - "> (Paran\xF3ico) \"Muito quieto. Quieto demais. \xC9 uma emboscada.\""
+  - "> (Paran\xF3ico) \"Eu vi os olhos na escurid\xE3o. Voc\xEAs n\xE3o viram?\""
   overrideMessageType: 1
-  messageTypeOverride: 3
+  messageTypeOverride: 4

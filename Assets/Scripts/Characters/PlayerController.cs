@@ -252,9 +252,9 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"<color=yellow>💎 TESOURO ENCONTRADO NA SALA {room.logicalPosition}!</color>");
         EventLogger.LogInfo($"💎 Baú encontrado na sala {room.logicalPosition}!");
         
-        // Recompensas aleatórias
-        float healthGain = Random.Range(5f, 15f);
-        float sanityGain = Random.Range(10f, 20f);
+        // Recompensas aleatórias (reduzidas para balanceamento)
+        float healthGain = Random.Range(2f, 5f);
+        float sanityGain = Random.Range(2f, 5f);
         float suppliesGain = Random.Range(1f, 3f);
 
         stats.AddResources(healthGain, sanityGain, suppliesGain);
@@ -264,14 +264,25 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Evento: Sala de Acampamento
-    /// TODO: Abrir menu de descanso
+    /// Evento: Sala de Acampamento - Local de descanso
+    /// Restaura vida e sanidade do jogador
     /// </summary>
     private void OnCampRoom(RoomNode room)
     {
         Debug.Log($"<color=cyan>🏕 ACAMPAMENTO NA SALA {room.logicalPosition}!</color>");
-        Debug.Log("Menu de descanso (não implementado ainda)");
-        // TODO: Abrir UI de descanso
+        Debug.Log("✨ Descansando e recuperando forças...");
+        
+        // Valores de recuperação (balanceados)
+        float healthRestore = 20f;
+        float sanityRestore = 20f;
+        
+        // Recupera vida e sanidade usando AddResources
+        stats.AddResources(healthRestore, sanityRestore, 0f);
+        
+        Debug.Log($"<color=green>+{healthRestore} HP restaurado! HP atual: {stats.currentHealth:F1}/{stats.maxHealth}</color>");
+        Debug.Log($"<color=cyan>+{sanityRestore} Sanidade restaurada! Sanidade atual: {stats.currentSanity:F1}/{stats.maxSanity}</color>");
+        
+        EventLogger.LogGain($"Descansou no acampamento. +{healthRestore:F0} HP, +{sanityRestore:F0} Sanidade");
     }
 
     /// <summary>

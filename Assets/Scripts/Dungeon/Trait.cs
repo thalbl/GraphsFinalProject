@@ -49,41 +49,94 @@ public class Trait
                 affliction: true
             ),
             new Trait(
-                "Ferido",
-                "Um ferimento grave dificulta sua jornada. Custos de Vida aumentam 50%.",
+                "Imprudente",
+                "Impaciência e desprezo pela própria segurança. Vida +50%, Tempo -20%.",
                 healthMult: 1.5f,
                 sanityMult: 1.0f,
-                timeMult: 1.0f,
+                timeMult: 0.8f,
                 affliction: true
             ),
             new Trait(
-                "Exausto",
-                "A fadiga toma conta. Movimentos custam o dobro de tempo.",
+                "Hesitante",
+                "Medo paralisante de tomar decisões erradas. Custos de Tempo dobrados.",
                 healthMult: 1.0f,
                 sanityMult: 1.0f,
                 timeMult: 2.0f,
                 affliction: true
             ),
             new Trait(
-                "Agorafóbico",
-                "Espaços abertos causam pânico. Sanidade cai 80% mais rápido.",
+                "Frágil",
+                "Corpo e mente fragilizados. Todos os custos aumentam 30%.",
+                healthMult: 1.3f,
+                sanityMult: 1.3f,
+                timeMult: 1.3f,
+                affliction: true
+            ),
+            new Trait(
+                "Ganancioso",
+                "Obsessão por saque. Sanidade +30%, Tempo -10%.",
                 healthMult: 1.0f,
-                sanityMult: 1.8f,
-                timeMult: 1.2f,
+                sanityMult: 1.3f,
+                timeMult: 0.9f,
                 affliction: true
             ),
             new Trait(
                 "Claustrofóbico",
-                "A sensação de estar preso é insuportável. Todos os custos aumentam 30%.",
-                healthMult: 1.3f,
-                sanityMult: 1.3f,
-                timeMult: 1.3f,
+                "Pânico em corredores apertados. Sanidade +50% durante movimento.",
+                healthMult: 1.0f,
+                sanityMult: 1.5f,
+                timeMult: 1.2f,
                 affliction: true
             )
         };
 
         int randomIndex = Random.Range(0, afflictions.Length);
         return afflictions[randomIndex];
+    }
+
+    /// <summary>
+    /// Retorna um trait positivo (virtude) aleatório.
+    /// </summary>
+    public static Trait GetRandomVirtue()
+    {
+        Trait[] virtues = new Trait[]
+        {
+            new Trait(
+                "Estoico",
+                "Mente forte e resiliente. Custos de Sanidade reduzidos em 30%.",
+                healthMult: 1.0f,
+                sanityMult: 0.7f,
+                timeMult: 1.0f,
+                affliction: false
+            ),
+            new Trait(
+                "Vigoroso",
+                "Corpo resistente. Custos de Vida reduzidos em 30%.",
+                healthMult: 0.7f,
+                sanityMult: 1.0f,
+                timeMult: 1.0f,
+                affliction: false
+            ),
+            new Trait(
+                "Ligeiro",
+                "Veloz e ágil. Custos de Tempo reduzidos em 30%.",
+                healthMult: 1.0f,
+                sanityMult: 1.0f,
+                timeMult: 0.7f,
+                affliction: false
+            ),
+            new Trait(
+                "Estrategista",
+                "Mestre tático. Todos os custos reduzidos em 15%.",
+                healthMult: 0.85f,
+                sanityMult: 0.85f,
+                timeMult: 0.85f,
+                affliction: false
+            )
+        };
+
+        int randomIndex = Random.Range(0, virtues.Length);
+        return virtues[randomIndex];
     }
 
     /// <summary>

@@ -10,18 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 39b58fb2ed3de764d8b7644b7e676e8b, type: 3}
-  m_Name: Selection_Camp_Normal
+  m_Name: Damage_Imprudente
   m_EditorClassIdentifier: 
-  context: 0
-  roomType: 4
-  anyRoomType: 0
+  context: 3
+  roomType: 0
+  anyRoomType: 1
   condition: 0
-  requiredTraitName: 
+  requiredTraitName: Imprudente
   phrases:
-  - "> Restos de uma fogueira prometem descanso e seguran\xE7a."
-  - "> Um ref\xFAgio onde corpo e mente podem se recuperar."
-  - '> O ambiente calmo convida ao descanso.'
-  - "> Um lugar perfeito para restaurar as for\xE7as."
-  - '> Finalmente, um momento de paz neste inferno.'
+  - "> (Imprudente) \"Hah! Isso \xE9 tudo o que tens?\""
+  - '> (Imprudente) "Sangue apenas me faz lutar melhor."'
   overrideMessageType: 1
-  messageTypeOverride: 3
+  messageTypeOverride: 0

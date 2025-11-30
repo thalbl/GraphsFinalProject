@@ -118,10 +118,11 @@ public class FlavorTextGenerator
             messageType = LogMessageType.Gain,
             phrases = new List<string>
             {
-                "> Restos de uma fogueira antiga indicam segurança.",
-                "> Um local defensável para descansar os ossos.",
-                "> O ambiente parece estranhamente calmo.",
-                "> Marcas antigas sugerem que outros acamparam aqui."
+                "> Restos de uma fogueira prometem descanso e segurança.",
+                "> Um refúgio onde corpo e mente podem se recuperar.",
+                "> O ambiente calmo convida ao descanso.",
+                "> Um lugar perfeito para restaurar as forças.",
+                "> Finalmente, um momento de paz neste inferno."
             }
         });
 
@@ -260,6 +261,321 @@ public class FlavorTextGenerator
                 "> Recursos recuperados. A jornada continua.",
                 "> O fardo parece um pouco mais leve.",
                 "> Um momento de alívio em meio ao horror."
+            }
+        });
+
+        count += CreateFlavorText(folderPath, "RoomEnter_Camp", new FlavorConfig
+        {
+            context = FlavorContext.RoomEnter,
+            roomType = RoomType.Camp,
+            anyRoomType = false,
+            overrideMessageType = true,
+            messageType = LogMessageType.Gain,
+            phrases = new List<string>
+            {
+                "> O calor da fogueira acalma o corpo e a mente.",
+                "> Finalmente, um momento para respirar e se recuperar.",
+                "> As feridas começam a sarar no descanso.",
+                "> A paz deste lugar restaura a sanidade.",
+                "> Os pesadelos parecem mais distantes aqui."
+            }
+        });
+
+        // ═══════════════════════════════════════════════════
+        // TRAITS - AFFLICTIONS (ROOM SELECTION)
+        // ═══════════════════════════════════════════════════
+
+        // PARANÓICO - Room Selection (Combat)
+        count += CreateFlavorText(folderPath, "Select_Combat_Paranoico", new FlavorConfig
+        {
+            context = FlavorContext.RoomSelection,
+            roomType = RoomType.Combat,
+            anyRoomType = false,
+            requiredTrait = "Paranóico",
+            overrideMessageType = true,
+            messageType = LogMessageType.Sanity,
+            phrases = new List<string>
+            {
+                "> (Paranóico) \"Eles estão lá dentro... esperando por nós.\"",
+                "> (Paranóico) \"Muito quieto. Quieto demais. É uma emboscada.\"",
+                "> (Paranóico) \"Eu vi os olhos na escuridão. Vocês não viram?\""
+            }
+        });
+
+        // IMPRUDENTE - Room Selection (Combat)
+        count += CreateFlavorText(folderPath, "Select_Combat_Imprudente", new FlavorConfig
+        {
+            context = FlavorContext.RoomSelection,
+            roomType = RoomType.Combat,
+            anyRoomType = false,
+            requiredTrait = "Imprudente",
+            phrases = new List<string>
+            {
+                "> (Imprudente) \"Chega de planejar! Vamos matar alguma coisa!\"",
+                "> (Imprudente) \"O caminho mais rápido é através deles.\"",
+                "> (Imprudente) \"Eu vou na frente. Tente acompanhar.\""
+            }
+        });
+
+        // HESITANTE - Room Selection
+        count += CreateFlavorText(folderPath, "Select_Any_Hesitante", new FlavorConfig
+        {
+            context = FlavorContext.RoomSelection,
+            anyRoomType = true,
+            requiredTrait = "Hesitante",
+            overrideMessageType = true,
+            messageType = LogMessageType.Neutral,
+            phrases = new List<string>
+            {
+                "> (Hesitante) \"Temos... temos mesmo certeza disto?\"",
+                "> (Hesitante) \"Talvez devêssemos voltar para a entrada...\"",
+                "> (Hesitante) \"E se a tocha apagar? E se não houver saída?\""
+            }
+        });
+
+        // GANANCIOSO - Room Selection (Treasure)
+        count += CreateFlavorText(folderPath, "Select_Treasure_Ganancioso", new FlavorConfig
+        {
+            context = FlavorContext.RoomSelection,
+            roomType = RoomType.Treasure,
+            anyRoomType = false,
+            requiredTrait = "Ganancioso",
+            overrideMessageType = true,
+            messageType = LogMessageType.Info,
+            phrases = new List<string>
+            {
+                "> (Ganancioso) \"Ouro! Eu sinto o cheiro dele!\"",
+                "> (Ganancioso) \"Saiam da frente, esse baú é meu!\"",
+                "> (Ganancioso) \"Finalmente, algo que vale a pena morrer.\""
+            }
+        });
+
+        // FRÁGIL - Room Selection
+        count += CreateFlavorText(folderPath, "Select_Any_Fragil", new FlavorConfig
+        {
+            context = FlavorContext.RoomSelection,
+            anyRoomType = true,
+            requiredTrait = "Frágil",
+            overrideMessageType = true,
+            messageType = LogMessageType.Danger,
+            phrases = new List<string>
+            {
+                "> (Frágil) \"Não sei se consigo dar mais um passo...\"",
+                "> (Frágil) \"Minhas pernas tremem. Estou tão cansado.\""
+            }
+        });
+
+        // ═══════════════════════════════════════════════════
+        // TRAITS - AFFLICTIONS (MOVEMENT)
+        // ═══════════════════════════════════════════════════
+
+        // PARANÓICO - Movement
+        count += CreateFlavorText(folderPath, "Movement_Paranoico_Extra", new FlavorConfig
+        {
+            context = FlavorContext.Movement,
+            anyRoomType = true,
+            requiredTrait = "Paranóico",
+            overrideMessageType = true,
+            messageType = LogMessageType.Sanity,
+            phrases = new List<string>
+            {
+                "> (Paranóico) \"Pare! Ouvi algo atrás de nós!\"",
+                "> (Paranóico) \"Quem está a carregar a tocha? Não confio nele.\"",
+                "> (Paranóico) \"Estamos a andar em círculos... eu sei que estamos.\""
+            }
+        });
+
+        // IMPRUDENTE - Movement
+        count += CreateFlavorText(folderPath, "Movement_Imprudente", new FlavorConfig
+        {
+            context = FlavorContext.Movement,
+            anyRoomType = true,
+            requiredTrait = "Imprudente",
+            phrases = new List<string>
+            {
+                "> (Imprudente) \"Corram! A glória não espera por ninguém!\"",
+                "> (Imprudente) \"Armadilhas são apenas cócegas.\""
+            }
+        });
+
+        // HESITANTE - Movement
+        count += CreateFlavorText(folderPath, "Movement_Hesitante", new FlavorConfig
+        {
+            context = FlavorContext.Movement,
+            anyRoomType = true,
+            requiredTrait = "Hesitante",
+            overrideMessageType = true,
+            messageType = LogMessageType.Neutral,
+            phrases = new List<string>
+            {
+                "> (Hesitante) \"Um passo de cada vez... devagar...\"",
+                "> (Hesitante) \"Espere! Acho que vi algo se mover.\""
+            }
+        });
+
+        // CLAUSTROFÓBICO - Movement
+        count += CreateFlavorText(folderPath, "Movement_Claustrofobico", new FlavorConfig
+        {
+            context = FlavorContext.Movement,
+            anyRoomType = true,
+            requiredTrait = "Claustrofóbico",
+            overrideMessageType = true,
+            messageType = LogMessageType.Sanity,
+            phrases = new List<string>
+            {
+                "> (Claustrofóbico) \"O teto... está a baixar. O TETO ESTÁ A BAIXAR!\"",
+                "> (Claustrofóbico) \"Preciso de ar! Saiam da minha frente!\"",
+                "> (Claustrofóbico) \"As paredes estão a esmagar-me...\"",
+                "> (Claustrofóbico) *Respiração hiperventilada e pânico visível.*"
+            }
+        });
+
+        // FRÁGIL - Movement
+        count += CreateFlavorText(folderPath, "Movement_Fragil", new FlavorConfig
+        {
+            context = FlavorContext.Movement,
+            anyRoomType = true,
+            requiredTrait = "Frágil",
+            overrideMessageType = true,
+            messageType = LogMessageType.Danger,
+            phrases = new List<string>
+            {
+                "> (Frágil) \"Cada passo é uma agonia...\"",
+                "> (Frágil) \"Por favor... só um momento de descanso...\""
+            }
+        });
+
+        // ═══════════════════════════════════════════════════
+        // TRAITS - AFFLICTIONS (DAMAGE)
+        // ═══════════════════════════════════════════════════
+
+        // IMPRUDENTE - Damage
+        count += CreateFlavorText(folderPath, "Damage_Imprudente", new FlavorConfig
+        {
+            context = FlavorContext.Damage,
+            anyRoomType = true,
+            requiredTrait = "Imprudente",
+            overrideMessageType = true,
+            messageType = LogMessageType.Neutral,
+            phrases = new List<string>
+            {
+                "> (Imprudente) \"Hah! Isso é tudo o que tens?\"",
+                "> (Imprudente) \"Sangue apenas me faz lutar melhor.\""
+            }
+        });
+
+        // FRÁGIL - Damage
+        count += CreateFlavorText(folderPath, "Damage_Fragil", new FlavorConfig
+        {
+            context = FlavorContext.Damage,
+            anyRoomType = true,
+            requiredTrait = "Frágil",
+            overrideMessageType = true,
+            messageType = LogMessageType.Danger,
+            phrases = new List<string>
+            {
+                "> (Frágil) *Chora silenciosamente enquanto sangra.*",
+                "> (Frágil) \"Eu sabia... eu vou quebrar.\""
+            }
+        });
+
+        // ═══════════════════════════════════════════════════
+        // TRAITS - VIRTUES
+        // ═══════════════════════════════════════════════════
+
+        // ESTOICO - Room Selection (Combat/Boss)
+        count += CreateFlavorText(folderPath, "Select_Danger_Estoico", new FlavorConfig
+        {
+            context = FlavorContext.RoomSelection,
+            roomType = RoomType.Combat,
+            anyRoomType = false,
+            requiredTrait = "Estoico",
+            phrases = new List<string>
+            {
+                "> (Estoico) \"O medo é uma escolha. Nós avançamos.\"",
+                "> (Estoico) \"Seja o que for, nós aguentamos.\""
+            }
+        });
+
+        // ESTOICO - During Sanity Damage
+        count += CreateFlavorText(folderPath, "Damage_Sanity_Estoico", new FlavorConfig
+        {
+            context = FlavorContext.Damage,
+            anyRoomType = true,
+            requiredTrait = "Estoico",
+            overrideMessageType = true,
+            messageType = LogMessageType.Sanity,
+            phrases = new List<string>
+            {
+                "> (Estoico) \"Mantenham o foco. É apenas uma ilusão.\"",
+                "> (Estoico) \"A mente comanda o corpo. Não cedam.\""
+            }
+        });
+
+        // VIGOROSO - Damage
+        count += CreateFlavorText(folderPath, "Damage_Vigoroso", new FlavorConfig
+        {
+            context = FlavorContext.Damage,
+            anyRoomType = true,
+            requiredTrait = "Vigoroso",
+            phrases = new List<string>
+            {
+                "> (Vigoroso) \"É apenas um arranhão. Continuem a marcha.\"",
+                "> (Vigoroso) \"Já sofri pior no café da manhã.\"",
+                "> (Vigoroso) *Cospe sangue e sorri.*"
+            }
+        });
+
+        // VIGOROSO - Room Selection (Combat)
+        count += CreateFlavorText(folderPath, "Select_Combat_Vigoroso", new FlavorConfig
+        {
+            context = FlavorContext.RoomSelection,
+            roomType = RoomType.Combat,
+            anyRoomType = false,
+            requiredTrait = "Vigoroso",
+            phrases = new List<string>
+            {
+                "> (Vigoroso) \"Eu serei o escudo. Fiquem atrás de mim.\""
+            }
+        });
+
+        // ESTRATEGISTA - Room Selection
+        count += CreateFlavorText(folderPath, "Select_Any_Estrategista", new FlavorConfig
+        {
+            context = FlavorContext.RoomSelection,
+            anyRoomType = true,
+            requiredTrait = "Estrategista",
+            phrases = new List<string>
+            {
+                "> (Estrategista) \"Calculado. A probabilidade de sucesso é aceitável.\"",
+                "> (Estrategista) \"Esta é a rota mais eficiente. Sigam o plano.\""
+            }
+        });
+
+        // ESTRATEGISTA - Movement
+        count += CreateFlavorText(folderPath, "Movement_Estrategista", new FlavorConfig
+        {
+            context = FlavorContext.Movement,
+            anyRoomType = true,
+            requiredTrait = "Estrategista",
+            phrases = new List<string>
+            {
+                "> (Estrategista) \"Mantenham a formação. Olhos nos flancos.\"",
+                "> (Estrategista) \"Economizem recursos. A jornada é longa.\""
+            }
+        });
+
+        // LIGEIRO - Movement
+        count += CreateFlavorText(folderPath, "Movement_Ligeiro", new FlavorConfig
+        {
+            context = FlavorContext.Movement,
+            anyRoomType = true,
+            requiredTrait = "Ligeiro",
+            phrases = new List<string>
+            {
+                "> (Ligeiro) \"Conheço este tipo de terreno. Sigam as minhas pegadas.\"",
+                "> (Ligeiro) \"Rápido e silencioso, como uma sombra.\"",
+                "> (Ligeiro) \"Posso ver o fim do túnel. Vamos!\""
             }
         });
 

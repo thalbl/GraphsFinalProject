@@ -104,10 +104,10 @@ public class PlayerStats
             
             GainRandomAffliction();
             
-            // Recupera um pouco de sanidade
-            currentSanity = sanityRecoveryAmount;
-            Debug.Log($"Sanidade recuperada para {currentSanity}");
-            EventLogger.LogGain($"+{sanityRecoveryAmount} Sanidade recuperada");
+            // Recupera sanidade completa após desenvolver a affliction
+            currentSanity = maxSanity;
+            Debug.Log($"Sanidade restaurada para {currentSanity} (máximo)");
+            EventLogger.LogGain($"A mente se adapta. Sanidade restaurada para {maxSanity:F0}");
         }
     }
 
