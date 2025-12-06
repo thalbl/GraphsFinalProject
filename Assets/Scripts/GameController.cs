@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private DungeonGraph dungeonGraph;
     [SerializeField] private CostSelectionMenu costSelectionMenu;
     [SerializeField] private GameOverUI gameOverUI;
+    [SerializeField] private PathfinderGPS gpsSystem; // Sistema de GPS
 
     [Header("Player")]
     [SerializeField] private GameObject playerPrefab; // Prefab do jogador (sprite simples)
@@ -45,6 +46,9 @@ public class GameController : MonoBehaviour
 
         if (gameOverUI == null)
             gameOverUI = FindObjectOfType<GameOverUI>();
+
+        if (gpsSystem == null)
+            gpsSystem = FindObjectOfType<PathfinderGPS>();
 
         // Registra evento de seleção de custo
         if (costSelectionMenu != null)
@@ -162,6 +166,19 @@ public class GameController : MonoBehaviour
         // Registra evento de morte
         playerController.stats.OnPlayerDied += OnPlayerDied;
 
+        // ═══ CONFIGURA REFERÊNCIA DO PLAYER NO GPS ═══
+        if (gpsSystem != null)
+        {
+            gpsSystem.SetPlayerController(playerController);
+        }
+
+        // ═══ CONFIGURA REFERÊNCIA DO PLAYER NO GPS BUTTON ═══
+        GPSButton gpsButton = FindObjectOfType<GPSButton>();
+        if (gpsButton != null)
+        {
+            gpsButton.SetPlayerController(playerController);
+        }
+
         Debug.Log("═══ PLAYER INSTANCIADO COM SUCESSO ═══");
 
         // ═══ CORREÇÃO: USA O CAMERA CONTROLLER PARA CENTRALIZAR ═══
@@ -248,6 +265,13 @@ public class GameController : MonoBehaviour
         if (isGameOver)
         {
             Debug.Log("Game Over - seleção desabilitada.");
+            return;
+        }
+
+        // ═══ VERIFICA SE É SELEÇÃO PARA GPS ═══
+        if (gpsSystem != null && gpsSystem.IsWaitingForRoomSelection)
+        {
+            gpsSystem.OnRoomSelectedForGPS(clickedRoom);
             return;
         }
 

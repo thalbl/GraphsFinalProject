@@ -45,6 +45,13 @@ public class RoomSpriteConfig : ScriptableObject
     [Range(1.0f, 2.0f)]
     public float borderScaleMultiplier = 1.15f;
 
+    [Header("GPS Border Sprites (Opcional)")]
+    [Tooltip("Sprite de borda para caminho GPS (frame 1). Se vazio, usa borderSprite1")]
+    public Sprite gpsBorderSprite1;
+    
+    [Tooltip("Sprite de borda para caminho GPS (frame 2). Se vazio, usa borderSprite2")]
+    public Sprite gpsBorderSprite2;
+
     /// <summary>
     /// Retorna o sprite apropriado baseado no tipo de sala
     /// </summary>

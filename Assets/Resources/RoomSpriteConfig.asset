@@ -23,3 +23,5 @@ MonoBehaviour:
   borderSprite2: {fileID: 21300000, guid: efad85a3c10b06a43941decc9281d23c, type: 3}
   borderAnimationSpeed: 2.1
   borderScaleMultiplier: 1.786
+  gpsBorderSprite1: {fileID: 21300000, guid: 534a0a6e841ddb94e8083659aa360583, type: 3}
+  gpsBorderSprite2: {fileID: 21300000, guid: fbd966cc214a6844e99b14b57f9563f5, type: 3}

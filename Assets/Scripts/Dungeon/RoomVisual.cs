@@ -16,8 +16,10 @@ public class RoomVisual : MonoBehaviour {
     private SpriteRenderer borderSpriteRenderer;
     private bool isHovered = false;
     private bool isSelected = false;
+    private bool isGPSHighlighted = false; // Flag para destacar caminho GPS
     private float animationTimer = 0f;
     private int currentBorderFrame = 0;
+
     
 
     public void Initialize(RoomNode room) {
@@ -108,7 +110,23 @@ public class RoomVisual : MonoBehaviour {
 
     private void UpdateBorderAnimation()
     {
-        if (spriteConfig.borderSprite1 == null || spriteConfig.borderSprite2 == null)
+        // Decide quais sprites usar baseado no estado GPS
+        Sprite sprite1, sprite2;
+        
+        if (isGPSHighlighted && spriteConfig.gpsBorderSprite1 != null && spriteConfig.gpsBorderSprite2 != null)
+        {
+            // Usa sprites específicos do GPS se disponíveis
+            sprite1 = spriteConfig.gpsBorderSprite1;
+            sprite2 = spriteConfig.gpsBorderSprite2;
+        }
+        else
+        {
+            // Usa sprites normais de borda
+            sprite1 = spriteConfig.borderSprite1;
+            sprite2 = spriteConfig.borderSprite2;
+        }
+
+        if (sprite1 == null || sprite2 == null)
             return;
 
         animationTimer += Time.deltaTime;
@@ -118,9 +136,7 @@ public class RoomVisual : MonoBehaviour {
         {
             animationTimer = 0f;
             currentBorderFrame = (currentBorderFrame + 1) % 2;
-            borderSpriteRenderer.sprite = currentBorderFrame == 0 ? 
-                spriteConfig.borderSprite1 : 
-                spriteConfig.borderSprite2;
+            borderSpriteRenderer.sprite = currentBorderFrame == 0 ? sprite1 : sprite2;
         }
     }
 
@@ -128,16 +144,46 @@ public class RoomVisual : MonoBehaviour {
     {
         if (borderSpriteRenderer != null)
         {
-            borderSpriteRenderer.enabled = isHovered || isSelected;
+            borderSpriteRenderer.enabled = isHovered || isSelected || isGPSHighlighted;
             
             if (borderSpriteRenderer.enabled)
             {
                 animationTimer = 0f;
                 currentBorderFrame = 0;
-                if (spriteConfig != null && spriteConfig.borderSprite1 != null)
+                
+                // Define sprite inicial baseado no estado GPS
+                if (isGPSHighlighted && spriteConfig != null && spriteConfig.gpsBorderSprite1 != null)
+                {
+                    borderSpriteRenderer.sprite = spriteConfig.gpsBorderSprite1;
+                }
+                else if (spriteConfig != null && spriteConfig.borderSprite1 != null)
                 {
                     borderSpriteRenderer.sprite = spriteConfig.borderSprite1;
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Atualiza a cor da borda baseado no estado
+    /// </summary>
+    private void UpdateBorderColor()
+    {
+        if (borderSpriteRenderer != null)
+        {
+            if (isGPSHighlighted)
+            {
+                // Usa cor configurável do PathfinderGPS (se disponível)
+                Color gpsColor = PathfinderGPS.Instance != null 
+                    ? PathfinderGPS.Instance.GPSRoomBorderColor 
+                    : new Color(0.3f, 0.7f, 1f, 1f); // Fallback: azul
+                
+                borderSpriteRenderer.color = gpsColor;
+            }
+            else
+            {
+                // Cor padrão (branca)
+                borderSpriteRenderer.color = Color.white;
             }
         }
     }
@@ -147,6 +193,18 @@ public class RoomVisual : MonoBehaviour {
         isSelected = selected;
         UpdateBorderVisibility();
     }
+
+    /// <summary>
+    /// Define se esta sala está destacada pelo GPS
+    /// </summary>
+    public void SetGPSHighlight(bool highlighted)
+    {
+        isGPSHighlighted = highlighted;
+        UpdateBorderVisibility();
+        UpdateBorderColor();
+    }
+
+
 
     // Mouse hover - apenas borda, sem mudança de cor
     void OnMouseEnter() {

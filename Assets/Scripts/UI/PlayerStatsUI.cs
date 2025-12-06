@@ -154,28 +154,43 @@ public class PlayerStatsUI : MonoBehaviour
         if (playerStats == null || playerStats.activeTraits == null)
             return;
 
-        string traitsString = "Traits:\n";
+        string traitsString = "";
         
         if (playerStats.activeTraits.Count == 0)
         {
-            traitsString += "Nenhum";
+            traitsString = "Traits: Nenhum";
         }
         else
         {
+            traitsString = $"Traits ({playerStats.activeTraits.Count}):\n";
+            
             foreach (Trait trait in playerStats.activeTraits)
             {
                 string color = trait.isAffliction ? "red" : "green";
                 traitsString += $"<color={color}>• {trait.traitName}</color>\n";
             }
+            
+            // Remove última quebra de linha
+            traitsString = traitsString.TrimEnd('\n');
         }
 
         // Atualiza TextMeshPro
         if (traitsText != null)
+        {
             traitsText.text = traitsString;
+            
+            // Garante que o overflow está configurado
+            traitsText.overflowMode = TMPro.TextOverflowModes.Overflow;
+            traitsText.enableWordWrapping = true;
+        }
 
         // Atualiza UI Text legacy
         if (traitsTextLegacy != null)
+        {
             traitsTextLegacy.text = traitsString.Replace("<color=red>", "").Replace("<color=green>", "").Replace("</color>", "");
+            traitsTextLegacy.horizontalOverflow = HorizontalWrapMode.Wrap;
+            traitsTextLegacy.verticalOverflow = VerticalWrapMode.Overflow;
+        }
     }
 
     void OnDestroy()

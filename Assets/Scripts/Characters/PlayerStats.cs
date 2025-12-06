@@ -183,7 +183,7 @@ public class PlayerStats
     /// <summary>
     /// Notifica listeners sobre mudanças nos stats.
     /// </summary>
-    private void NotifyStatsChanged()
+    public void NotifyStatsChanged()
     {
         OnStatsChanged?.Invoke(currentHealth, currentSanity, currentSupplies);
     }

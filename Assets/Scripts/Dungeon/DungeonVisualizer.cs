@@ -203,6 +203,15 @@ public class DungeonVisualizer
     }
 
     /// <summary>
+    /// Retorna o dicionário de LineRenderers para acesso externo (GPS, etc)
+    /// </summary>
+    public Dictionary<(RoomNode, RoomNode), LineRenderer> GetEdgeRenderers()
+    {
+        return edgeRenderers;
+    }
+
+
+    /// <summary>
     /// Cria um sprite processual para uma sala
     /// </summary>
     private Sprite CreateRoomSprite(Vector2 size)
