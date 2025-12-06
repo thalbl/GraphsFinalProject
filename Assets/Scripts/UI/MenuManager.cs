@@ -74,15 +74,18 @@ public class MenuManager : MonoBehaviour
     {
         Debug.Log("Carregando jogo salvo...");
         
-        // Verifica se existe save
-        if (PlayerPrefs.HasKey("CurrentSave"))
+        // Verifica se existe save usando o SaveManager (arquivos JSON)
+        if (SaveManager.SaveExists("test_save"))
         {
+            // Sinaliza ao GameSessionState que deve carregar o save ao iniciar
+            GameSessionState.Instance.SetPendingLoad("test_save");
+            
             Invoke(nameof(LoadGameScene), sceneLoadDelay);
         }
         else
         {
             Debug.LogWarning("Nenhum save encontrado!");
-            // Mostrar mensagem de erro na UI
+            // TODO: Mostrar mensagem de erro na UI
         }
     }
 

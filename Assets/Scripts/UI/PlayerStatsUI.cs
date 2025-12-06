@@ -54,30 +54,46 @@ public class PlayerStatsUI : MonoBehaviour
 
         if (playerController != null)
         {
-            playerStats = playerController.stats;
-
-            // Sincroniza max values
-            maxHealth = playerStats.maxHealth;
-            maxSanity = playerStats.maxSanity;
-            maxSupplies = playerStats.maxSupplies;
-
-            // Configura sliders
-            ConfigureSliders();
-
-            // Se inscreve nos eventos
-            playerStats.OnStatsChanged += UpdateStatsDisplay;
-            playerStats.OnTraitGained += UpdateTraitsDisplay;
-
-            // Atualização inicial
-            UpdateStatsDisplay(playerStats.currentHealth, playerStats.currentSanity, playerStats.currentSupplies);
-            UpdateAllTraits();
-
-            Debug.Log("PlayerStatsUI conectado ao Player!");
+            SetPlayer(playerController);
         }
         else
         {
             Debug.LogWarning("PlayerStatsUI não encontrou PlayerController na cena!");
         }
+    }
+
+    /// <summary>
+    /// Define o player e conecta os eventos (pode ser chamado externamente).
+    /// </summary>
+    public void SetPlayer(PlayerController player)
+    {
+        // Remove eventos anteriores se existirem
+        if (playerStats != null)
+        {
+            playerStats.OnStatsChanged -= UpdateStatsDisplay;
+            playerStats.OnTraitGained -= UpdateTraitsDisplay;
+        }
+
+        playerController = player;
+        playerStats = playerController.stats;
+
+        // Sincroniza max values com os valores REAIS do player
+        maxHealth = playerStats.maxHealth;
+        maxSanity = playerStats.maxSanity;
+        maxSupplies = playerStats.maxSupplies;
+
+        // Configura sliders com os valores corretos
+        ConfigureSliders();
+
+        // Se inscreve nos eventos
+        playerStats.OnStatsChanged += UpdateStatsDisplay;
+        playerStats.OnTraitGained += UpdateTraitsDisplay;
+
+        // Atualização inicial com valores corretos
+        UpdateStatsDisplay(playerStats.currentHealth, playerStats.currentSanity, playerStats.currentSupplies);
+        UpdateAllTraits();
+
+        Debug.Log($"[PlayerStatsUI] Conectado ao Player! Max HP={maxHealth}, Sanity={maxSanity}, Supplies={maxSupplies}");
     }
 
     /// <summary>
@@ -90,6 +106,7 @@ public class PlayerStatsUI : MonoBehaviour
             healthSlider.minValue = 0;
             healthSlider.maxValue = maxHealth;
             healthSlider.wholeNumbers = false;
+            Debug.Log($"[PlayerStatsUI] Health Slider configurado: 0-{maxHealth}");
         }
 
         if (sanitySlider != null)
@@ -97,6 +114,7 @@ public class PlayerStatsUI : MonoBehaviour
             sanitySlider.minValue = 0;
             sanitySlider.maxValue = maxSanity;
             sanitySlider.wholeNumbers = false;
+            Debug.Log($"[PlayerStatsUI] Sanity Slider configurado: 0-{maxSanity}");
         }
 
         if (suppliesSlider != null)
@@ -104,6 +122,7 @@ public class PlayerStatsUI : MonoBehaviour
             suppliesSlider.minValue = 0;
             suppliesSlider.maxValue = maxSupplies;
             suppliesSlider.wholeNumbers = false;
+            Debug.Log($"[PlayerStatsUI] Supplies Slider configurado: 0-{maxSupplies}");
         }
     }
 

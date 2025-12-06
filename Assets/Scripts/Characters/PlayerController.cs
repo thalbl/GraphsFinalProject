@@ -12,11 +12,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private DungeonGraph dungeonGraph;
     [SerializeField] private GameController gameController;
 
+    [Header("Animator")]
+    [Tooltip("Animator para controlar animações Idle e Run")]
+    [SerializeField] private Animator animator;
+    [Tooltip("Nome do parâmetro bool no Animator (true = correndo, false = idle)")]
+    [SerializeField] private string runParameterName = "IsRunning";
+
     [Header("Player Stats")]
     public PlayerStats stats = new PlayerStats();
 
     [Header("Movement Settings")]
     [SerializeField] private float movementDuration = 0.5f; // Tempo de animação de movimento
+
+    [Header("Visual Offset")]
+    [Tooltip("Ajuste de posição para centralizar o sprite com as salas")]
+    [SerializeField] private Vector2 visualOffset = Vector2.zero;
 
     [Header("Estado Atual")]
     public RoomNode currentRoom;
@@ -30,12 +40,38 @@ public class PlayerController : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         
+        // Auto-detecta Animator se não setado
+        if (animator == null)
+            animator = GetComponent<Animator>();
+        
         // Auto-detecta referências se não setadas
         if (dungeonGraph == null)
             dungeonGraph = FindObjectOfType<DungeonGraph>();
         
         if (gameController == null)
             gameController = FindObjectOfType<GameController>();
+    }
+
+    /// <summary>
+    /// Atualiza o estado da animação no Animator.
+    /// </summary>
+    private void SetRunningAnimation(bool running)
+    {
+        if (animator != null && !string.IsNullOrEmpty(runParameterName))
+        {
+            animator.SetBool(runParameterName, running);
+        }
+    }
+
+    /// <summary>
+    /// Retorna a posição de uma sala com o offset visual aplicado.
+    /// </summary>
+    private Vector3 GetPositionWithOffset(RoomNode room)
+    {
+        Vector3 position = room.GetWorldPosition();
+        position.x += visualOffset.x;
+        position.y += visualOffset.y;
+        return position;
     }
 
     /// <summary>
@@ -52,8 +88,8 @@ public class PlayerController : MonoBehaviour
 
         currentRoom = startNode;
         
-        // Posiciona o player fisicamente na sala
-        transform.position = startNode.GetWorldPosition();
+        // Posiciona o player fisicamente na sala (com offset visual)
+        transform.position = GetPositionWithOffset(startNode);
         
         // Inicializa stats
         stats.Initialize();
@@ -154,8 +190,10 @@ public class PlayerController : MonoBehaviour
         }
 
         // ═══ FASE 3: ANIMAÇÃO DE MOVIMENTO ═══
+        SetRunningAnimation(true);  // Inicia animação de corrida
+        
         Vector3 startPosition = transform.position;
-        Vector3 endPosition = targetRoom.GetWorldPosition();
+        Vector3 endPosition = GetPositionWithOffset(targetRoom);
         float elapsed = 0f;
 
         Debug.Log($"Animando movimento de {startPosition} para {endPosition}...");
@@ -174,6 +212,8 @@ public class PlayerController : MonoBehaviour
 
         // Garante posição final exata
         transform.position = endPosition;
+        
+        SetRunningAnimation(false);  // Volta para animação de Idle
 
         // ═══ FASE 4: ATUALIZAÇÃO DE ESTADO ═══
         RoomNode previousRoom = currentRoom;
@@ -186,6 +226,9 @@ public class PlayerController : MonoBehaviour
         if (gameController != null)
         {
             gameController.MovePlayerToRoom(currentRoom);
+            
+            // Registra movimento para progresso/métricas
+            gameController.RecordMovement(previousRoom, currentRoom, actualCost);
         }
 
         // ═══ FASE 5: EVENTOS DA SALA ═══
@@ -287,13 +330,27 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Evento: Sala do Boss
-    /// TODO: Iniciar combate final
+    /// Termina o jogo com vitória
     /// </summary>
     private void OnBossRoom(RoomNode room)
     {
         Debug.Log($"<color=red>👹 BOSS ENCONTRADO NA SALA {room.logicalPosition}!</color>");
-        Debug.Log("Combate de Boss (não implementado ainda)");
-        // TODO: Iniciar sequência de boss fight
+        EventLogger.LogInfo("🎉 Você chegou na sala do Boss!");
+        
+        Debug.Log("════════════════════════════════════");
+        Debug.Log("       🎉 VITÓRIA! 🎉              ");
+        Debug.Log("  Você completou a dungeon!         ");
+        Debug.Log("════════════════════════════════════");
+        
+        // Termina o jogo com vitória
+        if (gameController != null)
+        {
+            gameController.OnGameEnd(true);
+        }
+        else
+        {
+            Debug.LogError("GameController não encontrado para finalizar o jogo!");
+        }
     }
 
     /// <summary>

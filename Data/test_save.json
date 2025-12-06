@@ -1,0 +1,2515 @@
+{
+    "dungeonData": {
+        "seed": 147994031,
+        "maxRooms": 50,
+        "cycleChance": 0.30000001192092898,
+        "directedGraph": true,
+        "treasureChanceInDeadEnd": 0.800000011920929,
+        "treasureChanceInCorridor": 0.10000000149011612,
+        "campChance": 0.15000000596046449,
+        "eventChance": 0.10000000149011612,
+        "healthCostRange": {
+            "x": 1.0,
+            "y": 5.0
+        },
+        "sanityCostRange": {
+            "x": 1.0,
+            "y": 8.0
+        },
+        "timeCostRange": {
+            "x": 1.0,
+            "y": 3.0
+        }
+    },
+    "edgeConnections": [
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 1,
+            "costHealth": 1.7561321258544922,
+            "costSanity": 2.0270705223083498,
+            "costTime": 2.9070966243743898,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 2,
+            "costHealth": 2.424485683441162,
+            "costSanity": 7.309161186218262,
+            "costTime": 2.685089349746704,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 3,
+            "costHealth": 2.818774461746216,
+            "costSanity": 5.9163994789123539,
+            "costTime": 2.314484119415283,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 4,
+            "costHealth": 1.8355307579040528,
+            "costSanity": 5.431126594543457,
+            "costTime": 1.660559058189392,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 7,
+            "costHealth": 1.1951144933700562,
+            "costSanity": 4.657190799713135,
+            "costTime": 2.5291857719421388,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 23,
+            "costHealth": 1.0705883502960206,
+            "costSanity": 5.8968963623046879,
+            "costTime": 1.5216606855392457,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 6,
+            "costHealth": 1.3278300762176514,
+            "costSanity": 1.393481731414795,
+            "costTime": 2.7403900623321535,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 12,
+            "costHealth": 1.3899496793746949,
+            "costSanity": 3.3586599826812746,
+            "costTime": 1.6406817436218262,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 0,
+            "toRoomIndex": 5,
+            "costHealth": 1.6970875263214112,
+            "costSanity": 5.253942966461182,
+            "costTime": 1.6452709436416627,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 1,
+            "toRoomIndex": 0,
+            "costHealth": 3.7301828861236574,
+            "costSanity": 7.495040416717529,
+            "costTime": 1.0843892097473145,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 1,
+            "toRoomIndex": 13,
+            "costHealth": 1.7670732736587525,
+            "costSanity": 1.0968129634857178,
+            "costTime": 1.7948908805847169,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 1,
+            "toRoomIndex": 18,
+            "costHealth": 4.560640811920166,
+            "costSanity": 3.0367701053619386,
+            "costTime": 2.34533429145813,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 1,
+            "toRoomIndex": 2,
+            "costHealth": 4.472938537597656,
+            "costSanity": 2.2895967960357668,
+            "costTime": 2.524473190307617,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 1,
+            "toRoomIndex": 3,
+            "costHealth": 2.400289297103882,
+            "costSanity": 7.346168041229248,
+            "costTime": 1.234205961227417,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 1,
+            "toRoomIndex": 8,
+            "costHealth": 1.0079718828201295,
+            "costSanity": 5.342570781707764,
+            "costTime": 2.7731175422668459,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 2,
+            "toRoomIndex": 0,
+            "costHealth": 2.5188348293304445,
+            "costSanity": 5.289661884307861,
+            "costTime": 1.3354891538619996,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 2,
+            "toRoomIndex": 1,
+            "costHealth": 3.0199384689331056,
+            "costSanity": 3.831472635269165,
+            "costTime": 1.776875376701355,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 2,
+            "toRoomIndex": 3,
+            "costHealth": 3.9671428203582765,
+            "costSanity": 2.7167840003967287,
+            "costTime": 2.983886241912842,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 2,
+            "toRoomIndex": 4,
+            "costHealth": 1.2341068983078004,
+            "costSanity": 3.8629117012023927,
+            "costTime": 2.2806081771850588,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 2,
+            "toRoomIndex": 17,
+            "costHealth": 1.4763094186782838,
+            "costSanity": 2.6076345443725588,
+            "costTime": 2.365771532058716,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 2,
+            "toRoomIndex": 20,
+            "costHealth": 1.4515204429626465,
+            "costSanity": 4.36126184463501,
+            "costTime": 1.266492247581482,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 3,
+            "toRoomIndex": 0,
+            "costHealth": 2.9863104820251467,
+            "costSanity": 4.516700267791748,
+            "costTime": 1.5790951251983643,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 3,
+            "toRoomIndex": 2,
+            "costHealth": 1.0414776802062989,
+            "costSanity": 4.466815948486328,
+            "costTime": 1.2896480560302735,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 3,
+            "toRoomIndex": 6,
+            "costHealth": 4.581900119781494,
+            "costSanity": 2.437469244003296,
+            "costTime": 2.961763858795166,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 3,
+            "toRoomIndex": 1,
+            "costHealth": 1.473380208015442,
+            "costSanity": 6.154248237609863,
+            "costTime": 2.5745396614074709,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 3,
+            "toRoomIndex": 22,
+            "costHealth": 3.227011203765869,
+            "costSanity": 4.200501441955566,
+            "costTime": 1.241865634918213,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 3,
+            "toRoomIndex": 23,
+            "costHealth": 3.7838215827941896,
+            "costSanity": 4.106410503387451,
+            "costTime": 2.6450116634368898,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 4,
+            "toRoomIndex": 0,
+            "costHealth": 3.4021999835968019,
+            "costSanity": 5.063351154327393,
+            "costTime": 2.5457513332366945,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 4,
+            "toRoomIndex": 5,
+            "costHealth": 2.8279614448547365,
+            "costSanity": 5.7405686378479,
+            "costTime": 1.3977102041244507,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 4,
+            "toRoomIndex": 6,
+            "costHealth": 2.587740898132324,
+            "costSanity": 3.612032890319824,
+            "costTime": 2.9109127521514894,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 4,
+            "toRoomIndex": 7,
+            "costHealth": 4.146054744720459,
+            "costSanity": 1.5787445306777955,
+            "costTime": 2.909992218017578,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 4,
+            "toRoomIndex": 9,
+            "costHealth": 1.3967739343643189,
+            "costSanity": 4.668848514556885,
+            "costTime": 2.771902084350586,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 4,
+            "toRoomIndex": 2,
+            "costHealth": 1.4718005657196046,
+            "costSanity": 7.457587718963623,
+            "costTime": 1.3980028629302979,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 5,
+            "toRoomIndex": 4,
+            "costHealth": 1.0075774192810059,
+            "costSanity": 7.366236686706543,
+            "costTime": 1.2066062688827515,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 5,
+            "toRoomIndex": 0,
+            "costHealth": 3.312608480453491,
+            "costSanity": 6.0117034912109379,
+            "costTime": 2.6602394580841066,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 5,
+            "toRoomIndex": 6,
+            "costHealth": 1.6468466520309449,
+            "costSanity": 3.3033883571624758,
+            "costTime": 1.3205714225769044,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 5,
+            "toRoomIndex": 7,
+            "costHealth": 2.2359819412231447,
+            "costSanity": 1.8193765878677369,
+            "costTime": 2.420675754547119,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 5,
+            "toRoomIndex": 8,
+            "costHealth": 4.5781965255737309,
+            "costSanity": 3.126884937286377,
+            "costTime": 2.3751494884490969,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 5,
+            "toRoomIndex": 10,
+            "costHealth": 1.623203992843628,
+            "costSanity": 3.2856855392456056,
+            "costTime": 2.2093987464904787,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 6,
+            "toRoomIndex": 4,
+            "costHealth": 4.350074768066406,
+            "costSanity": 3.226503849029541,
+            "costTime": 1.9385623931884766,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 6,
+            "toRoomIndex": 0,
+            "costHealth": 1.3039387464523316,
+            "costSanity": 1.126719355583191,
+            "costTime": 1.1674410104751588,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 6,
+            "toRoomIndex": 3,
+            "costHealth": 1.686967134475708,
+            "costSanity": 2.293452501296997,
+            "costTime": 2.7549190521240236,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 6,
+            "toRoomIndex": 5,
+            "costHealth": 3.924957275390625,
+            "costSanity": 1.9458621740341187,
+            "costTime": 2.7859086990356447,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 7,
+            "toRoomIndex": 4,
+            "costHealth": 2.119525671005249,
+            "costSanity": 7.187681674957275,
+            "costTime": 2.5331716537475588,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 7,
+            "toRoomIndex": 8,
+            "costHealth": 1.6019145250320435,
+            "costSanity": 1.4286085367202759,
+            "costTime": 1.0951592922210694,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 7,
+            "toRoomIndex": 9,
+            "costHealth": 4.954353332519531,
+            "costSanity": 7.509370803833008,
+            "costTime": 1.8396910429000855,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 7,
+            "toRoomIndex": 0,
+            "costHealth": 4.431483745574951,
+            "costSanity": 6.906103134155273,
+            "costTime": 1.7508230209350587,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 7,
+            "toRoomIndex": 12,
+            "costHealth": 1.5873541831970215,
+            "costSanity": 4.075431823730469,
+            "costTime": 2.45084547996521,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 7,
+            "toRoomIndex": 5,
+            "costHealth": 4.700294017791748,
+            "costSanity": 5.730648994445801,
+            "costTime": 2.5735363960266115,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 7,
+            "toRoomIndex": 11,
+            "costHealth": 3.395637035369873,
+            "costSanity": 3.7504210472106935,
+            "costTime": 1.4149980545043946,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 8,
+            "toRoomIndex": 7,
+            "costHealth": 4.936707019805908,
+            "costSanity": 3.2173073291778566,
+            "costTime": 1.1782528162002564,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 8,
+            "toRoomIndex": 5,
+            "costHealth": 1.5882755517959595,
+            "costSanity": 6.443416595458984,
+            "costTime": 1.6886732578277588,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 8,
+            "toRoomIndex": 1,
+            "costHealth": 4.139496803283691,
+            "costSanity": 2.6177196502685549,
+            "costTime": 1.7229973077774048,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 9,
+            "toRoomIndex": 7,
+            "costHealth": 3.6274869441986086,
+            "costSanity": 5.0980119705200199,
+            "costTime": 1.1543359756469727,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 9,
+            "toRoomIndex": 10,
+            "costHealth": 3.677123546600342,
+            "costSanity": 2.4718613624572756,
+            "costTime": 2.071959972381592,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 9,
+            "toRoomIndex": 11,
+            "costHealth": 2.00724458694458,
+            "costSanity": 4.048464775085449,
+            "costTime": 2.798771381378174,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 9,
+            "toRoomIndex": 12,
+            "costHealth": 1.257617473602295,
+            "costSanity": 3.0803778171539308,
+            "costTime": 1.1310513019561768,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 9,
+            "toRoomIndex": 4,
+            "costHealth": 3.2123734951019289,
+            "costSanity": 1.2136709690093995,
+            "costTime": 1.7439326047897339,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 9,
+            "toRoomIndex": 13,
+            "costHealth": 2.7446212768554689,
+            "costSanity": 1.4484044313430787,
+            "costTime": 2.678581953048706,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 10,
+            "toRoomIndex": 9,
+            "costHealth": 2.5368123054504396,
+            "costSanity": 7.969118595123291,
+            "costTime": 1.7736961841583253,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 10,
+            "toRoomIndex": 11,
+            "costHealth": 2.2160046100616457,
+            "costSanity": 6.422451019287109,
+            "costTime": 2.1557207107543947,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 10,
+            "toRoomIndex": 5,
+            "costHealth": 4.8488450050354,
+            "costSanity": 7.095836639404297,
+            "costTime": 1.3330018520355225,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 11,
+            "toRoomIndex": 9,
+            "costHealth": 4.006677627563477,
+            "costSanity": 3.8442888259887697,
+            "costTime": 1.7086751461029053,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 11,
+            "toRoomIndex": 10,
+            "costHealth": 1.1915168762207032,
+            "costSanity": 6.887135028839111,
+            "costTime": 1.0022571086883546,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 11,
+            "toRoomIndex": 13,
+            "costHealth": 2.52600359916687,
+            "costSanity": 4.359104156494141,
+            "costTime": 1.7343981266021729,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 11,
+            "toRoomIndex": 7,
+            "costHealth": 4.275398254394531,
+            "costSanity": 1.0432994365692139,
+            "costTime": 2.6108038425445558,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 11,
+            "toRoomIndex": 15,
+            "costHealth": 4.402090072631836,
+            "costSanity": 5.231173038482666,
+            "costTime": 2.8039298057556154,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 12,
+            "toRoomIndex": 9,
+            "costHealth": 3.877800226211548,
+            "costSanity": 2.3512675762176515,
+            "costTime": 2.7207019329071047,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 12,
+            "toRoomIndex": 13,
+            "costHealth": 2.391364336013794,
+            "costSanity": 5.091857433319092,
+            "costTime": 2.1631953716278078,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 12,
+            "toRoomIndex": 14,
+            "costHealth": 4.338682651519775,
+            "costSanity": 6.509226322174072,
+            "costTime": 1.7415891885757447,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 12,
+            "toRoomIndex": 0,
+            "costHealth": 2.2696006298065187,
+            "costSanity": 6.388482093811035,
+            "costTime": 1.6819928884506226,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 12,
+            "toRoomIndex": 7,
+            "costHealth": 4.197189807891846,
+            "costSanity": 2.0693211555480959,
+            "costTime": 1.0268193483352662,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 13,
+            "toRoomIndex": 12,
+            "costHealth": 3.801720142364502,
+            "costSanity": 2.754249334335327,
+            "costTime": 2.408074140548706,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 13,
+            "toRoomIndex": 1,
+            "costHealth": 3.87003755569458,
+            "costSanity": 6.37465238571167,
+            "costTime": 2.4338345527648927,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 13,
+            "toRoomIndex": 9,
+            "costHealth": 3.0356802940368654,
+            "costSanity": 3.3197102546691896,
+            "costTime": 1.7695679664611817,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 13,
+            "toRoomIndex": 11,
+            "costHealth": 4.834164619445801,
+            "costSanity": 3.6420178413391115,
+            "costTime": 2.3985259532928469,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 13,
+            "toRoomIndex": 15,
+            "costHealth": 3.2899222373962404,
+            "costSanity": 1.977566123008728,
+            "costTime": 2.964142322540283,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 14,
+            "toRoomIndex": 12,
+            "costHealth": 1.2084640264511109,
+            "costSanity": 1.222314476966858,
+            "costTime": 2.3860890865325929,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 14,
+            "toRoomIndex": 15,
+            "costHealth": 2.3473520278930666,
+            "costSanity": 1.248850703239441,
+            "costTime": 2.9251768589019777,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 14,
+            "toRoomIndex": 16,
+            "costHealth": 3.524513006210327,
+            "costSanity": 6.659576416015625,
+            "costTime": 1.936206340789795,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 14,
+            "toRoomIndex": 17,
+            "costHealth": 3.402942657470703,
+            "costSanity": 3.2320568561553957,
+            "costTime": 1.5233100652694703,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 15,
+            "toRoomIndex": 14,
+            "costHealth": 1.1046391725540162,
+            "costSanity": 3.23250412940979,
+            "costTime": 2.5414700508117677,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 15,
+            "toRoomIndex": 13,
+            "costHealth": 3.902043342590332,
+            "costSanity": 2.242494821548462,
+            "costTime": 2.005401134490967,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 15,
+            "toRoomIndex": 16,
+            "costHealth": 1.0259476900100709,
+            "costSanity": 7.592945575714111,
+            "costTime": 2.080048084259033,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 15,
+            "toRoomIndex": 17,
+            "costHealth": 1.4795352220535279,
+            "costSanity": 4.208202838897705,
+            "costTime": 2.505812883377075,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 15,
+            "toRoomIndex": 11,
+            "costHealth": 3.4449853897094728,
+            "costSanity": 3.5811798572540285,
+            "costTime": 1.0667905807495118,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 16,
+            "toRoomIndex": 14,
+            "costHealth": 1.222936987876892,
+            "costSanity": 7.1459808349609379,
+            "costTime": 2.6869237422943117,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 16,
+            "toRoomIndex": 15,
+            "costHealth": 3.400238037109375,
+            "costSanity": 3.298600673675537,
+            "costTime": 1.3029205799102784,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 16,
+            "toRoomIndex": 17,
+            "costHealth": 4.785381317138672,
+            "costSanity": 1.822687029838562,
+            "costTime": 1.477224349975586,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 16,
+            "toRoomIndex": 18,
+            "costHealth": 3.508505344390869,
+            "costSanity": 5.522799491882324,
+            "costTime": 1.4607305526733399,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 16,
+            "toRoomIndex": 19,
+            "costHealth": 2.1090891361236574,
+            "costSanity": 2.218155860900879,
+            "costTime": 1.4902622699737549,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 17,
+            "toRoomIndex": 14,
+            "costHealth": 4.716772079467773,
+            "costSanity": 7.124917984008789,
+            "costTime": 2.146091938018799,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 17,
+            "toRoomIndex": 18,
+            "costHealth": 3.8972980976104738,
+            "costSanity": 5.44690465927124,
+            "costTime": 1.3317548036575318,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 17,
+            "toRoomIndex": 15,
+            "costHealth": 3.902348279953003,
+            "costSanity": 7.046101093292236,
+            "costTime": 1.6986631155014039,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 17,
+            "toRoomIndex": 2,
+            "costHealth": 2.4730424880981447,
+            "costSanity": 6.861554145812988,
+            "costTime": 1.2591798305511475,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 17,
+            "toRoomIndex": 16,
+            "costHealth": 2.2390739917755129,
+            "costSanity": 6.908554553985596,
+            "costTime": 2.148188352584839,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 17,
+            "toRoomIndex": 19,
+            "costHealth": 3.8582119941711427,
+            "costSanity": 5.342406749725342,
+            "costTime": 1.5343562364578248,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 18,
+            "toRoomIndex": 17,
+            "costHealth": 4.867912292480469,
+            "costSanity": 1.3838719129562379,
+            "costTime": 1.0226212739944459,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 18,
+            "toRoomIndex": 19,
+            "costHealth": 1.5356791019439698,
+            "costSanity": 2.6529464721679689,
+            "costTime": 2.8939902782440187,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 18,
+            "toRoomIndex": 20,
+            "costHealth": 2.925278663635254,
+            "costSanity": 6.004383087158203,
+            "costTime": 1.261641502380371,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 18,
+            "toRoomIndex": 1,
+            "costHealth": 3.14888072013855,
+            "costSanity": 6.670810222625732,
+            "costTime": 1.9713501930236817,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 18,
+            "toRoomIndex": 16,
+            "costHealth": 3.7502434253692629,
+            "costSanity": 2.3458480834960939,
+            "costTime": 2.688305616378784,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 18,
+            "toRoomIndex": 21,
+            "costHealth": 1.3622918128967286,
+            "costSanity": 1.757457971572876,
+            "costTime": 2.6338717937469484,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 18,
+            "toRoomIndex": 22,
+            "costHealth": 4.981812000274658,
+            "costSanity": 3.038191080093384,
+            "costTime": 2.1094181537628176,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 19,
+            "toRoomIndex": 18,
+            "costHealth": 1.7009930610656739,
+            "costSanity": 2.1210248470306398,
+            "costTime": 1.7160224914550782,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 19,
+            "toRoomIndex": 17,
+            "costHealth": 2.5386927127838136,
+            "costSanity": 1.4108823537826539,
+            "costTime": 1.270660638809204,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 19,
+            "toRoomIndex": 21,
+            "costHealth": 3.641829490661621,
+            "costSanity": 1.0889686346054078,
+            "costTime": 1.2706499099731446,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 19,
+            "toRoomIndex": 16,
+            "costHealth": 2.286898136138916,
+            "costSanity": 3.95017147064209,
+            "costTime": 2.477687120437622,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 19,
+            "toRoomIndex": 20,
+            "costHealth": 4.036338806152344,
+            "costSanity": 5.493915557861328,
+            "costTime": 2.2980897426605226,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 20,
+            "toRoomIndex": 18,
+            "costHealth": 3.7445363998413088,
+            "costSanity": 5.014553546905518,
+            "costTime": 2.4792356491088869,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 20,
+            "toRoomIndex": 21,
+            "costHealth": 1.2125239372253419,
+            "costSanity": 3.3937721252441408,
+            "costTime": 1.281022548675537,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 20,
+            "toRoomIndex": 22,
+            "costHealth": 3.179880380630493,
+            "costSanity": 2.842650890350342,
+            "costTime": 2.644423723220825,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 20,
+            "toRoomIndex": 19,
+            "costHealth": 3.911182165145874,
+            "costSanity": 2.674466133117676,
+            "costTime": 2.2143449783325197,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 20,
+            "toRoomIndex": 2,
+            "costHealth": 2.0620474815368654,
+            "costSanity": 7.285831928253174,
+            "costTime": 2.7006373405456545,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 20,
+            "toRoomIndex": 25,
+            "costHealth": 3.204575300216675,
+            "costSanity": 3.3586196899414064,
+            "costTime": 2.820037603378296,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 20,
+            "toRoomIndex": 24,
+            "costHealth": 1.6770652532577515,
+            "costSanity": 5.979470729827881,
+            "costTime": 2.497755765914917,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 20,
+            "toRoomIndex": 23,
+            "costHealth": 1.1217979192733765,
+            "costSanity": 4.260100841522217,
+            "costTime": 2.8001344203948976,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 21,
+            "toRoomIndex": 20,
+            "costHealth": 4.806497097015381,
+            "costSanity": 1.9413797855377198,
+            "costTime": 2.1280598640441896,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 21,
+            "toRoomIndex": 18,
+            "costHealth": 4.188503265380859,
+            "costSanity": 7.489346027374268,
+            "costTime": 2.863039493560791,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 21,
+            "toRoomIndex": 19,
+            "costHealth": 2.1220083236694338,
+            "costSanity": 1.6887011528015137,
+            "costTime": 1.1469216346740723,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 21,
+            "toRoomIndex": 26,
+            "costHealth": 2.0294740200042726,
+            "costSanity": 7.604801177978516,
+            "costTime": 2.4677586555480959,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 21,
+            "toRoomIndex": 27,
+            "costHealth": 2.808405876159668,
+            "costSanity": 3.5746498107910158,
+            "costTime": 1.4209598302841187,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 21,
+            "toRoomIndex": 45,
+            "costHealth": 3.6397523880004885,
+            "costSanity": 2.2493491172790529,
+            "costTime": 2.7116587162017824,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 21,
+            "toRoomIndex": 25,
+            "costHealth": 1.9759962558746338,
+            "costSanity": 7.06986665725708,
+            "costTime": 1.2471789121627808,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 22,
+            "toRoomIndex": 20,
+            "costHealth": 2.7696104049682619,
+            "costSanity": 4.058911323547363,
+            "costTime": 2.7681171894073488,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 22,
+            "toRoomIndex": 23,
+            "costHealth": 4.590017795562744,
+            "costSanity": 5.045778751373291,
+            "costTime": 1.258432149887085,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 22,
+            "toRoomIndex": 24,
+            "costHealth": 4.6452155113220219,
+            "costSanity": 4.673966884613037,
+            "costTime": 1.9692736864089966,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 22,
+            "toRoomIndex": 25,
+            "costHealth": 2.651876926422119,
+            "costSanity": 1.9898682832717896,
+            "costTime": 2.810859203338623,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 22,
+            "toRoomIndex": 27,
+            "costHealth": 4.859499454498291,
+            "costSanity": 1.1998693943023682,
+            "costTime": 1.6078068017959595,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 22,
+            "toRoomIndex": 18,
+            "costHealth": 3.3117849826812746,
+            "costSanity": 4.068229675292969,
+            "costTime": 1.8601932525634766,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 22,
+            "toRoomIndex": 3,
+            "costHealth": 3.8694379329681398,
+            "costSanity": 2.1844828128814699,
+            "costTime": 2.145484209060669,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 23,
+            "toRoomIndex": 22,
+            "costHealth": 4.4889421463012699,
+            "costSanity": 2.789213180541992,
+            "costTime": 2.3786377906799318,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 23,
+            "toRoomIndex": 0,
+            "costHealth": 1.8116439580917359,
+            "costSanity": 5.246230602264404,
+            "costTime": 1.8513926267623902,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 23,
+            "toRoomIndex": 3,
+            "costHealth": 2.1364002227783205,
+            "costSanity": 6.098127841949463,
+            "costTime": 2.6329185962677,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 23,
+            "toRoomIndex": 20,
+            "costHealth": 4.126767635345459,
+            "costSanity": 5.773288249969482,
+            "costTime": 2.7952120304107668,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 23,
+            "toRoomIndex": 24,
+            "costHealth": 4.0009446144104,
+            "costSanity": 6.425426006317139,
+            "costTime": 1.0649796724319459,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 23,
+            "toRoomIndex": 25,
+            "costHealth": 1.220847249031067,
+            "costSanity": 5.395625114440918,
+            "costTime": 1.5809905529022217,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 24,
+            "toRoomIndex": 22,
+            "costHealth": 2.9951372146606447,
+            "costSanity": 1.698094367980957,
+            "costTime": 1.0736027956008912,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 24,
+            "toRoomIndex": 20,
+            "costHealth": 4.556159019470215,
+            "costSanity": 4.922093868255615,
+            "costTime": 2.4775238037109377,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 24,
+            "toRoomIndex": 23,
+            "costHealth": 3.9529988765716554,
+            "costSanity": 1.1498287916183472,
+            "costTime": 2.4508779048919679,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 24,
+            "toRoomIndex": 27,
+            "costHealth": 4.442273139953613,
+            "costSanity": 1.9178104400634766,
+            "costTime": 2.9349398612976076,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 24,
+            "toRoomIndex": 29,
+            "costHealth": 3.2920970916748049,
+            "costSanity": 1.9471852779388428,
+            "costTime": 1.0692474842071534,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 24,
+            "toRoomIndex": 25,
+            "costHealth": 2.941434860229492,
+            "costSanity": 7.7517218589782719,
+            "costTime": 2.8093454837799074,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 22,
+            "costHealth": 4.142817974090576,
+            "costSanity": 4.964901447296143,
+            "costTime": 1.3140918016433716,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 26,
+            "costHealth": 1.9881082773208619,
+            "costSanity": 3.0277910232543947,
+            "costTime": 2.016658306121826,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 27,
+            "costHealth": 2.3463783264160158,
+            "costSanity": 5.304062366485596,
+            "costTime": 2.459942102432251,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 20,
+            "costHealth": 1.9340665340423585,
+            "costSanity": 5.966728210449219,
+            "costTime": 2.3886520862579347,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 21,
+            "costHealth": 1.4931391477584839,
+            "costSanity": 3.8020949363708498,
+            "costTime": 2.0192832946777345,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 24,
+            "costHealth": 4.4497480392456059,
+            "costSanity": 1.8116382360458375,
+            "costTime": 2.648466110229492,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 23,
+            "costHealth": 4.501775741577148,
+            "costSanity": 6.6725029945373539,
+            "costTime": 2.400752544403076,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 28,
+            "costHealth": 4.611413478851318,
+            "costSanity": 3.1708569526672365,
+            "costTime": 1.9580196142196656,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 25,
+            "toRoomIndex": 42,
+            "costHealth": 1.5502859354019166,
+            "costSanity": 3.0954341888427736,
+            "costTime": 1.4010785818099976,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 26,
+            "toRoomIndex": 25,
+            "costHealth": 3.183016300201416,
+            "costSanity": 2.6419246196746828,
+            "costTime": 2.066884756088257,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 26,
+            "toRoomIndex": 21,
+            "costHealth": 2.5831515789031984,
+            "costSanity": 5.19480037689209,
+            "costTime": 1.7034951448440552,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 26,
+            "toRoomIndex": 30,
+            "costHealth": 3.3654847145080568,
+            "costSanity": 6.925350666046143,
+            "costTime": 1.8628883361816407,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 26,
+            "toRoomIndex": 31,
+            "costHealth": 1.2372766733169556,
+            "costSanity": 1.2504806518554688,
+            "costTime": 1.4645708799362183,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 26,
+            "toRoomIndex": 27,
+            "costHealth": 3.089002847671509,
+            "costSanity": 1.4537655115127564,
+            "costTime": 1.8446742296218873,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 25,
+            "costHealth": 1.0353429317474366,
+            "costSanity": 7.8325114250183109,
+            "costTime": 2.45432710647583,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 28,
+            "costHealth": 3.066734790802002,
+            "costSanity": 7.513795852661133,
+            "costTime": 2.595362663269043,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 29,
+            "costHealth": 1.3973511457443238,
+            "costSanity": 5.862056732177734,
+            "costTime": 2.383596897125244,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 21,
+            "costHealth": 3.3267292976379396,
+            "costSanity": 3.3458521366119386,
+            "costTime": 1.6503809690475464,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 22,
+            "costHealth": 2.62420916557312,
+            "costSanity": 1.395424246788025,
+            "costTime": 2.576232671737671,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 24,
+            "costHealth": 3.7476370334625246,
+            "costSanity": 6.040351867675781,
+            "costTime": 2.4766740798950197,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 26,
+            "costHealth": 1.0268630981445313,
+            "costSanity": 1.4411438703536988,
+            "costTime": 1.0386698246002198,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 31,
+            "costHealth": 4.807818412780762,
+            "costSanity": 7.846492767333984,
+            "costTime": 1.5398163795471192,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 27,
+            "toRoomIndex": 30,
+            "costHealth": 1.9481697082519532,
+            "costSanity": 1.7056878805160523,
+            "costTime": 2.6550893783569338,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 28,
+            "toRoomIndex": 27,
+            "costHealth": 1.6639550924301148,
+            "costSanity": 3.427997589111328,
+            "costTime": 1.7788195610046387,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 28,
+            "toRoomIndex": 31,
+            "costHealth": 1.346714735031128,
+            "costSanity": 5.280917644500732,
+            "costTime": 2.0882415771484377,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 28,
+            "toRoomIndex": 29,
+            "costHealth": 4.641600131988525,
+            "costSanity": 6.77559232711792,
+            "costTime": 2.7908716201782228,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 28,
+            "toRoomIndex": 25,
+            "costHealth": 4.333545684814453,
+            "costSanity": 1.4160211086273194,
+            "costTime": 1.772280216217041,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 28,
+            "toRoomIndex": 32,
+            "costHealth": 1.9640482664108277,
+            "costSanity": 3.7167646884918215,
+            "costTime": 1.7291632890701295,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 29,
+            "toRoomIndex": 27,
+            "costHealth": 1.2240440845489503,
+            "costSanity": 4.219232559204102,
+            "costTime": 2.2519898414611818,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 29,
+            "toRoomIndex": 30,
+            "costHealth": 2.1597466468811037,
+            "costSanity": 2.3208186626434328,
+            "costTime": 1.6695502996444703,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 29,
+            "toRoomIndex": 31,
+            "costHealth": 4.80862283706665,
+            "costSanity": 4.232692241668701,
+            "costTime": 2.2232894897460939,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 29,
+            "toRoomIndex": 24,
+            "costHealth": 1.0012593269348145,
+            "costSanity": 7.20457124710083,
+            "costTime": 1.1789511442184449,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 29,
+            "toRoomIndex": 28,
+            "costHealth": 2.011436700820923,
+            "costSanity": 2.8419477939605715,
+            "costTime": 1.4932236671447755,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 29,
+            "toRoomIndex": 33,
+            "costHealth": 1.6928269863128663,
+            "costSanity": 5.730140686035156,
+            "costTime": 2.414905071258545,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 29,
+            "toRoomIndex": 32,
+            "costHealth": 4.17680549621582,
+            "costSanity": 6.438495635986328,
+            "costTime": 2.756650686264038,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 29,
+            "toRoomIndex": 42,
+            "costHealth": 3.658693790435791,
+            "costSanity": 7.271122455596924,
+            "costTime": 2.0362000465393068,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 30,
+            "toRoomIndex": 29,
+            "costHealth": 4.505977153778076,
+            "costSanity": 1.7846426963806153,
+            "costTime": 2.2729275226593019,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 30,
+            "toRoomIndex": 26,
+            "costHealth": 4.594609260559082,
+            "costSanity": 4.38090705871582,
+            "costTime": 2.165796995162964,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 30,
+            "toRoomIndex": 27,
+            "costHealth": 2.7807466983795168,
+            "costSanity": 3.9715347290039064,
+            "costTime": 2.32989501953125,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 30,
+            "toRoomIndex": 42,
+            "costHealth": 2.0844154357910158,
+            "costSanity": 3.294267177581787,
+            "costTime": 2.7189290523529054,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 30,
+            "toRoomIndex": 33,
+            "costHealth": 2.235146999359131,
+            "costSanity": 1.0344266891479493,
+            "costTime": 1.7808598279953004,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 30,
+            "toRoomIndex": 40,
+            "costHealth": 2.1303625106811525,
+            "costSanity": 1.927768588066101,
+            "costTime": 2.1515085697174074,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 30,
+            "toRoomIndex": 35,
+            "costHealth": 2.2384815216064455,
+            "costSanity": 3.707106590270996,
+            "costTime": 1.2811788320541382,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 31,
+            "toRoomIndex": 29,
+            "costHealth": 1.8161145448684693,
+            "costSanity": 6.05405330657959,
+            "costTime": 1.0529735088348389,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 31,
+            "toRoomIndex": 32,
+            "costHealth": 2.8751587867736818,
+            "costSanity": 1.8590757846832276,
+            "costTime": 1.5921343564987183,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 31,
+            "toRoomIndex": 33,
+            "costHealth": 3.6430187225341799,
+            "costSanity": 1.594476342201233,
+            "costTime": 2.6597695350646974,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 31,
+            "toRoomIndex": 26,
+            "costHealth": 3.910851240158081,
+            "costSanity": 3.4048879146575929,
+            "costTime": 1.9047044515609742,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 31,
+            "toRoomIndex": 27,
+            "costHealth": 1.7009109258651734,
+            "costSanity": 3.5590908527374269,
+            "costTime": 2.2675089836120607,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 31,
+            "toRoomIndex": 28,
+            "costHealth": 2.0535264015197756,
+            "costSanity": 5.982762336730957,
+            "costTime": 2.4360737800598146,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 31,
+            "toRoomIndex": 34,
+            "costHealth": 5.308794021606445,
+            "costSanity": 2.9395623207092287,
+            "costTime": 2.0394766330718996,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 31,
+            "toRoomIndex": 35,
+            "costHealth": 2.9818031787872316,
+            "costSanity": 3.2627298831939699,
+            "costTime": 1.0706307888031006,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 32,
+            "toRoomIndex": 31,
+            "costHealth": 4.468117713928223,
+            "costSanity": 2.037299156188965,
+            "costTime": 2.088542938232422,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 32,
+            "toRoomIndex": 29,
+            "costHealth": 1.9016789197921754,
+            "costSanity": 2.0129661560058595,
+            "costTime": 2.3724493980407717,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 32,
+            "toRoomIndex": 28,
+            "costHealth": 4.911561012268066,
+            "costSanity": 7.422336101531982,
+            "costTime": 1.654554009437561,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 32,
+            "toRoomIndex": 33,
+            "costHealth": 3.218156337738037,
+            "costSanity": 1.697930097579956,
+            "costTime": 1.4173142910003663,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 32,
+            "toRoomIndex": 34,
+            "costHealth": 2.6920089721679689,
+            "costSanity": 9.729818344116211,
+            "costTime": 1.7258087396621705,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 33,
+            "toRoomIndex": 31,
+            "costHealth": 3.7779881954193117,
+            "costSanity": 4.977895736694336,
+            "costTime": 1.684503197669983,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 33,
+            "toRoomIndex": 34,
+            "costHealth": 6.8382039070129398,
+            "costSanity": 4.955078125,
+            "costTime": 1.5500259399414063,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 33,
+            "toRoomIndex": 35,
+            "costHealth": 4.689883232116699,
+            "costSanity": 2.64884352684021,
+            "costTime": 1.332962989807129,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 33,
+            "toRoomIndex": 29,
+            "costHealth": 2.5920403003692629,
+            "costSanity": 6.401529788970947,
+            "costTime": 2.0319762229919435,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 33,
+            "toRoomIndex": 30,
+            "costHealth": 3.094614028930664,
+            "costSanity": 4.956307888031006,
+            "costTime": 2.073179244995117,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 33,
+            "toRoomIndex": 32,
+            "costHealth": 3.5527098178863527,
+            "costSanity": 4.4884819984436039,
+            "costTime": 1.1960989236831666,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 33,
+            "toRoomIndex": 37,
+            "costHealth": 3.47002911567688,
+            "costSanity": 5.86374044418335,
+            "costTime": 2.723440170288086,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 33,
+            "toRoomIndex": 42,
+            "costHealth": 2.705158233642578,
+            "costSanity": 6.410276412963867,
+            "costTime": 2.871868371963501,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 34,
+            "toRoomIndex": 33,
+            "costHealth": 4.845058441162109,
+            "costSanity": 5.974865436553955,
+            "costTime": 2.4295356273651125,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 34,
+            "toRoomIndex": 31,
+            "costHealth": 3.46278977394104,
+            "costSanity": 4.649032115936279,
+            "costTime": 2.7850728034973146,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 34,
+            "toRoomIndex": 32,
+            "costHealth": 2.17318058013916,
+            "costSanity": 3.9179491996765138,
+            "costTime": 2.579347610473633,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 34,
+            "toRoomIndex": 35,
+            "costHealth": 1.0575041770935059,
+            "costSanity": 5.374908447265625,
+            "costTime": 1.8568745851516724,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 33,
+            "costHealth": 4.742550849914551,
+            "costSanity": 7.304324626922607,
+            "costTime": 1.5125433206558228,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 36,
+            "costHealth": 1.6309846639633179,
+            "costSanity": 1.8303916454315186,
+            "costTime": 2.641815662384033,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 37,
+            "costHealth": 3.336362838745117,
+            "costSanity": 7.400205135345459,
+            "costTime": 2.0815699100494386,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 38,
+            "costHealth": 1.4756015539169312,
+            "costSanity": 5.004167556762695,
+            "costTime": 1.3187528848648072,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 30,
+            "costHealth": 4.215373992919922,
+            "costSanity": 5.037707805633545,
+            "costTime": 2.4509212970733644,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 34,
+            "costHealth": 3.3079309463500978,
+            "costSanity": 10.904867172241211,
+            "costTime": 1.9871845245361329,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 39,
+            "costHealth": 4.192675590515137,
+            "costSanity": 2.89463472366333,
+            "costTime": 1.839672565460205,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 31,
+            "costHealth": 2.593991994857788,
+            "costSanity": 5.643185138702393,
+            "costTime": 1.1386555433273316,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 35,
+            "toRoomIndex": 40,
+            "costHealth": 1.0441293716430665,
+            "costSanity": 5.111208438873291,
+            "costTime": 2.0824666023254396,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 36,
+            "toRoomIndex": 35,
+            "costHealth": 3.0814294815063478,
+            "costSanity": 3.751840829849243,
+            "costTime": 2.3930413722991945,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 36,
+            "toRoomIndex": 37,
+            "costHealth": 1.7110565900802613,
+            "costSanity": 4.458130836486816,
+            "costTime": 1.6624764204025269,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 36,
+            "toRoomIndex": 38,
+            "costHealth": 4.05745792388916,
+            "costSanity": 4.74892520904541,
+            "costTime": 2.06831693649292,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 37,
+            "toRoomIndex": 35,
+            "costHealth": 2.819387912750244,
+            "costSanity": 3.591322422027588,
+            "costTime": 1.602806806564331,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 37,
+            "toRoomIndex": 38,
+            "costHealth": 2.8527028560638429,
+            "costSanity": 1.0626193284988404,
+            "costTime": 2.8866002559661867,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 37,
+            "toRoomIndex": 36,
+            "costHealth": 4.1042962074279789,
+            "costSanity": 2.921156167984009,
+            "costTime": 1.2925188541412354,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 37,
+            "toRoomIndex": 41,
+            "costHealth": 3.5204555988311769,
+            "costSanity": 6.085803985595703,
+            "costTime": 1.00955331325531,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 37,
+            "toRoomIndex": 33,
+            "costHealth": 3.6739253997802736,
+            "costSanity": 3.924929141998291,
+            "costTime": 1.669301986694336,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 38,
+            "toRoomIndex": 35,
+            "costHealth": 1.9636058807373047,
+            "costSanity": 2.9184391498565676,
+            "costTime": 2.482938051223755,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 38,
+            "toRoomIndex": 39,
+            "costHealth": 2.121762752532959,
+            "costSanity": 2.228536367416382,
+            "costTime": 1.1439069509506226,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 38,
+            "toRoomIndex": 40,
+            "costHealth": 4.78407621383667,
+            "costSanity": 4.731486797332764,
+            "costTime": 2.094806671142578,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 38,
+            "toRoomIndex": 37,
+            "costHealth": 2.2222442626953127,
+            "costSanity": 5.3600664138793949,
+            "costTime": 1.334534764289856,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 38,
+            "toRoomIndex": 41,
+            "costHealth": 4.535091400146484,
+            "costSanity": 1.5069447755813599,
+            "costTime": 1.859520435333252,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 38,
+            "toRoomIndex": 42,
+            "costHealth": 3.030073881149292,
+            "costSanity": 2.433927059173584,
+            "costTime": 1.7841012477874756,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 38,
+            "toRoomIndex": 43,
+            "costHealth": 3.101243495941162,
+            "costSanity": 2.851435899734497,
+            "costTime": 2.3383076190948488,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 38,
+            "toRoomIndex": 36,
+            "costHealth": 3.4909143447875978,
+            "costSanity": 5.033266067504883,
+            "costTime": 2.464893341064453,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 39,
+            "toRoomIndex": 38,
+            "costHealth": 2.0610880851745607,
+            "costSanity": 6.662650108337402,
+            "costTime": 1.4265401363372803,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 39,
+            "toRoomIndex": 35,
+            "costHealth": 3.77781081199646,
+            "costSanity": 4.5108561515808109,
+            "costTime": 1.887594223022461,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 39,
+            "toRoomIndex": 44,
+            "costHealth": 1.1495368480682374,
+            "costSanity": 4.920742034912109,
+            "costTime": 2.384864568710327,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 40,
+            "toRoomIndex": 38,
+            "costHealth": 1.7866486310958863,
+            "costSanity": 5.025064945220947,
+            "costTime": 1.6032637357711793,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 40,
+            "toRoomIndex": 41,
+            "costHealth": 4.655992031097412,
+            "costSanity": 7.501905918121338,
+            "costTime": 1.0478168725967408,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 40,
+            "toRoomIndex": 42,
+            "costHealth": 3.4106826782226564,
+            "costSanity": 3.7893238067626955,
+            "costTime": 2.8253185749053957,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 40,
+            "toRoomIndex": 43,
+            "costHealth": 1.681322693824768,
+            "costSanity": 5.030587673187256,
+            "costTime": 2.775674343109131,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 40,
+            "toRoomIndex": 30,
+            "costHealth": 1.8779027462005616,
+            "costSanity": 4.698050022125244,
+            "costTime": 1.418578028678894,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 40,
+            "toRoomIndex": 45,
+            "costHealth": 4.540416717529297,
+            "costSanity": 5.400548458099365,
+            "costTime": 1.5347169637680054,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 40,
+            "toRoomIndex": 46,
+            "costHealth": 4.483366012573242,
+            "costSanity": 2.9327328205108644,
+            "costTime": 1.2757126092910767,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 40,
+            "toRoomIndex": 35,
+            "costHealth": 3.4497053623199465,
+            "costSanity": 1.1161928176879883,
+            "costTime": 2.8745572566986086,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 41,
+            "toRoomIndex": 40,
+            "costHealth": 4.212837219238281,
+            "costSanity": 1.5842987298965455,
+            "costTime": 1.8520352840423585,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 41,
+            "toRoomIndex": 37,
+            "costHealth": 3.4684550762176515,
+            "costSanity": 5.585301399230957,
+            "costTime": 1.15474534034729,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 41,
+            "toRoomIndex": 38,
+            "costHealth": 2.352457284927368,
+            "costSanity": 1.4843493700027466,
+            "costTime": 1.3722795248031617,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 41,
+            "toRoomIndex": 44,
+            "costHealth": 4.306458950042725,
+            "costSanity": 5.576223850250244,
+            "costTime": 2.564030408859253,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 41,
+            "toRoomIndex": 47,
+            "costHealth": 2.3087053298950197,
+            "costSanity": 4.70034122467041,
+            "costTime": 1.6678473949432374,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 41,
+            "toRoomIndex": 42,
+            "costHealth": 3.3348124027252199,
+            "costSanity": 1.5825339555740357,
+            "costTime": 1.6230250597000123,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 40,
+            "costHealth": 1.5989466905593873,
+            "costSanity": 5.361677169799805,
+            "costTime": 1.9636863470077515,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 30,
+            "costHealth": 4.532715320587158,
+            "costSanity": 5.216888427734375,
+            "costTime": 2.1854190826416017,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 38,
+            "costHealth": 4.228513717651367,
+            "costSanity": 6.100574493408203,
+            "costTime": 1.0250332355499268,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 41,
+            "costHealth": 1.8091377019882203,
+            "costSanity": 2.0299370288848879,
+            "costTime": 2.0902488231658937,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 29,
+            "costHealth": 1.107489824295044,
+            "costSanity": 4.574463844299316,
+            "costTime": 2.451700448989868,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 49,
+            "costHealth": 4.0923542976379398,
+            "costSanity": 2.150676727294922,
+            "costTime": 2.102858781814575,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 33,
+            "costHealth": 4.791667938232422,
+            "costSanity": 2.424604654312134,
+            "costTime": 2.5935800075531008,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 25,
+            "costHealth": 1.998420238494873,
+            "costSanity": 4.917724609375,
+            "costTime": 1.5791574716567994,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 42,
+            "toRoomIndex": 43,
+            "costHealth": 3.5275397300720217,
+            "costSanity": 7.0754289627075199,
+            "costTime": 2.2585840225219728,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 40,
+            "costHealth": 3.01577091217041,
+            "costSanity": 4.962234973907471,
+            "costTime": 2.0797550678253176,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 44,
+            "costHealth": 1.0653334856033326,
+            "costSanity": 2.038778066635132,
+            "costTime": 2.3729946613311769,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 45,
+            "costHealth": 4.764877796173096,
+            "costSanity": 2.6268391609191896,
+            "costTime": 2.1559643745422365,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 46,
+            "costHealth": 2.1941936016082765,
+            "costSanity": 7.2338337898254398,
+            "costTime": 2.521266460418701,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 38,
+            "costHealth": 1.0877351760864258,
+            "costSanity": 7.225106716156006,
+            "costTime": 1.4225798845291138,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 47,
+            "costHealth": 2.6081104278564455,
+            "costSanity": 2.975795269012451,
+            "costTime": 2.836838722229004,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 49,
+            "costHealth": 2.636413812637329,
+            "costSanity": 5.358457088470459,
+            "costTime": 1.9212194681167603,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 42,
+            "costHealth": 1.9175846576690674,
+            "costSanity": 2.2249691486358644,
+            "costTime": 1.7047406435012818,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 43,
+            "toRoomIndex": 48,
+            "costHealth": 3.856119155883789,
+            "costSanity": 3.2684476375579836,
+            "costTime": 2.553086280822754,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 44,
+            "toRoomIndex": 43,
+            "costHealth": 4.832040786743164,
+            "costSanity": 7.263267517089844,
+            "costTime": 1.4638711214065552,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 44,
+            "toRoomIndex": 39,
+            "costHealth": 3.706188917160034,
+            "costSanity": 3.9413411617279054,
+            "costTime": 2.908029079437256,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 44,
+            "toRoomIndex": 41,
+            "costHealth": 2.8136258125305177,
+            "costSanity": 1.0846235752105713,
+            "costTime": 1.0738517045974732,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 44,
+            "toRoomIndex": 47,
+            "costHealth": 3.204582929611206,
+            "costSanity": 1.5259054899215699,
+            "costTime": 1.0546274185180665,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 44,
+            "toRoomIndex": 46,
+            "costHealth": 3.2680883407592775,
+            "costSanity": 4.700984001159668,
+            "costTime": 1.47916579246521,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 44,
+            "toRoomIndex": 45,
+            "costHealth": 3.1060545444488527,
+            "costSanity": 1.2474479675292969,
+            "costTime": 1.0957348346710206,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 45,
+            "toRoomIndex": 43,
+            "costHealth": 4.744268417358398,
+            "costSanity": 7.251791000366211,
+            "costTime": 2.2583789825439455,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 45,
+            "toRoomIndex": 21,
+            "costHealth": 3.4015066623687746,
+            "costSanity": 1.6408586502075196,
+            "costTime": 2.229779005050659,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 45,
+            "toRoomIndex": 40,
+            "costHealth": 3.369464635848999,
+            "costSanity": 3.6551506519317629,
+            "costTime": 1.3664873838424683,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 45,
+            "toRoomIndex": 49,
+            "costHealth": 2.644510269165039,
+            "costSanity": 2.2114102840423586,
+            "costTime": 1.3577733039855958,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 45,
+            "toRoomIndex": 44,
+            "costHealth": 3.660459041595459,
+            "costSanity": 1.6618449687957764,
+            "costTime": 1.6842186450958253,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 46,
+            "toRoomIndex": 43,
+            "costHealth": 1.5249042510986329,
+            "costSanity": 7.572268962860107,
+            "costTime": 2.4250705242156984,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 46,
+            "toRoomIndex": 47,
+            "costHealth": 2.690441846847534,
+            "costSanity": 6.125949382781982,
+            "costTime": 1.3925082683563233,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 46,
+            "toRoomIndex": 48,
+            "costHealth": 3.7493386268615724,
+            "costSanity": 4.3627400398254398,
+            "costTime": 1.333038091659546,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 46,
+            "toRoomIndex": 49,
+            "costHealth": 2.845783233642578,
+            "costSanity": 4.178660869598389,
+            "costTime": 1.9005886316299439,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 46,
+            "toRoomIndex": 40,
+            "costHealth": 1.8936760425567628,
+            "costSanity": 7.042637825012207,
+            "costTime": 1.0959069728851319,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 46,
+            "toRoomIndex": 44,
+            "costHealth": 1.943491816520691,
+            "costSanity": 1.5170412063598633,
+            "costTime": 1.3133244514465333,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 47,
+            "toRoomIndex": 46,
+            "costHealth": 1.5731760263442994,
+            "costSanity": 3.0567243099212648,
+            "costTime": 1.977519154548645,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 47,
+            "toRoomIndex": 41,
+            "costHealth": 4.2538251876831059,
+            "costSanity": 2.3631091117858888,
+            "costTime": 2.8373897075653078,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 47,
+            "toRoomIndex": 43,
+            "costHealth": 3.187110185623169,
+            "costSanity": 4.4969305992126469,
+            "costTime": 1.2098349332809449,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 47,
+            "toRoomIndex": 44,
+            "costHealth": 1.6571145057678223,
+            "costSanity": 6.861648082733154,
+            "costTime": 2.1552932262420656,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 47,
+            "toRoomIndex": 48,
+            "costHealth": 1.952971339225769,
+            "costSanity": 3.819204330444336,
+            "costTime": 2.3826675415039064,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 47,
+            "toRoomIndex": 49,
+            "costHealth": 2.518991231918335,
+            "costSanity": 2.087224245071411,
+            "costTime": 2.77762770652771,
+            "description": "Corredor (Volta)"
+        },
+        {
+            "fromRoomIndex": 48,
+            "toRoomIndex": 46,
+            "costHealth": 2.805288553237915,
+            "costSanity": 6.751526832580566,
+            "costTime": 1.7693036794662476,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 48,
+            "toRoomIndex": 43,
+            "costHealth": 1.9707787036895753,
+            "costSanity": 7.273698806762695,
+            "costTime": 1.6692276000976563,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 48,
+            "toRoomIndex": 47,
+            "costHealth": 1.1317552328109742,
+            "costSanity": 6.836917400360107,
+            "costTime": 2.5832130908966066,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 49,
+            "toRoomIndex": 46,
+            "costHealth": 3.647745132446289,
+            "costSanity": 5.145037651062012,
+            "costTime": 1.437376856803894,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 49,
+            "toRoomIndex": 42,
+            "costHealth": 1.1598527431488038,
+            "costSanity": 4.481873035430908,
+            "costTime": 1.9441412687301636,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 49,
+            "toRoomIndex": 43,
+            "costHealth": 2.40559983253479,
+            "costSanity": 5.023530006408691,
+            "costTime": 1.9546047449111939,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 49,
+            "toRoomIndex": 45,
+            "costHealth": 3.135070323944092,
+            "costSanity": 4.3386077880859379,
+            "costTime": 1.7139737606048585,
+            "description": "Corredor"
+        },
+        {
+            "fromRoomIndex": 49,
+            "toRoomIndex": 47,
+            "costHealth": 3.7707998752593996,
+            "costSanity": 7.990549564361572,
+            "costTime": 2.9158403873443605,
+            "description": "Corredor"
+        }
+    ],
+    "playerState": {
+        "currentRoomIndex": 13,
+        "currentHealth": 86.36634063720703,
+        "maxHealth": 100.0,
+        "currentSanity": 80.5487060546875,
+        "maxSanity": 100.0,
+        "currentSupplies": 0.7171471118927002,
+        "maxSupplies": 10.0,
+        "activeTraits": []
+    },
+    "progressData": {
+        "visitedRoomIndices": [
+            0,
+            4,
+            7,
+            9,
+            11,
+            13
+        ],
+        "pathHistory": [
+            0,
+            4,
+            7,
+            9,
+            11,
+            13
+        ],
+        "totalSteps": 5,
+        "costsApplied": [
+            {
+                "fromRoomIndex": 0,
+                "toRoomIndex": 4,
+                "costHealth": 1.8355307579040528,
+                "costSanity": 5.431126594543457,
+                "costTime": 1.660559058189392,
+                "description": "Corredor (Volta)"
+            },
+            {
+                "fromRoomIndex": 4,
+                "toRoomIndex": 7,
+                "costHealth": 4.146054744720459,
+                "costSanity": 1.5787445306777955,
+                "costTime": 2.909992218017578,
+                "description": "Corredor (Volta)"
+            },
+            {
+                "fromRoomIndex": 7,
+                "toRoomIndex": 9,
+                "costHealth": 4.954353332519531,
+                "costSanity": 7.509370803833008,
+                "costTime": 1.8396910429000855,
+                "description": "Corredor (Volta)"
+            },
+            {
+                "fromRoomIndex": 9,
+                "toRoomIndex": 11,
+                "costHealth": 2.00724458694458,
+                "costSanity": 4.048464775085449,
+                "costTime": 2.798771381378174,
+                "description": "Corredor (Volta)"
+            },
+            {
+                "fromRoomIndex": 11,
+                "toRoomIndex": 13,
+                "costHealth": 2.52600359916687,
+                "costSanity": 4.359104156494141,
+                "costTime": 1.7343981266021729,
+                "description": "Corredor (Volta)"
+            }
+        ]
+    },
+    "saveDate": "2025-12-06 15:59:41",
+    "saveVersion": 1
+}

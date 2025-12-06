@@ -23,6 +23,11 @@ public class GameOverUI : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private string mainMenuSceneName = "Menu_Test"; // Nome da cena do menu principal
 
+    [Header("Transição para Run Summary")]
+    [SerializeField] private GameObject gameOverCanvas;           // Canvas inteiro do Game Over para desativar
+    [SerializeField] private RunSummaryUIStyled runSummaryUI;     // UI de resumo para ativar
+    [SerializeField] private float transitionDelay = 3f;          // Delay após animação antes de transicionar
+
     [Header("Animation Settings")]
     [SerializeField] private float overlayFadeDuration = 1.5f; // Duração do fade-in do overlay
     [SerializeField] private float textAnimationDuration = 2f; // Duração da animação do texto
@@ -229,6 +234,50 @@ public class GameOverUI : MonoBehaviour
         }
 
         Debug.Log("Animações de Game Over completas!");
+
+        // ═══ TRANSIÇÃO PARA RUN SUMMARY ═══
+        if (runSummaryUI != null)
+        {
+            yield return new WaitForSecondsRealtime(transitionDelay);
+            TransitionToRunSummary();
+        }
+    }
+
+    /// <summary>
+    /// Transiciona do Game Over para o Run Summary.
+    /// </summary>
+    private void TransitionToRunSummary()
+    {
+        Debug.Log("[GameOverUI] Transicionando para Run Summary...");
+        
+        // Desativa o canvas do Game Over
+        if (gameOverCanvas != null)
+        {
+            gameOverCanvas.SetActive(false);
+            Debug.Log("[GameOverUI] GameOverCanvas desativado.");
+        }
+        else if (gameOverPanel != null)
+        {
+            // Fallback: usa o panel se canvas não foi atribuído
+            gameOverPanel.SetActive(false);
+            Debug.Log("[GameOverUI] GameOverPanel desativado (fallback).");
+        }
+
+        // Ativa e mostra o Run Summary
+        if (runSummaryUI != null)
+        {
+            // Busca GameController para obter métricas
+            GameController gameController = FindObjectOfType<GameController>();
+            if (gameController != null)
+            {
+                // Chama OnGameEnd para calcular métricas e exibir o resumo
+                gameController.OnGameEnd(false);
+            }
+            else
+            {
+                Debug.LogWarning("[GameOverUI] GameController não encontrado para gerar métricas!");
+            }
+        }
     }
 
     /// <summary>

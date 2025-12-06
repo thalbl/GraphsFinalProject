@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 256656149859539277}
   - component: {fileID: 8655462342039370937}
   - component: {fileID: 5003354336971457491}
+  - component: {fileID: 8025895452412058922}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 970.552, y: 210.59251, z: 0.9692199}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: -2413806693520163455, guid: 72c08d0de38880e4c8ef4d9121b39961, type: 3}
-  m_Color: {r: 1, g: 0.5723677, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -99,6 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dungeonGraph: {fileID: 0}
   gameController: {fileID: 0}
+  animator: {fileID: 0}
+  runParameterName: IsRunning
   stats:
     maxHealth: 100
     currentHealth: 100
@@ -109,6 +112,7 @@ MonoBehaviour:
     activeTraits: []
     sanityRecoveryAmount: 20
   movementDuration: 0.5
+  visualOffset: {x: 0.5, y: 1}
   currentRoom:
     logicalPosition: {x: 0, y: 0}
     roomType: 0
@@ -119,3 +123,24 @@ MonoBehaviour:
       width: 0
       height: 0
     distanceFromStart: 0
+--- !u!95 &8025895452412058922
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6302745354606377668}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ea4e00cd3802ec14e9758df33cbf1022, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

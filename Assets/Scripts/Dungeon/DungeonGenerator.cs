@@ -12,7 +12,9 @@ public class DungeonGenerator : MonoBehaviour {
 
     [Header("Generation Settings")]
     public int maxRooms = 15;
+    [Tooltip("Seed para geração determinística. Se 0, usa seed aleatório baseado no tempo.")]
     public int randomSeed = 0;
+    [HideInInspector] public int actualSeed; // Seed realmente usada (útil quando randomSeed = 0)
     public bool generateOnStart = true;
 
     [Header("Room Sizes")]
@@ -76,8 +78,19 @@ public class DungeonGenerator : MonoBehaviour {
 
     [ContextMenu("Generate Dungeon")]
     public void GenerateDungeon() {
-        // Inicializa gerador de números aleatórios
-        prng = new System.Random(randomSeed);
+        // Determina a seed a usar (0 = aleatório baseado no tempo)
+        if (randomSeed == 0)
+        {
+            actualSeed = Environment.TickCount;
+            Debug.Log($"[DungeonGenerator] Seed aleatória gerada: {actualSeed}");
+        }
+        else
+        {
+            actualSeed = randomSeed;
+        }
+        
+        // Inicializa gerador de números aleatórios com a seed determinada
+        prng = new System.Random(actualSeed);
 
         // Limpa dungeon anterior
         if (dungeonContainer != null) {

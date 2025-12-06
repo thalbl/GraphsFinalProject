@@ -23,6 +23,12 @@ public class GameController : MonoBehaviour
     [SerializeField] private bool allowRoomSelection = true;
     private bool isGameOver = false;
 
+    [Header("Progress Tracking")]
+    private HashSet<int> visitedRoomIndices = new HashSet<int>();  // Salas únicas visitadas (índices)
+    private List<int> pathHistory = new List<int>();                // Histórico completo de movimentos (índices)
+    private int totalSteps = 0;                                     // Total de passos dados
+    private List<EdgeConnectionData> costsApplied = new List<EdgeConnectionData>(); // Histórico de custos
+
     [Header("Visualização de Caminho")]
     [SerializeField] private Color pathColor = Color.cyan;
     [SerializeField] private Color startRoomColor = Color.magenta;
@@ -71,6 +77,55 @@ public class GameController : MonoBehaviour
         }
 
         Debug.Log("GameController inicializado!");
+        
+        // Inicializa progresso
+        InitializeProgress();
+
+        // ═══ VERIFICA SE HÁ SAVE PENDENTE PARA CARREGAR ═══
+        CheckForPendingLoad();
+    }
+
+    /// <summary>
+    /// Verifica se há um save pendente para carregar (vindo do menu principal).
+    /// </summary>
+    private void CheckForPendingLoad()
+    {
+        GameSessionState sessionState = GameSessionState.Instance;
+        
+        if (sessionState.isPendingLoad && !string.IsNullOrEmpty(sessionState.pendingSaveFileName))
+        {
+            Debug.Log($"[GameController] Save pendente detectado: {sessionState.pendingSaveFileName}");
+            
+            // Limpa o estado pendente ANTES de carregar (evita loop infinito)
+            string saveFileName = sessionState.pendingSaveFileName;
+            sessionState.ClearPendingLoad();
+            
+            // Aguarda um frame para garantir que o dungeon foi gerado antes de sobrescrever
+            StartCoroutine(LoadSaveAfterDelay(saveFileName));
+        }
+    }
+
+    /// <summary>
+    /// Carrega o save após um pequeno delay para garantir sincronização.
+    /// </summary>
+    private System.Collections.IEnumerator LoadSaveAfterDelay(string fileName)
+    {
+        // Espera o dungeon ser gerado primeiro
+        yield return new WaitForSeconds(0.1f);
+        
+        Debug.Log($"[GameController] Carregando save pendente: {fileName}");
+        LoadSavedGame(fileName);
+    }
+
+    /// <summary>
+    /// Inicializa rastreamento de progresso.
+    /// </summary>
+    private void InitializeProgress()
+    {
+        visitedRoomIndices.Clear();
+        pathHistory.Clear();
+        totalSteps = 0;
+        costsApplied.Clear();
     }
 
     /// <summary>
@@ -86,6 +141,9 @@ public class GameController : MonoBehaviour
         {
             playerCurrentRoom = dungeonGenerator.spawnRoom;
             HighlightCurrentRoom();
+            
+            // Registra sala inicial no progresso
+            RecordRoomVisit(dungeonGenerator.spawnRoom);
             
             // ═══ DESTACA ARESTAS ACESSÍVEIS DA SALA INICIAL ═══
             dungeonGenerator.HighlightPlayerAccessibleEdges(playerCurrentRoom);
@@ -129,6 +187,8 @@ public class GameController : MonoBehaviour
         InstantiatePlayer(dungeonGenerator.spawnRoom);
     }
 
+    private GameSaveData pendingSaveData; // Armazena dados de save para aplicar após instanciação
+
     /// <summary>
     /// Instancia o player na sala de spawn.
     /// </summary>
@@ -160,11 +220,26 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        // Inicializa o player
+        // Inicializa o player (Reseta stats para max)
         playerController.Initialize(spawnRoom);
+
+        // ═══ SE HOUVER SAVE PENDENTE, APLICA AGORA ═══
+        if (pendingSaveData != null)
+        {
+            Debug.Log("[GameController] Aplicando save pendente após instanciação...");
+            ApplyPendingSaveData();
+        }
 
         // Registra evento de morte
         playerController.stats.OnPlayerDied += OnPlayerDied;
+
+        // ═══ NOTIFICA PlayerStatsUI PARA ATUALIZAR ═══
+        PlayerStatsUI statsUI = FindObjectOfType<PlayerStatsUI>();
+        if (statsUI != null)
+        {
+            statsUI.SetPlayer(playerController);
+            Debug.Log("PlayerStatsUI notificado sobre novo player.");
+        }
 
         // ═══ CONFIGURA REFERÊNCIA DO PLAYER NO GPS ═══
         if (gpsSystem != null)
@@ -183,6 +258,82 @@ public class GameController : MonoBehaviour
 
         // ═══ CORREÇÃO: USA O CAMERA CONTROLLER PARA CENTRALIZAR ═══
         CenterCameraOnPlayerUsingCameraController();
+    }
+
+    /// <summary>
+    /// Aplica os dados de save pendentes.
+    /// </summary>
+    private void ApplyPendingSaveData()
+    {
+        if (pendingSaveData == null || playerController == null) return;
+
+        SaveManager.ApplySaveData(
+            pendingSaveData,
+            dungeonGenerator,
+            playerController,
+            playerController.stats,
+            out visitedRoomIndices,
+            out pathHistory,
+            out totalSteps,
+            out costsApplied
+        );
+
+        // Atualiza sala atual
+        playerCurrentRoom = dungeonGenerator.allRooms[pendingSaveData.playerState.currentRoomIndex];
+        
+        // Move player para a sala correta
+        playerController.transform.position = playerCurrentRoom.GetWorldPosition();
+        
+        // Atualiza referência interna currentRoom
+        System.Reflection.FieldInfo currentRoomField = typeof(PlayerController).GetField("currentRoom", 
+            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        if (currentRoomField != null)
+        {
+            currentRoomField.SetValue(playerController, playerCurrentRoom);
+        }
+        
+        MovePlayerToRoom(playerCurrentRoom);
+
+        Debug.Log($"✅ Save Pendente Aplicado! HP={playerController.stats.currentHealth}/{playerController.stats.maxHealth}");
+        
+        // Limpa save pendente
+        pendingSaveData = null;
+    }
+
+    // ... (rest of code)
+
+    /// <summary>
+    /// Carrega um jogo salvo.
+    /// </summary>
+    public bool LoadSavedGame(string fileName = "autosave")
+    {
+        GameSaveData saveData = SaveManager.LoadGame(fileName);
+        
+        if (saveData == null)
+        {
+            Debug.LogError($"[LoadGame] Falha ao carregar: {fileName}");
+            return false;
+        }
+
+        Debug.Log($"[LoadGame] Prepara-se para carregar. Seed: {saveData.dungeonData.seed}");
+
+        // 1. Armazena o save como pendente
+        pendingSaveData = saveData;
+
+        // 2. Regenera o dungeon
+        // Isso vai disparar OnDungeonGenerated -> InstantiatePlayerWithDelay -> InstantiatePlayer
+        // O InstantiatePlayer vai verificar pendingSaveData e aplicar
+        GameSessionState.Instance.UpdateSettings(
+            saveData.dungeonData.maxRooms,
+            saveData.dungeonData.seed,
+            saveData.dungeonData.cycleChance,
+            saveData.dungeonData.directedGraph
+        );
+        
+        GameSessionState.Instance.ApplyToDungeonGenerator(dungeonGenerator);
+        dungeonGenerator.GenerateDungeon();
+
+        return true;
     }
 
     /// <summary>
@@ -255,6 +406,32 @@ public class GameController : MonoBehaviour
 
         // Pausa o jogo DEPOIS da UI estar ativa
         Time.timeScale = 0f;
+
+        // Inicia sequência de delay para exibir o resumo
+        StartCoroutine(HandleGameOverSequence());
+    }
+
+    private System.Collections.IEnumerator HandleGameOverSequence()
+    {
+        Debug.Log("[GameController] Aguardando cena de Game Over...");
+        // Espera 4 segundos reais parado na tela de Game Over
+        yield return new WaitForSecondsRealtime(4f);
+        
+        // NOTA: Se o GameOverUI tem runSummaryUI configurado, ELE vai chamar OnGameEnd().
+        // Isso evita duplicação. Se não tiver, fazemos aqui como fallback.
+        // A lógica do GameOverUI agora cuida da transição automaticamente.
+        // Este coroutine serve apenas como fallback se GameOverUI não estiver configurado corretamente.
+        
+        // Verifica se o RunSummary já foi ativado (pelo GameOverUI)
+        RunSummaryUIStyled styledUI = FindObjectOfType<RunSummaryUIStyled>();
+        if (styledUI != null && styledUI.gameObject.activeInHierarchy && styledUI.transform.GetChild(0).gameObject.activeSelf)
+        {
+            Debug.Log("[GameController] RunSummary já ativo, pula chamada duplicada.");
+            yield break;
+        }
+        
+        Debug.Log("[GameController] Exibindo Run Summary após Game Over (fallback).");
+        OnGameEnd(false);
     }
 
     /// <summary>
@@ -596,4 +773,139 @@ public class GameController : MonoBehaviour
 
     public RoomNode GetPlayerCurrentRoom() => playerCurrentRoom;
     public List<RoomNode> GetCurrentPath() => currentPath;
+
+    // ═══════════════════════════════════════════════════════════
+    // PROGRESS TRACKING
+    // ═══════════════════════════════════════════════════════════
+
+    /// <summary>
+    /// Registra visita a uma sala.
+    /// </summary>
+    public void RecordRoomVisit(RoomNode room)
+    {
+        if (room == null || dungeonGenerator == null) return;
+
+        int roomIndex = dungeonGenerator.allRooms.IndexOf(room);
+        if (roomIndex < 0) return;
+
+        // Adiciona ao histórico completo (pode ter repetições)
+        pathHistory.Add(roomIndex);
+
+        // Adiciona a salas únicas visitadas
+        bool isNewRoom = visitedRoomIndices.Add(roomIndex);
+
+        if (isNewRoom)
+        {
+            Debug.Log($"[Progress] Nova sala visitada: {room.logicalPosition} (Total: {visitedRoomIndices.Count}/{dungeonGenerator.allRooms.Count})");
+        }
+    }
+
+    /// <summary>
+    /// Registra um movimento do jogador (chamado pelo PlayerController).
+    /// </summary>
+    public void RecordMovement(RoomNode fromRoom, RoomNode toRoom, EdgeData costApplied)
+    {
+        if (dungeonGenerator == null) return;
+
+        totalSteps++;
+        RecordRoomVisit(toRoom);
+
+        // Registra custo aplicado
+        int fromIndex = dungeonGenerator.allRooms.IndexOf(fromRoom);
+        int toIndex = dungeonGenerator.allRooms.IndexOf(toRoom);
+        
+        if (fromIndex >= 0 && toIndex >= 0 && costApplied != null)
+        {
+            costsApplied.Add(new EdgeConnectionData(fromIndex, toIndex, costApplied));
+        }
+
+        Debug.Log($"[Progress] Movimento {totalSteps}: {fromRoom.logicalPosition} -> {toRoom.logicalPosition}");
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // SAVE / LOAD
+    // ═══════════════════════════════════════════════════════════
+
+    /// <summary>
+    /// Salva o jogo no arquivo especificado.
+    /// </summary>
+    public bool SaveCurrentGame(string fileName = "autosave")
+    {
+        if (dungeonGenerator == null || playerController == null)
+        {
+            Debug.LogError("[SaveGame] Impossível salvar - componentes necessários estão null!");
+            return false;
+        }
+
+        GameSaveData saveData = SaveManager.CreateSaveData(
+            dungeonGenerator,
+            playerController,
+            playerController.stats,
+            visitedRoomIndices,
+            pathHistory,
+            totalSteps,
+            costsApplied
+        );
+
+        bool success = SaveManager.SaveGame(fileName, saveData);
+        
+        if (success)
+        {
+            Debug.Log($"✅ Jogo salvo com sucesso: {fileName}");
+        }
+
+        return success;
+    }
+
+
+
+    /// <summary>
+    /// Chamado quando o jogo termina (vitória ou derrota).
+    /// Calcula métricas e exibe tela de resumo.
+    /// </summary>
+    public void OnGameEnd(bool victory)
+    {
+        if (dungeonGenerator == null || playerController == null) return;
+
+        Debug.Log("═══════════════════════════════════════");
+        Debug.Log($"   JOGO FINALIZADO - {(victory ? "VITÓRIA" : "DERROTA")}");
+        Debug.Log("═══════════════════════════════════════");
+
+        // Calcula métricas
+        GameMetrics metrics = MetricsCalculator.GenerateMetrics(
+            dungeonGenerator,
+            pathHistory,
+            visitedRoomIndices,
+            costsApplied,
+            playerController.stats,
+            victory
+        );
+
+        // Exibe resumo formatado no console
+        Debug.Log(metrics.GetFormattedSummary());
+        Debug.Log(MetricsCalculator.GetDetailedAnalysis(metrics, dungeonGenerator));
+
+        // ═══ EXIBE TELA DE RESUMO (UI) ═══
+        // Tenta usar versão estilizada primeiro
+        RunSummaryUIStyled styledUI = FindObjectOfType<RunSummaryUIStyled>();
+        if (styledUI != null)
+        {
+            styledUI.ShowReport(metrics);
+            Debug.Log("RunSummaryUIStyled exibida com sucesso.");
+        }
+        else
+        {
+            // Fallback para versão simples
+            RunSummaryUI summaryUI = FindObjectOfType<RunSummaryUI>();
+            if (summaryUI != null)
+            {
+                summaryUI.ShowSummary(metrics, dungeonGenerator, pathHistory);
+                Debug.Log("RunSummaryUI exibida com sucesso.");
+            }
+            else
+            {
+                Debug.LogWarning("Nenhuma RunSummaryUI encontrada na cena!");
+            }
+        }
+    }
 }

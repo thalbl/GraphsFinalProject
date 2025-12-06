@@ -22,6 +22,10 @@ public class GameSessionState : MonoBehaviour
         }
     }
 
+    [Header("Save/Load State")]
+    public bool isPendingLoad = false;          // Flag indicando que deve carregar save ao iniciar
+    public string pendingSaveFileName = "";      // Nome do arquivo de save a carregar
+
     [Header("Dungeon Generation Settings")]
     public int maxRooms = 50;
     public int randomSeed = 2020;
@@ -99,7 +103,30 @@ public class GameSessionState : MonoBehaviour
         randomSeed = 12345;
         complexity = 0.3f;
         directedGraph = true;
+        isPendingLoad = false;
+        pendingSaveFileName = "";
         
         Debug.Log("[GameSessionState] Reset to default values");
+    }
+
+    /// <summary>
+    /// Define um save para ser carregado quando a cena do jogo iniciar.
+    /// </summary>
+    /// <param name="fileName">Nome do arquivo de save (sem extensão)</param>
+    public void SetPendingLoad(string fileName)
+    {
+        isPendingLoad = true;
+        pendingSaveFileName = fileName;
+        Debug.Log($"[GameSessionState] Pending load set: {fileName}");
+    }
+
+    /// <summary>
+    /// Limpa o estado de load pendente.
+    /// </summary>
+    public void ClearPendingLoad()
+    {
+        isPendingLoad = false;
+        pendingSaveFileName = "";
+        Debug.Log("[GameSessionState] Pending load cleared");
     }
 }
