@@ -77,3 +77,8 @@ public struct VisibilityResult {
     public bool AllRoomsVisible => FullyVisibleRooms == TotalRooms;
 }
 
+
+
+
+
+
