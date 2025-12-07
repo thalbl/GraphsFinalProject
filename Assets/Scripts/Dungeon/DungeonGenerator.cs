@@ -213,4 +213,14 @@ public class DungeonGenerator : MonoBehaviour {
             visualizer.ResetAllEdgeColors();
         }
     }
+
+    public EdgeData GetEdgeCost(RoomNode from, RoomNode to)
+    {
+        if (edgeCosts.TryGetValue((from, to), out EdgeData data))
+        {
+            return data;
+        }
+        return null; // Não existe aresta lógica
+    }
+    
 }
