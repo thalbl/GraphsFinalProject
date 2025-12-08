@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b58fb2ed3de764d8b7644b7e676e8b, type: 3}
+  m_Name: Healing_Normal
+  m_EditorClassIdentifier: 
+  context: 4
+  roomType: 0
+  anyRoomType: 1
+  condition: 0
+  requiredTraitName: 
+  phrases:
+  - "> As feridas come\xE7am a se fechar."
+  - "> For\xE7a retorna aos membros cansados."
+  - "> O corpo agradece o momento de al\xEDvio."
+  - "> Um suspiro de al\xEDvio escapa dos l\xE1bios."
+  - '> A dor recua, ao menos por agora.'
+  overrideMessageType: 1
+  messageTypeOverride: 3

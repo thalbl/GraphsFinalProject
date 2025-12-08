@@ -382,7 +382,7 @@ public class RunSummaryUIStyled : MonoBehaviour
             GetOrAddCG(cardProf) 
         };
 
-        Debug.Log("✨ Estrutura de UI gerada com sucesso! Ajuste as fontes e sprites agora.");
+        Debug.Log("Estrutura de UI gerada com sucesso! Ajuste as fontes e sprites agora.");
     }
 
     // --- Helpers de Geração ---

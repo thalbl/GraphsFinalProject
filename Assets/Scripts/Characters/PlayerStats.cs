@@ -93,18 +93,30 @@ public class PlayerStats
     }
 
     /// <summary>
-    /// Verifica se a sanidade caiu abaixo de zero e aplica affliction.
+    /// Verifica se a sanidade caiu abaixo de zero e aplica trait (50% affliction, 50% virtue).
     /// </summary>
     private void CheckSanity()
     {
         if (currentSanity <= 0)
         {
-            Debug.LogWarning("Sanidade chegou a zero! Ganhando affliction...");
+            Debug.LogWarning("Sanidade chegou a zero! A mente está em colapso...");
             EventLogger.LogSanity("Sua sanidade chegou a zero!");
             
-            GainRandomAffliction();
+            // 50/50 chance de affliction ou virtue
+            bool isAffliction = UnityEngine.Random.value < 0.5f;
             
-            // Recupera sanidade completa após desenvolver a affliction
+            if (isAffliction)
+            {
+                Debug.Log("A escuridão toma conta... Affliction ganhada!");
+                GainRandomAffliction();
+            }
+            else
+            {
+                Debug.Log("A clareza surge do caos... Virtue ganhada!");
+                GainRandomVirtue();
+            }
+            
+            // Recupera sanidade completa após desenvolver o trait
             currentSanity = maxSanity;
             Debug.Log($"Sanidade restaurada para {currentSanity} (máximo)");
             EventLogger.LogGain($"A mente se adapta. Sanidade restaurada para {maxSanity:F0}");
@@ -132,6 +144,30 @@ public class PlayerStats
         else
         {
             Debug.Log($"Affliction '{affliction.traitName}' já ativa, não adicionada novamente.");
+        }
+    }
+
+    /// <summary>
+    /// Adiciona um trait positivo (virtude) aleatório ao jogador.
+    /// </summary>
+    public void GainRandomVirtue()
+    {
+        Trait virtue = Trait.GetRandomVirtue();
+        
+        // Evita duplicatas
+        if (!activeTraits.Exists(t => t.traitName == virtue.traitName))
+        {
+            activeTraits.Add(virtue);
+            Debug.Log($"<color=green>VIRTUE GANHADA: {virtue.traitName}</color> - {virtue.description}");
+            
+            // Log no UI
+            EventLogger.LogVirtue(virtue.traitName, virtue.description);
+            
+            OnTraitGained?.Invoke(virtue);
+        }
+        else
+        {
+            Debug.Log($"Virtue '{virtue.traitName}' já ativa, não adicionada novamente.");
         }
     }
 

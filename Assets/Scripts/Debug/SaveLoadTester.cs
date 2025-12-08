@@ -164,7 +164,7 @@ public class SaveLoadTester : MonoBehaviour
     private void TestVictory()
     {
         Debug.Log("──────────────────────────────────────");
-        Debug.Log("🎉 FORÇANDO VITÓRIA PARA TESTE...");
+        Debug.Log("FORCANDO VITORIA PARA TESTE...");
         Debug.Log("──────────────────────────────────────");
 
         gameController.OnGameEnd(true);

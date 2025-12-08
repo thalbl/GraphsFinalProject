@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b58fb2ed3de764d8b7644b7e676e8b, type: 3}
+  m_Name: Vigoroso_Movement_LowHealth
+  m_EditorClassIdentifier: 
+  context: 1
+  roomType: 0
+  anyRoomType: 1
+  condition: 1
+  requiredTraitName: Vigoroso
+  phrases:
+  - "> (Vigoroso) \"Apenas arranh\xF5es. Continuem.\""
+  - "> (Vigoroso) \"O corpo aguenta. A miss\xE3o continua.\""
+  overrideMessageType: 1
+  messageTypeOverride: 2

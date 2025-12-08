@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b58fb2ed3de764d8b7644b7e676e8b, type: 3}
+  m_Name: RoomEnter_Boss
+  m_EditorClassIdentifier: 
+  context: 2
+  roomType: 1
+  anyRoomType: 0
+  condition: 0
+  requiredTraitName: 
+  phrases:
+  - "> \u2550\u2550\u2550 O SENHOR DESTA MASMORRA AGUARDAVA. \u2550\u2550\u2550"
+  - "> \u2550\u2550\u2550 A ESCURID\xC3O ABSOLUTA TE ENVOLVE. \u2550\u2550\u2550"
+  - "> \u2550\u2550\u2550 VOC\xCA CHEGOU AO FIM DA JORNADA. \u2550\u2550\u2550"
+  - "> \u2550\u2550\u2550 O DESTINO FOI SELADO NESTE MOMENTO. \u2550\u2550\u2550"
+  - "> \u2550\u2550\u2550 A \xDALTIMA PORTA SE ABRE. N\xC3O H\xC1 VOLTA. \u2550\u2550\u2550"
+  overrideMessageType: 1
+  messageTypeOverride: 2
