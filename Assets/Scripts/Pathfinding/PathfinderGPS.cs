@@ -253,7 +253,18 @@ public class PathfinderGPS : MonoBehaviour
         playerController.stats.NotifyStatsChanged();
         
         Debug.Log($"[GPS] {sanityCost:F0} SP deduzidos. Sanidade atual: {playerController.stats.currentSanity:F1}");
-        EventLogger.LogSanity($"GPS utilizado. -{sanityCost:F0} SP");
+        
+        // ═══ Flavor text para uso do GPS ═══
+        string[] gpsFlavorPhrases = new string[]
+        {
+            "*A dungeon sussurra seus segredos... ao custo da sanidade.*",
+            "*Fragmentos de conhecimento proibido invadem a mente.*",
+            "*O véu se rasga. O caminho se revela. A mente sangra.*",
+            "*A escuridão aceita o sacrifício e mostra o caminho.*",
+            "*Vozes antigas ecoam: 'O preço foi pago. O caminho é este.'*"
+        };
+        string gpsFlavor = gpsFlavorPhrases[UnityEngine.Random.Range(0, gpsFlavorPhrases.Length)];
+        EventLogger.LogSanity($"GPS: -{sanityCost:F0} SP | {gpsFlavor}");
 
         // Calcula caminho usando A*
         currentGPSPath = AStarPathfinder.FindPath(
@@ -445,6 +456,7 @@ public class PathfinderGPS : MonoBehaviour
 
     // Propriedades públicas
     public bool IsWaitingForRoomSelection => isWaitingForRoomSelection;
+    public bool IsWaitingForCostTypeSelection => isWaitingForCostTypeSelection;
     public bool CanUseGPS => playerController != null && playerController.stats.currentSanity >= sanityCost;
     public float SanityCost => sanityCost;
     public Color GPSRoomBorderColor => gpsRoomBorderColor; // Cor da borda configurável

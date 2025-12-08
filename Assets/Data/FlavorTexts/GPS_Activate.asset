@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b58fb2ed3de764d8b7644b7e676e8b, type: 3}
+  m_Name: GPS_Activate
+  m_EditorClassIdentifier: 
+  context: 0
+  roomType: 0
+  anyRoomType: 1
+  condition: 0
+  requiredTraitName: 
+  phrases:
+  - '> *A dungeon sussurra seus segredos... ao custo da sanidade.*'
+  - '> *Fragmentos de conhecimento proibido invadem a mente.*'
+  - "> *O v\xE9u se rasga. O caminho se revela. A mente sangra.*"
+  - "> *A escurid\xE3o aceita o sacrif\xEDcio e mostra o caminho.*"
+  - "> *Vozes antigas ecoam: 'O pre\xE7o foi pago. O caminho \xE9 este.'*"
+  overrideMessageType: 1
+  messageTypeOverride: 4

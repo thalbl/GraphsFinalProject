@@ -91,6 +91,17 @@ public static class EventLogger
     }
 
     /// <summary>
+    /// Log de virtue (trait positivo) ganhada.
+    /// </summary>
+    public static void LogVirtue(string virtueName, string description)
+    {
+        if (GameLog.Instance != null)
+            GameLog.Instance.LogMessage($"VIRTUE: {virtueName} - {description}", LogMessageType.Gain);
+        else
+            Debug.Log($"[EventLogger] GameLog não disponível: VIRTUE - {virtueName}");
+    }
+
+    /// <summary>
     /// Log de seleção de sala.
     /// </summary>
     public static void LogRoomSelection(string roomName)

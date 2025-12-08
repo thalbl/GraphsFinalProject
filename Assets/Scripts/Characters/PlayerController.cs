@@ -281,7 +281,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnCombatRoom(RoomNode room)
     {
-        Debug.Log($"<color=red>⚔ COMBATE INICIADO NA SALA {room.logicalPosition}!</color>");
+        Debug.Log($"<color=red>[COMBATE] COMBATE INICIADO NA SALA {room.logicalPosition}!</color>");
         // TODO: Parar movimento, iniciar combate
         // Por enquanto, apenas log
     }
@@ -292,8 +292,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnTreasureRoom(RoomNode room)
     {
-        Debug.Log($"<color=yellow>💎 TESOURO ENCONTRADO NA SALA {room.logicalPosition}!</color>");
-        EventLogger.LogInfo($"💎 Baú encontrado na sala {room.logicalPosition}!");
+        Debug.Log($"<color=yellow>[TESOURO] TESOURO ENCONTRADO NA SALA {room.logicalPosition}!</color>");
+        EventLogger.LogInfo($"Bau encontrado na sala {room.logicalPosition}!");
         
         // Recompensas aleatórias (reduzidas para balanceamento)
         float healthGain = Random.Range(2f, 5f);
@@ -312,8 +312,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnCampRoom(RoomNode room)
     {
-        Debug.Log($"<color=cyan>🏕 ACAMPAMENTO NA SALA {room.logicalPosition}!</color>");
-        Debug.Log("✨ Descansando e recuperando forças...");
+        Debug.Log($"<color=cyan>[CAMP] ACAMPAMENTO NA SALA {room.logicalPosition}!</color>");
+        Debug.Log("Descansando e recuperando forcas...");
         
         // Valores de recuperação (balanceados)
         float healthRestore = 20f;
@@ -330,17 +330,36 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Evento: Sala do Boss
-    /// Termina o jogo com vitória
+    /// Termina o jogo com vitória após um delay
     /// </summary>
     private void OnBossRoom(RoomNode room)
     {
-        Debug.Log($"<color=red>👹 BOSS ENCONTRADO NA SALA {room.logicalPosition}!</color>");
-        EventLogger.LogInfo("🎉 Você chegou na sala do Boss!");
+        Debug.Log($"<color=red>[BOSS] BOSS ENCONTRADO NA SALA {room.logicalPosition}!</color>");
+        EventLogger.LogInfo("Voce chegou na sala do Boss!");
+        
+        // Mensagens dramáticas
+        EventLogger.LogGain("A dungeon está completa!");
+        EventLogger.LogInfo("Você sobreviveu à escuridão...");
         
         Debug.Log("════════════════════════════════════");
-        Debug.Log("       🎉 VITÓRIA! 🎉              ");
+        Debug.Log("       === VITORIA! ===              ");
         Debug.Log("  Você completou a dungeon!         ");
         Debug.Log("════════════════════════════════════");
+        
+        // Inicia coroutine para delay antes de mostrar tela de vitória
+        StartCoroutine(VictorySequence());
+    }
+
+    /// <summary>
+    /// Coroutine que espera um tempo antes de exibir a tela de vitória.
+    /// Permite que o jogador leia as mensagens de entrada na sala do Boss.
+    /// </summary>
+    private IEnumerator VictorySequence()
+    {
+        // Espera 3 segundos para o jogador ler as mensagens
+        yield return new WaitForSeconds(3f);
+        
+        EventLogger.LogGain("=== VITORIA ===");
         
         // Termina o jogo com vitória
         if (gameController != null)
@@ -359,7 +378,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnEventRoom(RoomNode room)
     {
-        Debug.Log($"<color=magenta>❓ EVENTO ALEATÓRIO NA SALA {room.logicalPosition}!</color>");
+        Debug.Log($"<color=magenta>[EVENTO] EVENTO ALEATORIO NA SALA {room.logicalPosition}!</color>");
         Debug.Log("Sistema de eventos (não implementado ainda)");
         // TODO: Criar sistema de eventos aleatórios
     }

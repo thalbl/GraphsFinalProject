@@ -525,6 +525,13 @@ public class GameController : MonoBehaviour
     /// </summary>
     private void OnCostTypeSelected(CostType selectedCostType)
     {
+        // ═══ GUARD: Se o GPS está ativo, ele lida com o evento ═══
+        if (gpsSystem != null && gpsSystem.IsWaitingForCostTypeSelection)
+        {
+            Debug.Log("[GameController] GPS está ativo, ignorando seleção de custo no GameController.");
+            return;
+        }
+
         Debug.Log($"Tipo de custo selecionado: {selectedCostType}");
 
         // ═══ DELEGA MOVIMENTO AO PLAYERCONTROLLER ═══
